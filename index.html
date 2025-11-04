@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enjoy Padel – Rezervări</title>
+  <style>
+    :root{
+      --bg:#0a0f0d; --fg:#eaf5ef; --muted:#95a7ad;
+      --panel:#0f1519; --line:#1f2a32;
+      --green:#22c55e; --blue:#2563eb; --chip:#0e1418;
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+
+    /* NAV */
+    nav{
+      position:fixed; inset:0 0 auto 0; z-index:50;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px clamp(18px,4vw,48px);
+      background:rgba(0,0,0,.55); backdrop-filter: blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .brand{font-weight:900; letter-spacing:.5px}
+    .brand b{color:var(--green)}
+    nav a{color:#e9f4ef; text-decoration:none; margin-left:18px; font-weight:600; opacity:.95}
+    nav a:hover{opacity:1}
+
+    /* HERO */
+    header.hero{
+      margin-top:64px; min-height:78vh; position:relative;
+      display:grid; place-items:center; text-align:center;
+      width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw;
+      background:
+        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+        url("./hero.png") center/cover no-repeat;
+    }
+    header .wrap{max-width:1100px; padding:0 clamp(16px,4vw,48px)}
+    h1{font-size:clamp(32px,6vw,60px); margin:.2rem 0 .7rem; color:var(--green)}
+    .lead{max-width:900px; margin:0 auto 18px; line-height:1.6; font-size:clamp(16px,2.2vw,19px)}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px; padding:14px 24px;
+      border-radius:999px; border:1px solid #2b3c46; background:var(--green); color:#04170d;
+      font-weight:900; text-decoration:none; cursor:pointer
+    }
+    .btn:hover{filter:brightness(1.05)}
+
+    /* SECTION */
+    .section{margin:28px auto; padding:24px clamp(16px,4vw,40px); width:100%; max-width:1400px;
+      background:var(--panel); border:1px solid var(--line); border-radius:18px}
+    .grid{display:grid; grid-template-columns:2fr 1fr; gap:24px}
+    @media (max-width:1000px){.grid{grid-template-columns:1fr}}
+
+    .label{font-size:13px; color:var(--muted); margin-bottom:6px}
+    .calendar{display:grid; grid-template-columns:repeat(7,1fr); gap:8px}
+    .day{padding:10px; border-radius:10px; border:1px solid var(--line); text-align:center;
+         background:var(--chip); cursor:pointer; color:#eaf5ef; font-weight:600}
+    .day.active{outline:2px solid var(--blue); background:rgba(37,99,235,.12); color:#d7eaff}
+    .day:disabled{color:#7a8b92; opacity:.55; cursor:not-allowed}
+
+    /* TIMELINE — grilă compactă pe ecran, fără scroll orizontal */
+    .timeline{
+      display:grid;
+      grid-template-columns:repeat(8, minmax(74px, 1fr)); /* desktop */
+      gap:8px; padding:8px; border:1px solid var(--line);
+      border-radius:12px; background:#0c1216; overflow:hidden;
+    }
+    @media (max-width:1200px){ .timeline{grid-template-columns:repeat(6, minmax(74px,1fr));} }
+    @media (max-width:900px){  .timeline{grid-template-columns:repeat(5, minmax(70px,1fr));} }
+    @media (max-width:700px){  .timeline{grid-template-columns:repeat(4, minmax(68px,1fr));} }
+    @media (max-width:480px){  .timeline{grid-template-columns:repeat(3, minmax(66px,1fr));} }
+
+    .slot{
+      width:100%; text-align:center; padding:10px 8px;
+      border-radius:10px; border:1px solid var(--line);
+      background:var(--chip); color:#eaf5ef; font-weight:700;
+      cursor:pointer; user-select:none;
+    }
+    .slot:disabled{opacity:.45; color:#7a8b92; cursor:not-allowed}
+    .slot.start{outline:2px solid var(--green)}
+    .slot.end{outline:2px solid var(--green)}
+    .slot.range{background:rgba(34,197,94,.14); border-color:rgba(34,197,94,.35)}
+
+    .card{background:#0d1418; border:1px solid var(--line); border-radius:14px; padding:16px}
+    .price{font-size:28px; font-weight:900}
+    .notice{font-size:12px; color:var(--muted)}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="brand">ENJOY <b>PADEL</b></div>
+    <div>
+      <a href="#rezerva">Rezervă</a>
+      <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://tiktok.com/" target="_blank" rel="noopener">TikTok</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap">
+      <h1>Bine ai venit la Enjoy Padel!</h1>
+      <p class="lead">Aici jocul e mereu aprins! Terenuri moderne, energie bună și o comunitate de jucători care iubesc padelul. Fie că vii să te distrezi cu prietenii sau să-ți testezi limitele, te așteptăm să intri în joc și să simți vibe-ul!</p>
+      <a href="#rezerva" class="btn" id="cta">Rezervă acum</a>
+    </div>
+  </header>
+
+  <!-- BOOKING -->
+  <section id="rezerva" class="section">
+    <div class="grid">
+      <div>
+        <h2 style="margin:0 0 10px">Rezervă teren • Non-stop</h2>
+
+        <div class="label">Selectează ziua</div>
+        <div id="days" class="calendar" style="margin-bottom:12px"></div>
+
+        <div class="label">Alege intervalul (tap pe ora de start, apoi tap pe ora de final)</div>
+        <div id="timeline" class="timeline"></div>
+        <div class="notice" style="margin-top:6px">
+          Minim 1 oră • Poți alege și 1h30 (ex: 13:00 → 14:30). Selectarea peste 00:00 e permisă.
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3 style="margin:6px 0 8px">Detalii rezervare</h3>
+          <div class="label">Data</div>
+          <div id="sum-date" style="margin-bottom:8px">—</div>
+          <div class="label">Interval</div>
+          <div id="sum-time" style="margin-bottom:8px">—</div>
+          <div class="label">Total</div>
+          <div class="price" id="sum-price">—</div>
+
+          <div style="margin-top:12px">
+            <div class="label">Cod de reducere (opțional)</div>
+            <input id="coupon" placeholder="Introdu codul (în curând)" />
+            <div id="couponMsg" class="notice" style="margin-top:6px"></div>
+          </div>
+
+          <button class="btn" style="width:100%;margin-top:12px" id="payBtn">Continuă (plata în curând)</button>
+          <p class="notice" style="margin-top:6px">Plata online va fi activă în curând. Momentan poți selecta intervalul și vedea prețul.</p>
+          <p class="notice">2 terenuri OUTDOOR. Atribuirea terenului se face automat la confirmare.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+<script>
+/* ===== CONFIG ===== */
+const DAYS_AHEAD = 21;     // zile afișate
+const MIN_LEN = 60;        // minim 1 oră
+const MAX_LEN = 180;       // maxim 3 ore
+const STEP = 30;           // sloturi din 30 în 30 de minute (48/zi)
+
+/* ==== DATE UTILS (LOCAL) ==== */
+function localYMD(dateObj){
+  const y = dateObj.getFullYear();
+  const m = String(dateObj.getMonth()+1).padStart(2,'0');
+  const d = String(dateObj.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
+}
+function todayLocal(){
+  const d = new Date(); d.setHours(0,0,0,0); return d;
+}
+
+/* ===== TARIFE =====
+   L–V: 00–08 = 60; 08–18 = 80; 18–24 = 100
+   S–D: 00–08 = 80; 08–12 = 100; 12–18 = 120; 18–24 = 140
+*/
+function isWeekend(dateStr){
+  const d = new Date(dateStr + "T00:00:00");
+  const day = d.getDay(); // 0 Dum, 6 Sâm
+  return day===0 || day===6;
+}
+function hourlyRate(dateStr, hour){
+  if(isWeekend(dateStr)){
+    if(hour>=0 && hour<8)  return 80;
+    if(hour>=8 && hour<12) return 100;
+    if(hour>=12 && hour<18) return 120;
+    return 140; // 18–24
+  } else {
+    if(hour>=0 && hour<8)  return 60;
+    if(hour>=8 && hour<18) return 80;
+    return 100; // 18–24
+  }
+}
+function priceBetween(start, end){
+  let total = 0;
+  const cur = new Date(start);
+  while(cur < end){
+    const stepEnd = new Date(cur);
+    stepEnd.setMinutes(stepEnd.getMinutes() + Math.min(60 - cur.getMinutes(), (end - cur)/60000));
+    const dateStr = localYMD(cur);
+    const rate = hourlyRate(dateStr, cur.getHours());
+    const minutes = (stepEnd - cur)/60000;
+    total += rate * (minutes/60);
+    cur.setTime(stepEnd.getTime());
+  }
+  return Math.round(total);
+}
+
+/* ===== STATE / DOM ===== */
+let selDate = null;  // "YYYY-MM-DD"
+let startIdx = null; // 0..47
+let endIdx = null;   // 0..47 (poate fi < startIdx => trecere peste 00:00)
+
+const daysEl = document.getElementById('days');
+const tlEl   = document.getElementById('timeline');
+const sDate  = document.getElementById('sum-date');
+const sTime  = document.getElementById('sum-time');
+const sPrice = document.getElementById('sum-price');
+const couponMsg = document.getElementById('couponMsg');
+
+/* ===== BUILD DAYS ===== */
+function buildDays(){
+  daysEl.innerHTML = '';
+  const start = todayLocal();
+  const todayYMD = localYMD(start);
+
+  for(let i=0;i<DAYS_AHEAD;i++){
+    const d = new Date(start);
+    d.setDate(d.getDate()+i);
+
+    const ymd = localYMD(d);
+    const label = d.toLocaleDateString('ro-RO',{weekday:'short', day:'2-digit', month:'2-digit'});
+    const btn = document.createElement('button');
+    btn.className='day'; btn.textContent=label; btn.dataset.ymd=ymd;
+    btn.onclick = ()=>{ selDate=ymd; startIdx=null; endIdx=null; refresh(); };
+    daysEl.appendChild(btn);
+  }
+  if(!selDate) selDate = todayYMD;
+}
+
+/* ===== BUILD TIMELINE ===== */
+function idxToLabel(i){ const h=Math.floor(i/2), m=i%2?30:0; return `${String(h).padStart(2,'0')}:${m?'30':'00'}`; }
+function idxToDate(dateStr, i){ const d=new Date(dateStr+"T00:00:00"); d.setMinutes(i*STEP); return d; }
+function minutesForward(fromIdx,toIdx){ return ((toIdx-fromIdx+48)%48)*STEP; }
+
+function buildTimeline(){
+  tlEl.innerHTML='';
+  if(!selDate) return;
+  const now = new Date();
+
+  for(let i=0;i<48;i++){
+    const b=document.createElement('button');
+    b.className='slot'; b.textContent=idxToLabel(i); b.dataset.idx=i;
+
+    const thisTime=idxToDate(selDate,i);
+    if(thisTime<now) b.disabled=true;
+
+    // highlight range
+    if(startIdx!==null && endIdx!==null){
+      const inRange = (endIdx>=startIdx) ? (i>=startIdx && i<=endIdx) : (i>=startIdx || i<=endIdx);
+      if(i===startIdx) b.classList.add('start');
+      if(i===endIdx)   b.classList.add('end');
+      if(inRange)      b.classList.add('range');
+    } else if(startIdx!==null && i===startIdx){
+      b.classList.add('start');
+    }
+
+    b.onclick=()=>onSlot(i);
+    tlEl.appendChild(b);
+  }
+}
+
+/* ===== LOGIC ===== */
+function onSlot(i){
+  if(startIdx===null){ startIdx=i; endIdx=null; }
+  else if(endIdx===null){
+    const mins=minutesForward(startIdx,i);
+    if(mins<MIN_LEN || mins>MAX_LEN) return; // respectă limitele
+    endIdx=i;
+  } else { startIdx=i; endIdx=null; }
+  refresh();
+}
+
+/* ===== REFRESH & SUMMARY ===== */
+function refresh(){
+  // zi activă
+  [...daysEl.children].forEach(b=>b.classList.toggle('active', b.dataset.ymd===selDate));
+  // timeline
+  buildTimeline();
+
+  // sumar
+  if(selDate){
+    const d=new Date(selDate+"T00:00:00");
+    sDate.textContent=d.toLocaleDateString('ro-RO',{weekday:'long',day:'2-digit',month:'long'});
+  } else sDate.textContent='—';
+
+  if(selDate && startIdx!==null && endIdx!==null){
+    const start=idxToDate(selDate,startIdx);
+    let end=idxToDate(selDate,endIdx);
+    if(endIdx<startIdx) end.setDate(end.getDate()+1); // trecere peste 00:00
+
+    const fmt=dt=>`${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+    const extra = end.getDate()!==start.getDate() ? " (ziua următoare)" : "";
+    sTime.textContent=`${fmt(start)} – ${fmt(end)}${extra}`;
+    sPrice.textContent=priceBetween(start,end)+" lei";
+  } else { sTime.textContent='—'; sPrice.textContent='—'; }
+}
+
+/* ===== EVENTS ===== */
+document.getElementById('payBtn').addEventListener('click', ()=>{
+  alert("Plata online va fi activă în curând. Momentan poți selecta intervalul și vedea prețul.");
+});
+document.getElementById('cta').addEventListener('click', (e)=>{
+  e.preventDefault();
+  document.getElementById('rezerva').scrollIntoView({behavior:'smooth'});
+});
+
+/* ===== INIT ===== */
+buildDays(); refresh();
+</script>
+</body>
+</html>
