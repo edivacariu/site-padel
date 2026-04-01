@@ -11,228 +11,304 @@
 
     :root{
       --accent:#22c55e;
+      --accent-dark:#16a34a;
       --text:#ffffff;
       --muted:rgba(255,255,255,0.86);
+      --card-bg:rgba(7,12,20,0.46);
+      --card-border:rgba(255,255,255,0.10);
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      background: #000;
     }
 
     body{
-      margin:0;
-      font-family:'Poppins',sans-serif;
-      color:white;
       background:
-        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)),
+        linear-gradient(rgba(0,0,0,0.46), rgba(0,0,0,0.74)),
         url('./hero.png') center/cover no-repeat;
     }
 
     .hero{
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      padding:34px 24px 20px;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 34px 24px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* 🔥 LOGO BACKGROUND */
     .bg-logo{
-      position:absolute;
-      top:50%;
-      left:50%;
-      transform:translate(-50%, -50%);
-      width:700px;
-      opacity:0.08;
-      filter:blur(2px);
-      z-index:0;
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(70vw, 700px);
+      opacity: 0.06;
+      filter: grayscale(100%) brightness(1.2);
+      z-index: 0;
+      pointer-events: none;
     }
 
     .socials{
-      position:absolute;
-      top:16px;
-      right:20px;
-      display:flex;
-      gap:12px;
-      z-index:5;
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      display: flex;
+      gap: 12px;
+      z-index: 5;
     }
 
     .social-btn{
-      width:50px;
-      height:50px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:12px;
-      background:#1f1d22;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: #1f1d22;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.22);
+      transition: transform .18s ease, background .18s ease;
+      text-decoration: none;
+    }
+
+    .social-btn:hover{
+      transform: translateY(-2px);
+      background: #29262d;
     }
 
     .social-btn svg{
-      width:24px;
-      height:24px;
-      fill:#fff;
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+      display: block;
     }
 
     .content{
-      max-width:1000px;
-      margin-top:40px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:24px;
-      z-index:2;
-    }
-
-    /* 🔥 BRAND CU LOGO MIC */
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-
-    .brand img{
-      width:60px;
+      max-width: 1000px;
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      z-index: 2;
     }
 
     h1{
-      margin:0;
-      font-size:70px;
-      font-weight:800;
-      color:var(--accent);
+      margin: 0;
+      font-size: 82px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 0.95;
     }
 
     .sub{
-      font-size:30px;
-      font-weight:700;
-      letter-spacing:0.2em;
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      line-height: 1.05;
     }
 
     .tagline{
-      font-size:30px;
-      font-weight:600;
+      font-size: 34px;
+      font-weight: 600;
     }
 
     .btn{
-      padding:20px 40px;
-      border-radius:20px;
-      background:linear-gradient(#34d399, var(--accent));
-      color:white;
-      font-size:26px;
-      font-weight:800;
-      text-decoration:none;
-      box-shadow:0 12px 28px rgba(34,197,94,0.35);
+      min-width: 360px;
+      padding: 20px 40px;
+      border-radius: 20px;
+      background: linear-gradient(#34d399, var(--accent));
+      color: white;
+      font-size: 30px;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 12px 28px rgba(34,197,94,0.35);
     }
 
     .subtext{
-      font-size:18px;
-      max-width:600px;
-      color:var(--muted);
+      font-size: 18px;
+      max-width: 600px;
+      color: var(--muted);
+      line-height: 1.45;
     }
 
     .meta-row{
-      display:flex;
-      gap:16px;
-      flex-wrap:wrap;
-      justify-content:center;
+      margin-top: 20px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .meta-card{
-      padding:14px 18px;
-      border-radius:18px;
-      background:rgba(0,0,0,0.5);
-      border:1px solid rgba(255,255,255,0.1);
-      display:flex;
-      align-items:center;
-      gap:10px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(4px);
     }
 
     .big-number{
-      font-size:60px;
-      font-weight:900;
-      color:var(--accent);
+      font-size: 64px;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
     }
 
     .meta-title{
-      font-size:22px;
-      font-weight:700;
+      font-size: 22px;
+      font-weight: 700;
     }
 
     .meta-sub{
-      font-size:16px;
-      color:var(--muted);
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.4;
     }
 
-    @media (max-width:900px){
-      .brand{
-        flex-direction:column;
+    @media (max-width: 900px){
+      .hero{
+        padding: 34px 18px 20px;
       }
 
-      h1{font-size:48px;}
-      .tagline{font-size:22px;}
-      .btn{font-size:20px;}
-      .bg-logo{width:400px;}
-    }
+      .socials{
+        top: 10px;
+        right: 12px;
+        gap: 10px;
+      }
 
+      .social-btn{
+        width: 44px;
+        height: 44px;
+      }
+
+      .social-btn svg{
+        width: 22px;
+        height: 22px;
+      }
+
+      .content{
+        margin-top: 52px;
+        max-width: 420px;
+      }
+
+      h1{
+        font-size: 58px;
+      }
+
+      .sub{
+        font-size: 28px;
+        letter-spacing: 0.16em;
+      }
+
+      .tagline{
+        font-size: 24px;
+      }
+
+      .btn{
+        min-width: 0;
+        width: 100%;
+        max-width: 320px;
+        font-size: 22px;
+        padding: 16px 24px;
+      }
+
+      .subtext{
+        max-width: 340px;
+        font-size: 14px;
+      }
+
+      .meta-row{
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+      }
+
+      .meta-card{
+        width: 100%;
+        max-width: 320px;
+        justify-content: center;
+      }
+
+      .big-number{
+        font-size: 56px;
+      }
+
+      .bg-logo{
+        width: min(90vw, 420px);
+        top: 55%;
+      }
+    }
   </style>
 </head>
-
 <body>
 
-<div class="hero">
+  <div class="hero">
 
-  <!-- 🔥 LOGO FUNDAL -->
-  <img src="./logo.png" class="bg-logo" />
+    <!-- dacă logo.png există, apare subtil în fundal -->
+    <img src="./logo.png" alt="" class="bg-logo">
 
-  <!-- SOCIAL -->
-  <div class="socials">
-    <a class="social-btn" href="https://facebook.com" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.2H7.8V14h2.8v8h2.9z"/></svg>
-    </a>
-    <a class="social-btn" href="https://instagram.com" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/></svg>
-    </a>
-    <a class="social-btn" href="https://tiktok.com" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M14.2 3c.3 2.1 1.5 3.7 3.5 4.6v6.2"/></svg>
-    </a>
-  </div>
+    <div class="socials">
+      <a class="social-btn" href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.2H7.8V14h2.8v8h2.9z"/>
+        </svg>
+      </a>
 
-  <div class="content">
+      <a class="social-btn" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2.2A2.8 2.8 0 0 0 4.2 7v10A2.8 2.8 0 0 0 7 19.8h10a2.8 2.8 0 0 0 2.8-2.8V7A2.8 2.8 0 0 0 17 4.2H7zm10.25 1.65a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6z"/>
+        </svg>
+      </a>
 
-    <!-- 🔥 LOGO MIC + TEXT -->
-    <div class="brand">
-      <img src="./logo.png" />
+      <a class="social-btn" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19.59 6.69A4.83 4.83 0 0 1 16 5.08V15.5A5.5 5.5 0 1 1 10.5 10c.19 0 .38.02.57.04v2.79a2.76 2.76 0 1 0 2.18 2.67V2h2.75a4.85 4.85 0 0 0 3.59 4.69z"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="content">
       <h1>PADEL CLUB</h1>
-    </div>
+      <div class="sub">BOTOȘANI</div>
 
-    <div class="sub">BOTOȘANI</div>
+      <div class="tagline">Descoperă fenomenul PADEL.</div>
 
-    <div class="tagline">Descoperă fenomenul PADEL.</div>
+      <a href="https://playtomic.io/" target="_blank" class="btn">
+        REZERVĂ TEREN
+      </a>
 
-    <a href="https://playtomic.io/" target="_blank" class="btn">
-      REZERVĂ TEREN
-    </a>
-
-    <div class="subtext">
-      Vei fi redirecționat către PlayTomic, cea mai mare aplicație de PADEL din lume,
-      pentru a-ți face rezervarea.
-    </div>
-
-    <div class="meta-row">
-      <div class="meta-card">
-        <div class="big-number">2</div>
-        <div class="meta-title">terenuri outdoor</div>
+      <div class="subtext">
+        Vei fi redirecționat către PlayTomic, cea mai mare aplicație de PADEL din lume,
+        pentru a-ți face rezervarea.
       </div>
 
-      <div class="meta-card">
-        <div>
-          <div class="meta-title">Program NON-STOP</div>
-          <div class="meta-sub">Acces self-service, intri și joci oricând.</div>
+      <div class="meta-row">
+        <div class="meta-card">
+          <div class="big-number">2</div>
+          <div class="meta-title">terenuri outdoor</div>
+        </div>
+
+        <div class="meta-card">
+          <div>
+            <div class="meta-title">Program NON-STOP</div>
+            <div class="meta-sub">Acces self-service, intri și joci oricând.</div>
+          </div>
         </div>
       </div>
     </div>
 
   </div>
-
-</div>
 
 </body>
 </html>
