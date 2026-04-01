@@ -3,419 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Enjoy Padel – Rezervări</title>
+  <title>Enjoy Padel</title>
+
   <style>
-    :root{
-      --bg:#0a0f0d; --fg:#eaf5ef; --muted:#95a7ad;
-      --panel:#0f1519; --line:#1f2a32; --chip:#0e1418;
-      --green:#22c55e; --blue:#2563eb; --red:#ef4444;
-      --free:#1a242b; --busy:#121a1f;
-    }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-
-    /* NAV */
-    nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(18px,4vw,48px);background:rgba(0,0,0,.55);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
-    .brand{font-weight:900;letter-spacing:.5px}
-    .brand b{color:var(--green)}
-    nav a{color:#e9f4ef;text-decoration:none;margin-left:18px;font-weight:600;opacity:.95}
-    nav a:hover{opacity:1}
-
-    /* HERO */
-    header.hero{margin-top:64px;min-height:92vh;position:relative;display:grid;place-items:center;text-align:center;width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;background:linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.6)), url('./hero.png') center/cover no-repeat}
-    header .wrap{max-width:1100px;padding:0 clamp(16px,4vw,48px)}
-    h1{font-size:clamp(32px,6vw,60px);margin:.2rem 0 .7rem;color:var(--green)}
-    .lead{max-width:900px;margin:0 auto 18px;line-height:1.6;font-size:clamp(16px,2.2vw,19px)}
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:999px;border:1px solid #2b3c46;background:var(--green);color:#04170d;font-weight:900;text-decoration:none;cursor:pointer}
-    .btn:hover{filter:brightness(1.05)}
-
-    /* SECTION */
-    .section{margin:28px auto;padding:24px clamp(16px,4vw,40px);width:100%;max-width:1100px;background:var(--panel);border:1px solid var(--line);border-radius:18px}
-    .steps{display:grid;gap:16px}
-    .card{background:var(--chip);border:1px solid var(--line);border-radius:14px;padding:16px}
-
-    /* COMBINED PICKER (teren + data) */
-    .combo{display:grid;gap:12px;cursor:pointer}
-    .combo:hover{outline:2px solid rgba(37,99,235,.25)}
-    .combo-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .combo-title{font-weight:800}
-    .combo-sub{font-size:12px;color:var(--muted)}
-    .combo-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    .court-buttons{display:flex;gap:10px;flex-wrap:wrap}
-    .court{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:#0b1216;color:#eaf5ef;cursor:pointer;font-weight:700}
-    .court.active{outline:2px solid var(--blue);background:rgba(37,99,235,.12)}
-    .date-wrap{position:relative;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#0a0f0d;border-radius:10px;padding:10px 12px}
-    .date-wrap .cal-ico{font-size:18px;opacity:.85}
-    .date-text{min-width:150px}
-
-    /* ✅ input-ul de dată acoperă toată zona și primește tap pe mobil */
-    .date-input{
-      position:absolute; inset:0; width:100%; height:100%;
-      opacity:0; cursor:pointer; -webkit-appearance:none; appearance:none;
-      border:0; background:transparent; color:transparent;
-      pointer-events:auto; /* important pe mobil */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      background: black;
     }
 
-    /* START MINUTE TOGGLE */
-    .startmin{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0}
-    .min-label{font-size:13px;color:var(--muted)}
-    .min-btn{padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#0c1216;color:#eaf5ef;cursor:pointer;font-weight:700}
-    .min-btn.active{background:linear-gradient(90deg,var(--green),#38bdf8);color:#02140b;border-color:transparent}
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
+                  url('./hero.png') center/cover no-repeat;
+      padding: 20px;
+    }
 
-    /* HOUR LIST + DURATION */
-    .hours{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px}
-    .slot{position:relative;padding:12px;border-radius:12px;border:1px dashed #23313a;background:var(--free);color:#dfe8ec;text-align:center;font-weight:800;cursor:pointer}
-    .slot.busy{background:var(--busy);color:#7e8b92;border-style:solid;cursor:not-allowed}
-    .slot.selected{outline:2px solid var(--blue)}
+    h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+      color: #22c55e;
+    }
 
-    .durations{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .dur{padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#0c1216;color:#eaf5ef;cursor:pointer;font-weight:700}
-    .dur.active{background:linear-gradient(90deg,var(--green),#38bdf8);color:#02140b;border-color:transparent}
+    p {
+      max-width: 700px;
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
 
-    /* overlays */
-    .overlay-full{position:relative}
-    .overlay-full::after{content:'';position:absolute;inset:2px;border-radius:10px;background:linear-gradient(90deg,rgba(34,197,94,.18),rgba(56,189,248,.20));pointer-events:none}
-    .overlay-left{position:relative}
-    .overlay-left::after{content:'';position:absolute;top:2px;bottom:2px;left:2px;width:50%;border-top-left-radius:10px;border-bottom-left-radius:10px;background:linear-gradient(90deg,rgba(34,197,94,.18),rgba(56,189,248,.20));pointer-events:none}
-    .overlay-right{position:relative}
-    .overlay-right::after{content:'';position:absolute;top:2px;bottom:2px;right:2px;width:50%;border-top-right-radius:10px;border-bottom-right-radius:10px;background:linear-gradient(90deg,rgba(34,197,94,.18),rgba(56,189,248,.20));pointer-events:none}
+    .btn {
+      font-size: 22px;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 10px;
+      background: #22c55e;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
 
-    .legend{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted)}
-    .dot{width:12px;height:12px;border-radius:50%}
-    .dot.free{background:#24323a;border:1px dashed #2b3a44}
-    .dot.busy{background:#121a1f;border:1px solid #22313a}
-    .dot.sel{background:linear-gradient(90deg,var(--green),#38bdf8)}
+    .btn:hover {
+      opacity: 0.9;
+    }
 
-    /* SUMMARY */
-    .summary{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-top:10px}
-    @media (max-width:700px){.summary{grid-template-columns:1fr}}
+    .subtext {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #ccc;
+      max-width: 500px;
+    }
   </style>
 </head>
+
 <body>
-  <!-- NAV -->
-  <nav>
-    <div class="brand">ENJOY <b>PADEL</b></div>
-    <div>
-      <a href="#rezerva">Rezervă</a>
-      <a href="#" target="_blank" rel="noopener">Instagram</a>
-      <a href="#" target="_blank" rel="noopener">TikTok</a>
+
+  <div class="hero">
+    <h1>Bine ai venit la Enjoy Padel!</h1>
+
+    <p>
+      Aici jocul e mereu aprins! Terenuri moderne, energie bună și o comunitate de jucători care iubesc padelul.
+      Fie că vii să te distrezi cu prietenii sau să-ți testezi limitele, te așteptăm să intri în joc și să simți vibe-ul!
+    </p>
+
+    <a href="https://playtomic.io/" target="_blank" class="btn">
+      REZERVĂ TEREN
+    </a>
+
+    <div class="subtext">
+      Vei fi redirecționat către PlayTomic, cea mai mare aplicație de PADEL din lume,
+      pentru a-ți face rezervarea.
     </div>
-  </nav>
+  </div>
 
-  <!-- HERO -->
-  <header class="hero">
-    <div class="wrap">
-      <h1>Bine ai venit la Enjoy Padel!</h1>
-      <p class="lead">Aici jocul e mereu aprins! Terenuri moderne, energie bună și o comunitate de jucători care iubesc padelul. Fie că vii să te distrezi cu prietenii sau să-ți testezi limitele, te așteptăm să intri în joc și să simți vibe-ul!</p>
-      <a href="#rezerva" class="btn" id="cta">Rezervă acum</a>
-    </div>
-  </header>
-
-  <!-- BOOKING -->
-  <section id="rezerva" class="section">
-    <div class="steps">
-      <!-- CHENAR COMBINAT: Teren + Data -->
-      <div class="card combo" id="comboPicker" tabindex="0" aria-label="Alege terenul și data">
-        <div class="combo-head">
-          <div>
-            <div class="combo-title">Alege terenul & data</div>
-            <div class="combo-sub">Tap aici pentru a deschide calendarul pe mobil</div>
-          </div>
-        </div>
-        <div class="combo-row">
-          <div class="court-buttons" role="group" aria-label="Teren">
-            <button class="court active" data-court="1" type="button">Teren 1</button>
-            <button class="court" data-court="2" type="button">Teren 2</button>
-          </div>
-
-          <div class="date-wrap" id="dateClick">
-            <span class="cal-ico">📅</span>
-            <span class="date-text" id="dateText">Alege o dată</span>
-            <!-- input-ul invizibil dar clickabil peste toată zona -->
-            <input type="date" id="datePicker" class="date-input" />
-          </div>
-        </div>
-      </div>
-
-      <!-- CONTROALE ORĂ + DURATĂ -->
-      <div class="card">
-        <div class="legend" style="margin-bottom:8px">
-          <span class="dot free"></span> liber
-          <span class="dot busy"></span> ocupat
-          <span class="dot sel"></span> selectat
-        </div>
-
-        <div class="startmin">
-          <span class="min-label">Start la:</span>
-          <button class="min-btn active" data-min="0" type="button">:00</button>
-          <button class="min-btn" data-min="30" type="button">:30</button>
-        </div>
-
-        <div id="hourList" class="hours"></div>
-
-        <div class="durations">
-          <button class="dur active" data-min="60" type="button">60 min</button>
-          <button class="dur" data-min="90" type="button">90 min</button>
-          <button class="dur" data-min="120" type="button">120 min</button>
-        </div>
-
-        <div class="summary">
-          <div id="selSummary">—</div>
-          <button class="btn" id="continueBtn" type="button">Continuă</button>
-        </div>
-        <div class="combo-sub" style="margin-top:6px">Pentru 90/120 min, vezi doar orele de start unde jumătățile consecutive sunt libere.</div>
-      </div>
-    </div>
-  </section>
-
-  <script>
-  /* ===== CONFIG ===== */
-  const PROGRAM_START = 6;
-  const PROGRAM_END   = 23;
-  const STEP = 30;
-  const BUFFER_MIN = 0;
-
-  /* ===== TARIFE ===== */
-  function isWeekend(dateStr){
-    const d=new Date(dateStr+"T00:00:00");
-    const day=d.getDay();
-    return day===0||day===6;
-  }
-  function hourlyRate(dateStr, hour){
-    if(isWeekend(dateStr)){
-      if(hour<8) return 80; if(hour<12) return 100; if(hour<18) return 120; return 140;
-    } else {
-      if(hour<8) return 60; if(hour<18) return 80; return 100;
-    }
-  }
-  function priceBetween(start,end){
-    let total=0; const cur=new Date(start);
-    while(cur<end){
-      const stepEnd=new Date(cur);
-      const stepMin=Math.min(60-cur.getMinutes(),(end-cur)/60000);
-      stepEnd.setMinutes(stepEnd.getMinutes()+stepMin);
-      const rate=hourlyRate(localYMD(cur),cur.getHours());
-      total+=rate*(stepMin/60);
-      cur.setTime(stepEnd.getTime());
-    }
-    return Math.round(total);
-  }
-
-  /* ===== STATE & EL ===== */
-  const dateEl = document.getElementById('datePicker');
-  const dateText = document.getElementById('dateText');
-  const dateClick = document.getElementById('dateClick');
-  const comboPicker = document.getElementById('comboPicker');
-
-  const hourList = document.getElementById('hourList');
-  const selSummary = document.getElementById('selSummary');
-  const continueBtn = document.getElementById('continueBtn');
-
-  let court = 1;
-  let dateStr = null;       // YYYY-MM-DD
-  let startHour = null;     // 0..23
-  let startMinute = 0;      // 0 sau 30
-  let duration = 60;        // 60, 90, 120
-  let busyHalves = new Set(); // 0..47
-
-  /* ===== HELPERS ===== */
-  function todayYMD(){
-    const d=new Date();
-    const m=String(d.getMonth()+1).padStart(2,'0');
-    const day=String(d.getDate()).padStart(2,'0');
-    return `${d.getFullYear()}-${m}-${day}`;
-  }
-  function localYMD(d){
-    const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,'0'); const day=String(d.getDate()).padStart(2,'0');
-    return `${y}-${m}-${day}`;
-  }
-  function labelDate(ymd){
-    const d=new Date(ymd+"T00:00:00");
-    return d.toLocaleDateString('ro-RO',{weekday:'long', day:'2-digit', month:'long', year:'numeric'});
-  }
-  function halfIndexFrom(h,m){ return h*2 + (m===30?1:0); }
-
-  /* ===== API HOOKS (demo) ===== */
-  async function fetchAvailability(ymd, courtId){
-    return simulateBusyHalves(ymd, courtId);
-  }
-  async function postBooking(payload){
-    const [h,m] = payload.start.split(':').map(Number);
-    if(!canBook(dateStr,h,m,duration)) throw new Error('Interval indisponibil (revalidare).');
-    return { ok:true, bookingId: Math.random().toString(36).slice(2) };
-  }
-  function simulateBusyHalves(ymd, courtId){
-    const d = new Date(ymd+"T00:00:00");
-    const seed = (d.getDate()+d.getMonth()+1 + (courtId*7)) % 5;
-    const patterns = [ [9,18], [8,10,19], [7,12,20], [6,14,21,22], [11,13,17] ];
-    const set = new Set();
-    (patterns[seed]||[]).forEach(h=>{ set.add(h*2); set.add(h*2+1); });
-    return set;
-  }
-
-  /* ===== Disponibilitate ===== */
-  function canBook(ymd, startH, startM, minutes){
-    if(minutes % STEP !== 0) return false;
-    const halvesNeed = minutes / STEP;
-    const startHalf = halfIndexFrom(startH, startM);
-
-    if(startHalf < PROGRAM_START*2) return false;
-
-    const endHalf = startHalf + halvesNeed;
-    const maxHalf = PROGRAM_END * 2 + 2;
-    if(endHalf > maxHalf) return false;
-
-    const bufferHalves = Math.ceil(BUFFER_MIN / STEP);
-    for(let k=0;k<halvesNeed;k++){
-      if(busyHalves.has(startHalf + k)) return false;
-    }
-    for(let b=0;b<bufferHalves;b++){
-      const chk = endHalf + b;
-      if(chk >= 48) return false;
-      if(chk > PROGRAM_END*2+1) return false;
-      if(busyHalves.has(chk)) return false;
-    }
-    return true;
-  }
-
-  function buildHours(){
-    hourList.innerHTML='';
-    if(!dateStr){ selSummary.textContent='—'; return; }
-
-    for(let h=PROGRAM_START; h<=PROGRAM_END; h++){
-      const btn = document.createElement('button');
-      btn.className='slot';
-      btn.textContent = `${String(h).padStart(2,'0')}:00`;
-      btn.dataset.h = h;
-
-      const available = canBook(dateStr,h,startMinute,duration);
-      if(!available){ btn.classList.add('busy'); btn.disabled=true; btn.title='Indisponibil pentru durata aleasă'; }
-      if(startHour===h) btn.classList.add('selected');
-
-      btn.onclick = ()=>{ if(btn.disabled) return; startHour=h; updateOverlay(); updateSummary(); };
-      hourList.appendChild(btn);
-    }
-    updateOverlay();
-  }
-
-  function updateOverlay(){
-    [...hourList.children].forEach(el=>{el.classList.remove('overlay-full','overlay-left','overlay-right');});
-    if(startHour==null) return;
-    const halves = duration/30;
-    const startHalf = halfIndexFrom(startHour, startMinute);
-
-    const affected = new Map(); // hour -> {left,right}
-    for(let k=0;k<halves;k++){
-      const half = startHalf + k; const hour = Math.floor(half/2); const side = (half%2===0)?'left':'right';
-      if(!affected.has(hour)) affected.set(hour,{left:false,right:false});
-      affected.get(hour)[side] = true;
-    }
-
-    for(const [hour, sides] of affected.entries()){
-      const el = [...hourList.children].find(x=>Number(x.dataset.h)===hour);
-      if(!el) continue;
-      if(sides.left && sides.right) el.classList.add('overlay-full');
-      else if(sides.left) el.classList.add('overlay-left');
-      else if(sides.right) el.classList.add('overlay-right');
-    }
-  }
-
-  function updateSummary(){
-    if(!dateStr || startHour==null){ selSummary.textContent='—'; return; }
-    const start = new Date(dateStr+"T00:00:00"); start.setHours(startHour,startMinute,0,0);
-    const end = new Date(start); end.setMinutes(end.getMinutes()+duration);
-    const fmt=dt=>`${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
-    const extra = end.getDate()!==start.getDate() ? " (ziua următoare)" : "";
-    const total = priceBetween(start,end);
-    const bufferTxt = BUFFER_MIN ? ` • Buffer: ${BUFFER_MIN} min` : "";
-    selSummary.textContent = `Data: ${labelDate(dateStr)} • Teren ${court} • ${fmt(start)} – ${fmt(end)}${extra} • Total: ${total} lei${bufferTxt}`;
-  }
-
-  /* ===== EVENTS ===== */
-  // Wrapperul rămâne clickabil pe desktop; pe mobil, inputul (invizibil) primește tap.
-  comboPicker.addEventListener('click', (e)=>{
-    if(e.target.classList.contains('court')) return;
-    if (dateEl.showPicker) dateEl.showPicker();
-    else { dateEl.focus(); dateEl.click(); }
-  });
-  dateClick.addEventListener('click', ()=>{
-    if (dateEl.showPicker) dateEl.showPicker();
-    else { dateEl.focus(); dateEl.click(); }
-  });
-
-  document.querySelectorAll('.court').forEach(b=>{
-    b.addEventListener('click', async (ev)=>{
-      ev.stopPropagation();
-      document.querySelectorAll('.court').forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-      court = Number(b.dataset.court);
-      startHour = null;
-      busyHalves = dateStr ? await fetchAvailability(dateStr, court) : new Set();
-      buildHours(); updateSummary();
-    });
-  });
-
-  document.querySelectorAll('.min-btn').forEach(mb=>{
-    mb.addEventListener('click',()=>{
-      document.querySelectorAll('.min-btn').forEach(x=>x.classList.remove('active'));
-      mb.classList.add('active');
-      startMinute = Number(mb.dataset.min);
-      if(dateStr && startHour!=null && !canBook(dateStr,startHour,startMinute,duration)) startHour=null;
-      buildHours(); updateOverlay(); updateSummary();
-    });
-  });
-
-  document.querySelectorAll('.dur').forEach(d=>{
-    d.addEventListener('click',()=>{
-      document.querySelectorAll('.dur').forEach(x=>x.classList.remove('active'));
-      d.classList.add('active');
-      duration = Number(d.dataset.min);
-      if(dateStr && startHour!=null && !canBook(dateStr,startHour,startMinute,duration)) startHour=null;
-      buildHours(); updateOverlay(); updateSummary();
-    });
-  });
-
-  dateEl.addEventListener('change', async ()=>{
-    dateStr = dateEl.value || null;
-    dateText.textContent = dateStr ? labelDate(dateStr) : 'Alege o dată';
-    startHour = null;
-    busyHalves = dateStr ? await fetchAvailability(dateStr, court) : new Set();
-    buildHours(); updateOverlay(); updateSummary();
-  });
-
-  continueBtn.addEventListener('click', async ()=>{
-    if(!dateStr || startHour==null){ alert('Te rog selectează terenul, data, ora și durata.'); return; }
-    if(!canBook(dateStr,startHour,startMinute,duration)){ alert('Interval indisponibil. Te rog alege altă combinație.'); return; }
-
-    const start = new Date(dateStr+"T00:00:00"); start.setHours(startHour,startMinute,0,0);
-    const end = new Date(start); end.setMinutes(end.getMinutes()+duration);
-    const fmt=dt=>`${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
-
-    try{
-      const payload = { courtId: court, date: dateStr, start: fmt(start), duration };
-      const res = await postBooking(payload);
-      alert(`Rezervare confirmată!\nID: ${res.bookingId}\nTeren ${court}\n${labelDate(dateStr)}\n${fmt(start)} – ${fmt(end)}`);
-      busyHalves = await fetchAvailability(dateStr, court);
-      startHour = null;
-      buildHours(); updateSummary();
-    }catch(e){
-      alert(e.message || 'A apărut o eroare la rezervare.');
-    }
-  });
-
-  // init
-  async function init(){
-    const today=todayYMD();
-    dateEl.value = today; dateEl.min=today; dateStr=today;
-    dateText.textContent = labelDate(today);
-    busyHalves = await fetchAvailability(dateStr, court);
-    buildHours(); updateOverlay(); updateSummary();
-  }
-  init();
-
-  document.getElementById('cta').addEventListener('click', (e)=>{
-    e.preventDefault(); document.getElementById('rezerva').scrollIntoView({behavior:'smooth'});
-  });
-  </script>
 </body>
 </html>
