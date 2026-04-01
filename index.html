@@ -4,220 +4,154 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Enjoy Padel Botoșani</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    :root{
-      --green:#22c55e;
-      --green-dark:#16a34a;
-      --text:#ffffff;
-      --muted:rgba(255,255,255,0.92);
-      --soft:rgba(255,255,255,0.78);
-      --card:rgba(8,18,14,0.48);
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      background: black;
     }
 
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
-      background:#000;
-    }
-
-    .hero{
-      min-height:100vh;
-      position:relative;
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      text-align:center;
-      padding:clamp(34px, 7vh, 72px) 20px 36px;
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px;
+      text-align: center;
       background:
-        linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.52) 24%, rgba(0,0,0,0.68) 56%, rgba(0,0,0,0.84) 100%),
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)),
         url('./hero.png') center/cover no-repeat;
     }
 
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(34,197,94,0.05), transparent 22%, transparent 72%, rgba(0,0,0,0.14));
-      pointer-events:none;
+    /* SOCIAL */
+    .socials {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      display: flex;
+      gap: 12px;
     }
 
-    .content{
-      position:relative;
-      z-index:1;
-      width:100%;
-      max-width:460px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
+    .socials a {
+      text-decoration: none;
+      font-size: 20px;
+      color: white;
+      opacity: 0.8;
     }
 
-    .brand{
-      margin-top:4px;
-      line-height:0.95;
+    .socials a:hover {
+      opacity: 1;
     }
 
-    .brand-main{
-      margin:0;
-      font-size:clamp(40px, 10vw, 64px);
-      font-weight:800;
-      letter-spacing:0.02em;
-      color:var(--green);
-      text-transform:uppercase;
+    h1 {
+      font-size: 42px;
+      margin: 20px 0 5px;
+      color: #22c55e;
+      font-weight: 800;
     }
 
-    .brand-sub{
-      margin:8px 0 0;
-      font-size:clamp(24px, 6vw, 34px);
-      font-weight:700;
-      letter-spacing:0.22em;
-      color:#ffffff;
-      text-transform:uppercase;
+    .sub {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 3px;
     }
 
-    .tagline{
-      margin:28px 0 0;
-      font-size:clamp(20px, 5vw, 28px);
-      font-weight:600;
-      color:#ffffff;
+    .tagline {
+      margin-top: 25px;
+      font-size: 22px;
+      font-weight: 600;
     }
 
-    .cta{
-      margin-top:28px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:min(100%, 320px);
-      min-height:64px;
-      padding:18px 24px;
-      border-radius:18px;
-      text-decoration:none;
-      background:linear-gradient(180deg, #31db72 0%, var(--green) 100%);
-      color:#041109;
-      font-size:clamp(20px, 4.8vw, 24px);
-      font-weight:800;
-      letter-spacing:0.03em;
-      text-transform:uppercase;
-      box-shadow:0 14px 30px rgba(34,197,94,0.28);
-      border:1px solid rgba(255,255,255,0.12);
+    .btn {
+      margin-top: 25px;
+      font-size: 22px;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 12px;
+      background: #22c55e;
+      color: black;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(34,197,94,0.4);
     }
 
-    .cta-note{
-      margin:14px 0 0;
-      max-width:340px;
-      font-size:clamp(13px, 3.5vw, 15px);
-      line-height:1.45;
-      color:var(--muted);
+    .subtext {
+      margin-top: 12px;
+      font-size: 14px;
+      max-width: 300px;
+      opacity: 0.85;
     }
 
-    .info-stack{
-      margin-top:30px;
-      width:min(100%, 340px);
-      display:grid;
-      gap:14px;
+    .card {
+      margin-top: 30px;
+      padding: 16px;
+      border-radius: 15px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.1);
+      width: 260px;
     }
 
-    .info-card{
-      background:var(--card);
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:18px;
-      padding:16px 16px 15px;
-      backdrop-filter:blur(6px);
-      box-shadow:0 12px 24px rgba(0,0,0,0.18);
+    .big {
+      font-size: 34px;
+      color: #22c55e;
+      font-weight: 800;
     }
 
-    .info-number{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      color:var(--green);
-      font-size:clamp(28px, 8vw, 36px);
-      font-weight:800;
-      line-height:1;
+    .title {
+      margin-top: 5px;
+      font-size: 20px;
+      font-weight: 700;
     }
 
-    .bolt{
-      font-size:0.95em;
-      transform:translateY(-1px);
+    .subtitle {
+      margin-top: 10px;
+      font-size: 16px;
+      opacity: 0.9;
     }
 
-    .info-title{
-      margin-top:8px;
-      font-size:clamp(19px, 4.8vw, 24px);
-      font-weight:700;
-      color:#fff;
-    }
-
-    .info-sub{
-      margin-top:6px;
-      font-size:clamp(14px, 3.7vw, 16px);
-      line-height:1.45;
-      color:var(--soft);
-    }
-
-    @media (min-width: 768px){
-      .hero{
-        align-items:center;
-        padding-top:56px;
-        padding-bottom:56px;
-      }
-
-      .content{
-        max-width:760px;
-      }
-
-      .brand{
-        margin-top:0;
-      }
-
-      .tagline{
-        margin-top:22px;
-      }
-
-      .info-stack{
-        grid-template-columns:repeat(2, minmax(0, 1fr));
-        width:min(100%, 720px);
-        margin-top:34px;
-      }
-    }
   </style>
 </head>
+
 <body>
-  <section class="hero">
-    <div class="content">
-      <div class="brand">
-        <h1 class="brand-main">ENJOY PADEL</h1>
-        <div class="brand-sub">BOTOSANI</div>
-      </div>
 
-      <div class="tagline">Descoperă fenomenul PADEL.</div>
+<div class="hero">
 
-      <a href="https://playtomic.io/" target="_blank" rel="noopener" class="cta">
-        REZERVĂ TEREN
-      </a>
+  <!-- SOCIAL ICONS -->
+  <div class="socials">
+    <a href="https://instagram.com" target="_blank">📸</a>
+    <a href="https://facebook.com" target="_blank">📘</a>
+    <a href="https://tiktok.com" target="_blank">🎵</a>
+  </div>
 
-      <div class="cta-note">
-        Vei fi redirecționat către PlayTomic, cea mai mare aplicație de PADEL din lume, pentru a-ți face rezervarea.
-      </div>
+  <h1>ENJOY PADEL</h1>
+  <div class="sub">BOTOSANI</div>
 
-      <div class="info-stack">
-        <div class="info-card">
-          <div class="info-number">2 <span class="bolt">⚡</span></div>
-          <div class="info-title">2 terenuri outdoor</div>
-        </div>
+  <div class="tagline">Descoperă fenomenul PADEL.</div>
 
-        <div class="info-card">
-          <div class="info-title">Program NON-STOP</div>
-          <div class="info-sub">Acces self-service, intri și joci oricând.</div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <a href="https://playtomic.io/" target="_blank" class="btn">
+    REZERVĂ TEREN
+  </a>
+
+  <div class="subtext">
+    Vei fi redirecționat către PlayTomic, cea mai mare aplicație de PADEL din lume,
+    pentru a-ți face rezervarea.
+  </div>
+
+  <div class="card">
+    <div class="big">2</div>
+    <div class="title">terenuri outdoor</div>
+  </div>
+
+  <div class="card">
+    <div class="title">Program NON-STOP</div>
+    <div class="subtitle">Acces self-service, intri și joci oricând.</div>
+  </div>
+
+</div>
+
 </body>
 </html>
