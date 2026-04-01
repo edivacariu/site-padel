@@ -40,19 +40,6 @@
       padding: 34px 24px 20px;
       text-align: center;
       position: relative;
-      overflow: hidden;
-    }
-
-    .bg-logo{
-      position: absolute;
-      top: 52%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: min(70vw, 700px);
-      opacity: 0.06;
-      filter: grayscale(100%) brightness(1.2);
-      z-index: 0;
-      pointer-events: none;
     }
 
     .socials{
@@ -61,7 +48,6 @@
       right: 20px;
       display: flex;
       gap: 12px;
-      z-index: 5;
     }
 
     .social-btn{
@@ -73,21 +59,12 @@
       border-radius: 12px;
       background: #1f1d22;
       border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.22);
-      transition: transform .18s ease, background .18s ease;
-      text-decoration: none;
-    }
-
-    .social-btn:hover{
-      transform: translateY(-2px);
-      background: #29262d;
     }
 
     .social-btn svg{
       width: 24px;
       height: 24px;
       fill: #fff;
-      display: block;
     }
 
     .content{
@@ -97,7 +74,6 @@
       flex-direction: column;
       align-items: center;
       gap: 24px;
-      z-index: 2;
     }
 
     h1{
@@ -105,14 +81,12 @@
       font-size: 82px;
       font-weight: 800;
       color: var(--accent);
-      line-height: 0.95;
     }
 
     .sub{
       font-size: 34px;
       font-weight: 700;
       letter-spacing: 0.24em;
-      line-height: 1.05;
     }
 
     .tagline{
@@ -136,7 +110,6 @@
       font-size: 18px;
       max-width: 600px;
       color: var(--muted);
-      line-height: 1.45;
     }
 
     .meta-row{
@@ -155,11 +128,10 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      backdrop-filter: blur(4px);
     }
 
     .big-number{
-      font-size: 64px;
+      font-size: 50px; /* 🔥 aici e highlight */
       font-weight: 900;
       color: var(--accent);
       line-height: 1;
@@ -173,142 +145,67 @@
     .meta-sub{
       font-size: 16px;
       color: var(--muted);
-      line-height: 1.4;
     }
 
     @media (max-width: 900px){
-      .hero{
-        padding: 34px 18px 20px;
-      }
-
-      .socials{
-        top: 10px;
-        right: 12px;
-        gap: 10px;
-      }
-
-      .social-btn{
-        width: 44px;
-        height: 44px;
-      }
-
-      .social-btn svg{
-        width: 22px;
-        height: 22px;
-      }
-
-      .content{
-        margin-top: 52px;
-        max-width: 420px;
-      }
-
-      h1{
-        font-size: 58px;
-      }
-
-      .sub{
-        font-size: 28px;
-        letter-spacing: 0.16em;
-      }
-
-      .tagline{
-        font-size: 24px;
-      }
-
-      .btn{
-        min-width: 0;
-        width: 100%;
-        max-width: 320px;
-        font-size: 22px;
-        padding: 16px 24px;
-      }
-
-      .subtext{
-        max-width: 340px;
-        font-size: 14px;
-      }
-
-      .meta-row{
-        flex-direction: column;
-        width: 100%;
-        gap: 12px;
-      }
-
-      .meta-card{
-        width: 100%;
-        max-width: 320px;
-        justify-content: center;
-      }
-
-      .big-number{
-        font-size: 56px;
-      }
-
-      .bg-logo{
-        width: min(90vw, 420px);
-        top: 55%;
-      }
+      h1{font-size:58px;}
+      .tagline{font-size:24px;}
+      .btn{font-size:22px; min-width:0; width:100%;}
+      .meta-row{flex-direction:column;}
+      .meta-card{justify-content:center;}
+      .big-number{font-size:40px;}
     }
+
   </style>
 </head>
+
 <body>
 
-  <div class="hero">
+<div class="hero">
 
-    <!-- dacă logo.png există, apare subtil în fundal -->
-    <img src="./logo.png" alt="" class="bg-logo">
-
-    <div class="socials">
-      <a class="social-btn" href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.2H7.8V14h2.8v8h2.9z"/>
-        </svg>
-      </a>
-
-      <a class="social-btn" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2.2A2.8 2.8 0 0 0 4.2 7v10A2.8 2.8 0 0 0 7 19.8h10a2.8 2.8 0 0 0 2.8-2.8V7A2.8 2.8 0 0 0 17 4.2H7zm10.25 1.65a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6z"/>
-        </svg>
-      </a>
-
-      <a class="social-btn" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M19.59 6.69A4.83 4.83 0 0 1 16 5.08V15.5A5.5 5.5 0 1 1 10.5 10c.19 0 .38.02.57.04v2.79a2.76 2.76 0 1 0 2.18 2.67V2h2.75a4.85 4.85 0 0 0 3.59 4.69z"/>
-        </svg>
-      </a>
-    </div>
-
-    <div class="content">
-      <h1>PADEL CLUB</h1>
-      <div class="sub">BOTOȘANI</div>
-
-      <div class="tagline">Descoperă fenomenul PADEL.</div>
-
-      <a href="https://playtomic.io/" target="_blank" class="btn">
-        REZERVĂ TEREN
-      </a>
-
-      <div class="subtext">
-        Vei fi redirecționat către PlayTomic, cea mai mare aplicație de PADEL din lume,
-        pentru a-ți face rezervarea.
-      </div>
-
-      <div class="meta-row">
-        <div class="meta-card">
-          <div class="big-number">2</div>
-          <div class="meta-title">terenuri outdoor</div>
-        </div>
-
-        <div class="meta-card">
-          <div>
-            <div class="meta-title">Program NON-STOP</div>
-            <div class="meta-sub">Acces self-service, intri și joci oricând.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  <div class="socials">
+    <a class="social-btn" href="https://facebook.com" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.2H7.8V14h2.8v8h2.9z"/></svg>
+    </a>
+    <a class="social-btn" href="https://instagram.com" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2.2A2.8 2.8 0 0 0 4.2 7v10A2.8 2.8 0 0 0 7 19.8h10a2.8 2.8 0 0 0 2.8-2.8V7A2.8 2.8 0 0 0 17 4.2H7zm10.25 1.65a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6z"/></svg>
+    </a>
+    <a class="social-btn" href="https://tiktok.com" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M14.2 3c.3 2.1 1.5 3.7 3.5 4.6.8.4 1.7.6 2.3.6v3.1c-1.4 0-2.7-.3-4-.9v6.2c0 3.3-2.6 5.7-6 5.7-3.2 0-5.8-2.4-5.8-5.6 0-3.4 2.8-5.9 6.2-5.6v3.1a2.6 2.6 0 1 0 2.6 2.6V3h1.2z"/></svg>
+    </a>
   </div>
+
+  <div class="content">
+    <h1>PADEL CLUB</h1>
+    <div class="sub">BOTOȘANI</div>
+
+    <div class="tagline">Descoperă fenomenul PADEL.</div>
+
+    <a href="https://playtomic.io/" target="_blank" class="btn">
+      REZERVĂ TEREN
+    </a>
+
+    <div class="subtext">
+      Vei fi redirecționat către PlayTomic, cea mai mare aplicație de PADEL din lume,
+      pentru a-ți face rezervarea.
+    </div>
+
+    <div class="meta-row">
+      <div class="meta-card">
+        <div class="big-number">2</div>
+        <div class="meta-title">terenuri outdoor</div>
+      </div>
+
+      <div class="meta-card">
+        <div>
+          <div class="meta-title">Program NON-STOP</div>
+          <div class="meta-sub">Acces self-service, intri și joci oricând.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 </body>
 </html>
