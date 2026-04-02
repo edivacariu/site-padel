@@ -100,7 +100,6 @@
       padding-bottom: 10px;
     }
 
-    /* 🔥 linie mai lungă cât cuvântul */
     .sub::after {
       content: "";
       position: absolute;
@@ -140,6 +139,8 @@
     .meta-row {
       margin-top: 16px;
       display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
       justify-content: center;
     }
 
@@ -164,6 +165,11 @@
     .meta-title {
       font-size: 22px;
       font-weight: 700;
+    }
+
+    .meta-sub {
+      font-size: 15px;
+      color: var(--muted);
     }
 
     @media (max-width: 640px) {
@@ -213,13 +219,20 @@
       </a>
 
       <div class="subtext">
-        Vei fi redirecționat către Playtomic pentru rezervare.
+        Vei fi redirecționat către Playtomic, cea mai mare aplicație de padel din lume, pentru a-ți face rezervarea.
       </div>
 
       <div class="meta-row">
         <div class="meta-card">
           <div class="big-number">2</div>
           <div class="meta-title">terenuri outdoor</div>
+        </div>
+
+        <div class="meta-card">
+          <div>
+            <div class="meta-title">Program NON-STOP</div>
+            <div class="meta-sub">Acces self-service, intri și joci când vrei.</div>
+          </div>
         </div>
       </div>
 
