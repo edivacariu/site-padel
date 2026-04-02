@@ -12,8 +12,8 @@
     }
 
     :root {
-      --accent: #ff5a00;
-      --accent-dark: #e44f00;
+      --accent: #22c55e;
+      --accent-dark: #16a34a;
       --text: #ffffff;
       --muted: rgba(255, 255, 255, 0.88);
       --card-bg: rgba(7, 12, 20, 0.46);
@@ -50,7 +50,6 @@
       right: 16px;
       display: flex;
       gap: 10px;
-      z-index: 2;
     }
 
     .social-btn {
@@ -62,13 +61,6 @@
       border-radius: 14px;
       background: rgba(26, 26, 26, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(6px);
-      transition: transform 0.2s ease, background 0.2s ease;
-    }
-
-    .social-btn:hover {
-      transform: translateY(-2px);
-      background: rgba(40, 40, 40, 0.95);
     }
 
     .social-btn svg {
@@ -80,18 +72,11 @@
     .content {
       width: 100%;
       max-width: 900px;
-      margin-top: 58px;
+      margin-top: 60px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 24px;
-    }
-
-    .top-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
     }
 
     h1 {
@@ -110,51 +95,44 @@
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: #ffffff;
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
+      display: inline-block;
+      position: relative;
+      padding-bottom: 10px;
     }
 
+    /* 🔥 linie mai lungă cât cuvântul */
     .sub::after {
       content: "";
-      width: 126px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
       height: 5px;
       border-radius: 999px;
       background: #ffffff;
     }
 
     .tagline {
-      margin-top: 6px;
       font-size: 32px;
       font-weight: 600;
       line-height: 1.3;
       color: #ffffff;
-      max-width: 760px;
     }
 
     .btn {
-      margin-top: 6px;
       min-width: 340px;
       padding: 20px 38px;
       border-radius: 999px;
-      background: linear-gradient(180deg, #ff6a14 0%, var(--accent) 100%);
+      background: linear-gradient(#34d399, var(--accent));
       color: #ffffff;
       font-size: 29px;
       font-weight: 800;
       text-decoration: none;
-      box-shadow: 0 16px 34px rgba(255, 90, 0, 0.28);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 38px rgba(255, 90, 0, 0.34);
+      box-shadow: 0 16px 34px rgba(34, 197, 94, 0.28);
     }
 
     .subtext {
       font-size: 18px;
-      line-height: 1.6;
       max-width: 680px;
       color: var(--muted);
     }
@@ -162,147 +140,48 @@
     .meta-row {
       margin-top: 16px;
       display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
       justify-content: center;
     }
 
     .meta-card {
-      min-width: 240px;
-      padding: 16px 20px;
+      padding: 18px 28px;
       border-radius: 20px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 12px;
     }
 
     .big-number {
-      font-size: 48px;
+      font-size: 52px;
       font-weight: 900;
       color: var(--accent);
       line-height: 1;
-      flex-shrink: 0;
     }
 
     .meta-title {
       font-size: 22px;
       font-weight: 700;
-      line-height: 1.2;
-      color: #ffffff;
-    }
-
-    .meta-sub {
-      margin-top: 4px;
-      font-size: 15px;
-      line-height: 1.45;
-      color: var(--muted);
-    }
-
-    @media (max-width: 900px) {
-      .content {
-        margin-top: 72px;
-        gap: 22px;
-      }
-
-      h1 {
-        font-size: 64px;
-      }
-
-      .sub {
-        font-size: 24px;
-      }
-
-      .tagline {
-        font-size: 25px;
-        max-width: 560px;
-      }
-
-      .btn {
-        font-size: 24px;
-        min-width: 300px;
-      }
     }
 
     @media (max-width: 640px) {
-      .hero {
-        padding: 22px 18px 24px;
-      }
-
-      .socials {
-        top: 14px;
-        right: 14px;
-        gap: 8px;
-      }
-
-      .social-btn {
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-      }
-
-      .social-btn svg {
-        width: 19px;
-        height: 19px;
-      }
-
-      .content {
-        margin-top: 64px;
-        gap: 20px;
-      }
-
       h1 {
         font-size: 46px;
-        letter-spacing: -1px;
       }
 
       .sub {
         font-size: 20px;
-        letter-spacing: 0.2em;
-        gap: 8px;
-      }
-
-      .sub::after {
-        width: 96px;
-        height: 4px;
       }
 
       .tagline {
-        font-size: 18px;
-        line-height: 1.45;
+        font-size: 20px;
       }
 
       .btn {
         width: 100%;
-        min-width: 0;
-        padding: 18px 24px;
-        font-size: 21px;
-      }
-
-      .subtext {
-        font-size: 15px;
-        max-width: 100%;
-      }
-
-      .meta-row {
-        width: 100%;
-        flex-direction: column;
-      }
-
-      .meta-card {
-        width: 100%;
-        min-width: 0;
-      }
-
-      .big-number {
-        font-size: 40px;
-      }
-
-      .meta-title {
-        font-size: 20px;
+        font-size: 22px;
       }
     }
   </style>
@@ -310,51 +189,42 @@
 
 <body>
   <div class="hero">
+
     <div class="socials">
-      <a class="social-btn" href="https://facebook.com" target="_blank" aria-label="Facebook">
+      <a class="social-btn" href="https://facebook.com" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.2H7.8V14h2.8v8h2.9z"/></svg>
       </a>
-      <a class="social-btn" href="https://instagram.com" target="_blank" aria-label="Instagram">
+      <a class="social-btn" href="https://instagram.com" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2.2A2.8 2.8 0 0 0 4.2 7v10A2.8 2.8 0 0 0 7 19.8h10a2.8 2.8 0 0 0 2.8-2.8V7A2.8 2.8 0 0 0 17 4.2H7zm10.25 1.65a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6z"/></svg>
       </a>
-      <a class="social-btn" href="https://tiktok.com" target="_blank" aria-label="TikTok">
+      <a class="social-btn" href="https://tiktok.com" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M14.2 3c.3 2.1 1.5 3.7 3.5 4.6.8.4 1.7.6 2.3.6v3.1c-1.4 0-2.7-.3-4-.9v6.2c0 3.3-2.6 5.7-6 5.7-3.2 0-5.8-2.4-5.8-5.6 0-3.4 2.8-5.9 6.2-5.6v3.1a2.6 2.6 0 1 0 2.6 2.6V3h1.2z"/></svg>
       </a>
     </div>
 
     <div class="content">
-      <div class="top-block">
-        <h1>ENJOY PADEL</h1>
-        <div class="sub">BOTOȘANI</div>
-      </div>
+      <h1>ENJOY PADEL</h1>
+      <div class="sub">BOTOȘANI</div>
 
-      <div class="tagline">Experiența premium de padel, într-un spațiu făcut pentru joc, energie și momente bune.</div>
+      <div class="tagline">Descoperă fenomenul PADEL.</div>
 
       <a href="https://playtomic.io/" target="_blank" class="btn">
-        REZERVĂ ACUM
+        REZERVĂ TEREN!
       </a>
 
       <div class="subtext">
-        Vei fi redirecționat către Playtomic pentru rezervare rapidă și acces simplu la teren.
+        Vei fi redirecționat către Playtomic pentru rezervare.
       </div>
 
       <div class="meta-row">
         <div class="meta-card">
           <div class="big-number">2</div>
-          <div>
-            <div class="meta-title">Terenuri outdoor</div>
-            <div class="meta-sub">Spațiu modern pentru meciuri relaxate sau competitive.</div>
-          </div>
-        </div>
-
-        <div class="meta-card">
-          <div>
-            <div class="meta-title">Program NON-STOP</div>
-            <div class="meta-sub">Acces self-service, intri și joci când vrei.</div>
-          </div>
+          <div class="meta-title">terenuri outdoor</div>
         </div>
       </div>
+
     </div>
+
   </div>
 </body>
 </html>
