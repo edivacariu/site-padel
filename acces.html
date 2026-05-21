@@ -1,1 +1,421 @@
-test
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enjoy Padel - Echipament</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg: #ffffff;
+      --text: #070b14;
+      --muted: #717680;
+      --green: #0b8f2d;
+      --dark: #070b14;
+      --border: #edf0f4;
+      --shadow: 0 10px 34px rgba(10, 20, 35, 0.07);
+      --soft-shadow: 0 4px 18px rgba(10, 20, 35, 0.055);
+      --radius: 28px;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      padding: 26px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 34px;
+    }
+
+    .tab {
+      min-height: 104px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-size: 31px;
+      font-weight: 500;
+      text-decoration: none;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, #060b16 0%, #101827 100%);
+      color: #fff;
+      border-color: #060b16;
+      box-shadow: 0 12px 30px rgba(4, 9, 20, 0.18);
+    }
+
+    .tab svg {
+      width: 43px;
+      height: 43px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .products {
+      display: grid;
+      gap: 26px;
+    }
+
+    .card {
+      min-height: 244px;
+      display: grid;
+      grid-template-columns: 285px 1fr auto;
+      align-items: center;
+      gap: 32px;
+      padding: 26px 28px 26px 42px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.10));
+    }
+
+    .info {
+      min-width: 0;
+    }
+
+    .title {
+      margin: 0 0 16px;
+      font-size: 36px;
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+
+    .label {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .green {
+      margin: 0;
+      font-size: 31px;
+      line-height: 1.16;
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    .price {
+      margin: 0;
+      font-size: 38px;
+      line-height: 1.05;
+      color: var(--green);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .action {
+      align-self: center;
+      justify-self: end;
+      border: 1px solid #dfe3ea;
+      border-radius: 17px;
+      background: #fff;
+      color: var(--text);
+      height: 76px;
+      padding: 0 25px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 17px;
+      font-size: 26px;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(10, 20, 35, 0.035);
+    }
+
+    .action.dark {
+      min-width: 230px;
+      border-color: #07101e;
+      background: linear-gradient(135deg, #060b16 0%, #101827 100%);
+      color: #fff;
+      box-shadow: 0 12px 22px rgba(4, 9, 20, 0.18);
+    }
+
+    .action svg {
+      width: 39px;
+      height: 39px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.1;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .action:active,
+    .tab:active {
+      transform: scale(0.985);
+    }
+
+    @media (max-width: 820px) {
+      body {
+        padding: 16px;
+      }
+
+      .tabs {
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .tab {
+        min-height: 66px;
+        border-radius: 18px;
+        font-size: 16px;
+        gap: 9px;
+      }
+
+      .tab svg {
+        width: 25px;
+        height: 25px;
+      }
+
+      .products {
+        gap: 16px;
+      }
+
+      .card {
+        min-height: 168px;
+        grid-template-columns: 118px 1fr;
+        gap: 16px;
+        padding: 18px;
+        border-radius: 22px;
+        position: relative;
+      }
+
+      .product-image {
+        height: 132px;
+      }
+
+      .title {
+        font-size: 23px;
+        margin-bottom: 9px;
+      }
+
+      .label {
+        font-size: 17px;
+      }
+
+      .green {
+        font-size: 18px;
+      }
+
+      .price {
+        font-size: 24px;
+      }
+
+      .action {
+        grid-column: 2;
+        justify-self: start;
+        height: 48px;
+        padding: 0 14px;
+        border-radius: 13px;
+        font-size: 15px;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .action.dark {
+        min-width: 142px;
+      }
+
+      .action svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .tab {
+        font-size: 14px;
+      }
+
+      .card {
+        grid-template-columns: 98px 1fr;
+        padding: 15px;
+      }
+
+      .product-image {
+        height: 116px;
+      }
+
+      .title {
+        font-size: 20px;
+      }
+
+      .label,
+      .green {
+        font-size: 16px;
+      }
+
+      .price {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <nav class="tabs" aria-label="Meniu echipament">
+      <a class="tab active" href="#">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <ellipse cx="23" cy="19" rx="13" ry="16" transform="rotate(-36 23 19)"></ellipse>
+          <path d="M32 31l13 13"></path>
+          <path d="M43 42l7 7"></path>
+          <path d="M15 11h.1M21 8h.1M28 10h.1M12 18h.1M19 17h.1M26 16h.1M33 17h.1M15 25h.1M22 24h.1M29 24h.1"></path>
+        </svg>
+        <span>Închiriere echipament</span>
+      </a>
+
+      <a class="tab" href="#">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M51 19A22 22 0 0 0 14 12"></path>
+          <path d="M14 12v14h14"></path>
+          <path d="M13 45a22 22 0 0 0 37 7"></path>
+          <path d="M50 52V38H36"></path>
+        </svg>
+        <span>Returnează echipamentul</span>
+      </a>
+    </nav>
+
+    <section class="products">
+
+      <article class="card">
+        <div class="product-image">
+          <img src="paleta-black-crown-viva.png" alt="Black Crown VIVA">
+        </div>
+
+        <div class="info">
+          <h2 class="title">Black Crown VIVA</h2>
+          <p class="green">Paletă oferită gratuit</p>
+        </div>
+
+        <button class="action" type="button">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="12" y="7" width="24" height="34" rx="2"></rect>
+            <path d="M20 13h8M24 22v10M20 26h8"></path>
+            <circle cx="31" cy="24" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg>
+          <span>deschide dulap</span>
+        </button>
+      </article>
+
+      <article class="card">
+        <div class="product-image">
+          <img src="paleta-adidas-match-black.png" alt="adidas MATCH BLACK">
+        </div>
+
+        <div class="info">
+          <h2 class="title">adidas MATCH BLACK</h2>
+          <p class="label">Preț închiriere:</p>
+          <p class="price">15 lei / rezervare</p>
+        </div>
+
+        <button class="action dark" type="button">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="7" y="13" width="34" height="24" rx="3"></rect>
+            <path d="M7 20h34M14 29h11"></path>
+            <circle cx="33" cy="30" r="2.5"></circle>
+          </svg>
+          <span>plătește</span>
+        </button>
+      </article>
+
+      <article class="card">
+        <div class="product-image">
+          <img src="paleta-vibor-a-titan-junior.png" alt="Vibor-A Titan Junior">
+        </div>
+
+        <div class="info">
+          <h2 class="title">Vibor-A Titan Junior</h2>
+          <p class="label">Pentru copii / femei</p>
+          <p class="green">Paletă oferită gratuit</p>
+        </div>
+
+        <button class="action" type="button">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="12" y="7" width="24" height="34" rx="2"></rect>
+            <path d="M20 13h8M24 22v10M20 26h8"></path>
+            <circle cx="31" cy="24" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg>
+          <span>deschide dulap</span>
+        </button>
+      </article>
+
+      <article class="card">
+        <div class="product-image">
+          <img src="set-mingi-black-crown.png" alt="Set mingi black brown 1+1">
+        </div>
+
+        <div class="info">
+          <h2 class="title">Set mingi black brown 1+1</h2>
+          <p class="label">Preț achiziție:</p>
+          <p class="price">50 lei</p>
+        </div>
+
+        <button class="action dark" type="button">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M9 11h5l4 21h18l4-14H17"></path>
+            <circle cx="21" cy="39" r="2.8"></circle>
+            <circle cx="35" cy="39" r="2.8"></circle>
+          </svg>
+          <span>cumpără</span>
+        </button>
+      </article>
+
+    </section>
+  </main>
+</body>
+</html>
