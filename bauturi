@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Băuturi — EnjoyPadel</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #111; min-height: 100vh; }
+  .container { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+  .page-header { margin-bottom: 1.5rem; }
+  .page-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .page-header p { font-size: 14px; color: #888; }
+
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #999; text-transform: uppercase; padding: 4px 0 6px; }
+
+  .item-card { display: flex; align-items: center; gap: 16px; padding: 16px; background: #fff; border: 1px solid #eee; border-radius: 12px; transition: border-color 0.15s; margin-bottom: 10px; }
+  .item-card:hover { border-color: #ccc; }
+  .item-img { width: 68px; height: 68px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; font-size: 36px; }
+  .item-img img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+  .item-info { flex: 1; min-width: 0; }
+  .item-name { font-size: 15px; font-weight: 600; color: #111; margin-bottom: 3px; }
+  .item-tag { font-size: 13px; color: #888; margin-bottom: 4px; }
+  .item-price { font-size: 15px; font-weight: 600; color: #1a9e5c; }
+  .item-action { flex-shrink: 0; }
+
+  .btn-solid { padding: 10px 18px; border: none; border-radius: 8px; background: #0e1117; color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: inherit; white-space: nowrap; font-weight: 500; }
+  .btn-solid:hover { opacity: 0.85; }
+  .btn-solid i { font-size: 16px; }
+
+  .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: flex-end; justify-content: center; }
+  .drawer-overlay.open { display: flex; }
+  .drawer { background: #fff; border-radius: 16px 16px 0 0; width: 100%; max-width: 680px; padding: 20px; max-height: 85vh; overflow-y: auto; }
+  .drawer-handle { width: 36px; height: 4px; border-radius: 2px; background: #ddd; margin: 0 auto 20px; }
+  .drawer-img-wrap { width: 100%; height: 150px; border-radius: 10px; background: #f5f5f5; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 72px; }
+  .drawer-img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; padding: 12px; }
+  .drawer-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; text-align: center; }
+  .drawer-sub { font-size: 13px; color: #888; margin-bottom: 20px; line-height: 1.5; text-align: center; }
+  .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+  .detail-row:last-of-type { border-bottom: none; }
+  .detail-label { color: #888; }
+  .detail-value { font-weight: 600; }
+  .price-big { font-size: 32px; font-weight: 800; color: #1a9e5c; text-align: center; margin: 16px 0; }
+  .drawer-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .drawer-actions button { flex: 1; padding: 14px; font-size: 15px; border-radius: 8px; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; font-weight: 600; }
+  .da-cancel { background: #f5f5f5; border: 1px solid #ddd !important; color: #111; font-weight: 400 !important; }
+  .da-cancel:hover { background: #ebebeb; }
+  .da-pay { background: #1a9e5c; color: #fff; }
+  .da-pay:hover { background: #158a4f; }
+
+  .success-screen { text-align: center; padding: 20px 0; }
+  .success-icon { font-size: 56px; margin-bottom: 12px; }
+  .success-screen h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+  .success-screen p { font-size: 14px; color: #888; line-height: 1.6; }
+  .success-code { font-size: 28px; font-weight: 800; letter-spacing: 0.15em; font-family: monospace; color: #0e1117; margin: 12px 0 4px; }
+  .success-hint { font-size: 13px; color: #1a9e5c; font-weight: 500; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0e1117; color: #fff; padding: 11px 22px; border-radius: 8px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 300; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+  .section-gap { margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>🥤 Băuturi & Răcoritoare</h1>
+    <p>Alege produsul dorit și achită online — ridicarea se face imediat de la frigider.</p>
+  </div>
+
+  <div class="section-label">Pepsi</div>
+
+  <div class="item-card">
+    <div class="item-img"><img src="pepsi.png" alt="Pepsi" onerror="this.outerHTML='<div class=\'item-img\' style=\'font-size:36px\'>🥤</div>'"></div>
+    <div class="item-info">
+      <div class="item-name">Pepsi</div>
+      <div class="item-tag">Răcoritoare cola clasică</div>
+      <div class="item-price">10 lei</div>
+    </div>
+    <div class="item-action">
+      <button class="btn-solid" onclick="openDrawer('pepsi')"><i class="ti ti-credit-card"></i> Achită</button>
+    </div>
+  </div>
+
+  <div class="item-card">
+    <div class="item-img"><img src="pepsi-max.png" alt="Pepsi Max" onerror="this.outerHTML='<div class=\'item-img\' style=\'font-size:36px\'>🖤</div>'"></div>
+    <div class="item-info">
+      <div class="item-name">Pepsi Max</div>
+      <div class="item-tag">Fără zahăr, gust intens</div>
+      <div class="item-price">10 lei</div>
+    </div>
+    <div class="item-action">
+      <button class="btn-solid" onclick="openDrawer('pepsi-max')"><i class="ti ti-credit-card"></i> Achită</button>
+    </div>
+  </div>
+
+  <div class="item-card">
+    <div class="item-img"><img src="pepsi-twist.png" alt="Pepsi Twist" onerror="this.outerHTML='<div class=\'item-img\' style=\'font-size:36px\'>💜</div>'"></div>
+    <div class="item-info">
+      <div class="item-name">Pepsi Twist</div>
+      <div class="item-tag">Cu aromă de lămâie</div>
+      <div class="item-price">10 lei</div>
+    </div>
+    <div class="item-action">
+      <button class="btn-solid" onclick="openDrawer('pepsi-twist')"><i class="ti ti-credit-card"></i> Achită</button>
+    </div>
+  </div>
+
+  <div class="section-label section-gap">Aqua Carpatica</div>
+
+  <div class="item-card">
+    <div class="item-img"><img src="aqua-plata.png" alt="Aqua Carpatica Plată" onerror="this.outerHTML='<div class=\'item-img\' style=\'font-size:36px\'>💧</div>'"></div>
+    <div class="item-info">
+      <div class="item-name">Aqua Carpatica Plată 0.5L</div>
+      <div class="item-tag">Apă plată naturală</div>
+      <div class="item-price">10 lei</div>
+    </div>
+    <div class="item-action">
+      <button class="btn-solid" onclick="openDrawer('aqua-plata')"><i class="ti ti-credit-card"></i> Achită</button>
+    </div>
+  </div>
+
+  <div class="item-card">
+    <div class="item-img"><img src="aqua-minerala.png" alt="Aqua Carpatica Minerală" onerror="this.outerHTML='<div class=\'item-img\' style=\'font-size:36px\'>💦</div>'"></div>
+    <div class="item-info">
+      <div class="item-name">Aqua Carpatica Minerală 0.5L</div>
+      <div class="item-tag">Apă minerală naturală</div>
+      <div class="item-price">10 lei</div>
+    </div>
+    <div class="item-action">
+      <button class="btn-solid" onclick="openDrawer('aqua-minerala')"><i class="ti ti-credit-card"></i> Achită</button>
+    </div>
+  </div>
+
+  <div class="item-card">
+    <div class="item-img"><img src="aqua-doza.png" alt="Aqua Carpatica Doză" onerror="this.outerHTML='<div class=\'item-img\' style=\'font-size:36px\'>🥫</div>'"></div>
+    <div class="item-info">
+      <div class="item-name">Aqua Carpatica Doză</div>
+      <div class="item-tag">Apă carbogazoasă la doză</div>
+      <div class="item-price">10 lei</div>
+    </div>
+    <div class="item-action">
+      <button class="btn-solid" onclick="openDrawer('aqua-doza')"><i class="ti ti-credit-card"></i> Achită</button>
+    </div>
+  </div>
+
+  <div class="section-label section-gap">Alte răcoritoare</div>
+
+  <div class="item-card">
+    <div class="item-img"><img src="mirinda.png" alt="Mirinda" onerror="this.outerHTML='<div class=\'item-img\' style=\'font-size:36px\'>🍊</div>'"></div>
+    <div class="item-info">
+      <div class="item-name">Mirinda</div>
+      <div class="item-tag">Răcoritoare cu portocale</div>
+      <div class="item-price">10 lei</div>
+    </div>
+    <div class="item-action">
+      <button class="btn-solid" onclick="openDrawer('mirinda')"><i class="ti ti-credit-card"></i> Achită</button>
+    </div>
+  </div>
+
+  <div class="item-card">
+    <div class="item-img"><img src="7up.png" alt="7UP" onerror="this.outerHTML='<div class=\'item-img\' style=\'font-size:36px\'>🍋</div>'"></div>
+    <div class="item-info">
+      <div class="item-name">7UP</div>
+      <div class="item-tag">Răcoritoare cu lămâie & lime</div>
+      <div class="item-price">10 lei</div>
+    </div>
+    <div class="item-action">
+      <button class="btn-solid" onclick="openDrawer('7up')"><i class="ti ti-credit-card"></i> Achită</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- DRAWER -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawerOutside(event)">
+  <div class="drawer">
+    <div class="drawer-handle"></div>
+    <div id="drawer-content"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const drinks = {
+  'pepsi':         { name: 'Pepsi',                        img: 'pepsi.png',         emoji: '🥤', tag: 'Răcoritoare cola clasică' },
+  'pepsi-max':     { name: 'Pepsi Max',                    img: 'pepsi-max.png',     emoji: '🖤', tag: 'Fără zahăr, gust intens' },
+  'pepsi-twist':   { name: 'Pepsi Twist',                  img: 'pepsi-twist.png',   emoji: '💜', tag: 'Cu aromă de lămâie' },
+  'aqua-plata':    { name: 'Aqua Carpatica Plată 0.5L',    img: 'aqua-plata.png',    emoji: '💧', tag: 'Apă plată naturală' },
+  'aqua-minerala': { name: 'Aqua Carpatica Minerală 0.5L', img: 'aqua-minerala.png', emoji: '💦', tag: 'Apă minerală naturală' },
+  'aqua-doza':     { name: 'Aqua Carpatica Doză',          img: 'aqua-doza.png',     emoji: '🥫', tag: 'Apă carbogazoasă la doză' },
+  'mirinda':       { name: 'Mirinda',                      img: 'mirinda.png',       emoji: '🍊', tag: 'Răcoritoare cu portocale' },
+  '7up':           { name: '7UP',                          img: '7up.png',           emoji: '🍋', tag: 'Răcoritoare cu lămâie & lime' },
+};
+
+function openDrawer(id) {
+  const d = drinks[id];
+  document.getElementById('drawer-content').innerHTML = `
+    <div class="drawer-img-wrap">
+      <img src="${d.img}" alt="${d.name}" onerror="this.parentElement.innerHTML='<span style=\'font-size:72px\'>${d.emoji}</span>'">
+    </div>
+    <div class="drawer-title">${d.name}</div>
+    <div class="drawer-sub">${d.tag}</div>
+    <div class="detail-row">
+      <span class="detail-label">Preț</span>
+      <span class="detail-value" style="color:#1a9e5c">10 RON</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Ridicare</span>
+      <span class="detail-value">Imediat, la frigider</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Locație</span>
+      <span class="detail-value">EnjoyPadel Botoșani</span>
+    </div>
+    <div class="price-big">10 lei</div>
+    <div class="drawer-actions">
+      <button class="da-cancel" onclick="closeDrawer()"><i class="ti ti-x"></i> Anulează</button>
+      <button class="da-pay" onclick="processPayment('${id}')"><i class="ti ti-credit-card"></i> Achită 10 lei</button>
+    </div>
+  `;
+  document.getElementById('drawer-overlay').classList.add('open');
+}
+
+function processPayment(id) {
+  const d = drinks[id];
+  const confirmCode = String(Math.floor(1000 + Math.random() * 9000));
+  document.getElementById('drawer-content').innerHTML = `
+    <div class="success-screen">
+      <div class="success-icon">✅</div>
+      <h3>Plată confirmată!</h3>
+      <div class="success-code">#${confirmCode}</div>
+      <div class="success-hint">Cod confirmare</div>
+      <p style="margin-top:16px">Poți ridica <strong>${d.name}</strong> imediat de la frigider.<br>Bucură-te de meci! 🎾</p>
+      <button class="btn-solid" style="margin:24px auto 0;justify-content:center" onclick="closeDrawer()">
+        <i class="ti ti-check"></i> Închide
+      </button>
+    </div>
+  `;
+}
+
+function closeDrawer() {
+  document.getElementById('drawer-overlay').classList.remove('open');
+}
+
+function closeDrawerOutside(e) {
+  if (e.target === document.getElementById('drawer-overlay')) closeDrawer();
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeDrawer();
+});
+</script>
+
+</body>
+</html>
