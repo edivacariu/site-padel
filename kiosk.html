@@ -3,108 +3,305 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kiosk — EnjoyPadel</title>
+<title>Kiosk Echipament — EnjoyPadel</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #000;
+    background: #f0f4f8;
     min-height: 100vh;
     display: flex;
+    align-items: stretch;
+  }
+
+  /* ── LEFT PANEL ── */
+  .left {
+    width: 50%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background:
-      linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)),
-      url('./hero.png') center center / cover no-repeat;
-  }
-
-  .card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.12);
-    backdrop-filter: blur(16px);
-    border-radius: 24px;
     padding: 48px 40px;
-    text-align: center;
-    max-width: 420px;
-    width: 90%;
+    border-right: 3px solid #e8edf2;
   }
 
-  .logo {
-    font-size: 28px;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.5px;
+  .brand {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -1px;
     text-transform: uppercase;
+    color: #0e1117;
     margin-bottom: 4px;
   }
 
-  .sub {
+  .brand-sub {
     font-size: 13px;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 32px;
+    color: #aaa;
+    margin-bottom: 48px;
   }
 
-  .qr-wrap {
+  .qr-box {
     background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    display: inline-block;
-    margin-bottom: 28px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border: 4px solid #0e1117;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+    margin-bottom: 40px;
   }
 
-  .label {
-    font-size: 20px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 8px;
+  .scan-label {
+    font-size: 42px;
+    font-weight: 900;
+    color: #0e1117;
+    text-align: center;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
   }
 
-  .desc {
+  .scan-label span {
+    color: #22c55e;
+  }
+
+  .scan-sub {
+    font-size: 18px;
+    color: #888;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .arrow-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    color: #bbb;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .arrow-row i { font-size: 22px; }
+
+  /* ── RIGHT PANEL ── */
+  .right {
+    width: 50%;
+    background: #f7f9fc;
+    padding: 40px 36px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .right-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0e1117;
+    margin-bottom: 4px;
+  }
+
+  .right-sub {
     font-size: 14px;
-    color: rgba(255,255,255,0.55);
-    line-height: 1.6;
+    color: #888;
+    margin-bottom: 28px;
   }
 
-  .accent { color: #22c55e; }
-
-  .arrow {
-    font-size: 32px;
-    margin-bottom: 16px;
-    animation: bounce 1.5s infinite;
+  /* SECTION */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #aaa;
+    text-transform: uppercase;
+    margin: 20px 0 10px;
   }
 
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+  .section-label:first-of-type { margin-top: 0; }
+
+  /* ITEM CARD */
+  .item-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: #fff;
+    border: 1.5px solid #e8edf2;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .item-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6px;
+  }
+
+  .item-img .emoji { font-size: 32px; }
+
+  .item-info { flex: 1; min-width: 0; }
+
+  .item-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0e1117;
+    margin-bottom: 3px;
+  }
+
+  .item-tag { font-size: 13px; color: #888; margin-bottom: 4px; }
+
+  .item-free {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a9e5c;
+  }
+
+  .item-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a9e5c;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .badge-green { background: #e1f5ee; color: #0f6e56; }
+  .badge-blue  { background: #e8f0fe; color: #1a56db; }
+  .badge-amber { background: #fef3c7; color: #92400e; }
+
+  /* FOOTER */
+  .kiosk-footer {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid #e8edf2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #bbb;
   }
 </style>
 </head>
 <body>
 
-<div class="card">
-  <div class="logo">ENJOY PADEL</div>
-  <div class="sub">Botoșani</div>
+<!-- LEFT: QR -->
+<div class="left">
+  <div class="brand">ENJOY PADEL</div>
+  <div class="brand-sub">Botoșani</div>
 
-  <div class="qr-wrap">
+  <div class="qr-box">
     <div id="qrcode"></div>
   </div>
 
-  <div class="arrow">👆</div>
-  <div class="label">Scanează pentru <span class="accent">Echipament</span></div>
-  <div class="desc">Închiriază palete, mingi și alte echipamente direct de pe telefon.</div>
+  <div class="scan-label">Scanează<br>pentru <span>Echipament</span></div>
+  <div class="scan-sub">Folosește camera telefonului<br>pentru a accesa meniul complet</div>
+
+  <div class="arrow-row">
+    <i class="ti ti-device-mobile"></i>
+    Funcționează cu orice telefon
+  </div>
+</div>
+
+<!-- RIGHT: MENU -->
+<div class="right">
+  <div class="right-title">🏓 Echipament disponibil</div>
+  <div class="right-sub">Scanează QR-ul pentru a închiria sau cumpăra</div>
+
+  <div class="section-label">Palete standard — gratuit</div>
+
+  <div class="item-card">
+    <div class="item-img">
+      <img src="paleta-black-crown-viva.png" alt="Black Crown VIVA" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span class="emoji" style="display:none">🏓</span>
+    </div>
+    <div class="item-info">
+      <div class="item-name">Black Crown VIVA</div>
+      <div class="item-tag">Adulți · Nivel intermediar</div>
+      <div class="item-free">Gratuit</div>
+    </div>
+    <span class="badge badge-green">GRATUIT</span>
+  </div>
+
+  <div class="section-label">Palete copii / femei — gratuit</div>
+
+  <div class="item-card">
+    <div class="item-img">
+      <img src="paleta-vibor-a-titan-junior.png" alt="Vibor-A Titan Junior" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span class="emoji" style="display:none">🏓</span>
+    </div>
+    <div class="item-info">
+      <div class="item-name">Vibor-A Titan Junior</div>
+      <div class="item-tag">Copii / femei · Nivel începător</div>
+      <div class="item-free">Gratuit</div>
+    </div>
+    <span class="badge badge-green">GRATUIT</span>
+  </div>
+
+  <div class="section-label">Palete premium — închiriere</div>
+
+  <div class="item-card">
+    <div class="item-img">
+      <img src="paleta-adidas-match-black.png" alt="adidas MATCH BLACK" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span class="emoji" style="display:none">🎾</span>
+    </div>
+    <div class="item-info">
+      <div class="item-name">adidas MATCH BLACK</div>
+      <div class="item-tag">Adulți · Nivel avansat</div>
+      <div class="item-price">15 lei / rezervare</div>
+    </div>
+    <span class="badge badge-blue">15 LEI</span>
+  </div>
+
+  <div class="section-label">Mingi / accesorii — cumpărare</div>
+
+  <div class="item-card">
+    <div class="item-img">
+      <span class="emoji">🎱</span>
+    </div>
+    <div class="item-info">
+      <div class="item-name">Set mingi Black Crown 1+1</div>
+      <div class="item-tag">2 tuburi × 3 mingi pressurizate</div>
+      <div class="item-price">50 lei</div>
+    </div>
+    <span class="badge badge-amber">50 LEI</span>
+  </div>
+
+  <div class="kiosk-footer">
+    <span>© 2026 ENJOYPADEL S.R.L.</span>
+    <span>enjoypadel.ro</span>
+  </div>
 </div>
 
 <script>
   new QRCode(document.getElementById('qrcode'), {
     text: 'https://enjoypadel.ro/echipament.html',
-    width: 220,
-    height: 220,
+    width: 260,
+    height: 260,
     colorDark: '#000000',
     colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.H
