@@ -1,30 +1,28 @@
+✅ Deploy făcut, Worker activ (`3055d252`). Preview arată `{"error":"Not found"}` — corect, pentru că `/` nu există.
+
+Acum îți dau `echipament.html` actualizat cu device_id cookie:
+
+```html
 <!DOCTYPE html>
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google" content="notranslate">
 <title>Echipament — EnjoyPadel</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #111; min-height: 100vh; }
   .container { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
-
-  /* TABS */
   .tabs { display: flex; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; border: 1px solid #ddd; }
   .tab-btn { flex: 1; padding: 13px 16px; background: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 500; color: #666; transition: background 0.15s; font-family: inherit; }
   .tab-btn.active { background: #0e1117; color: #fff; }
   .tab-btn:first-child { border-right: 1px solid #ddd; }
   .tab-btn i { font-size: 18px; }
-
-  /* VIEWS */
   .view { display: none; }
   .view.active { display: flex; flex-direction: column; gap: 12px; }
-
-  /* SECTION LABEL */
   .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #999; text-transform: uppercase; padding: 4px 0 6px; }
-
-  /* ITEM CARD */
   .item-card { display: flex; align-items: center; gap: 16px; padding: 16px; background: #fff; border: 1px solid #eee; border-radius: 12px; transition: border-color 0.15s; }
   .item-card:hover { border-color: #ccc; }
   .item-card.unavailable { opacity: 0.5; pointer-events: none; }
@@ -41,8 +39,6 @@
   .avail-dot.low { background: #e67e22; }
   .avail-dot.none { background: #ccc; }
   .avail-text { font-size: 12px; color: #888; }
-
-  /* BUTTONS */
   .item-action { flex-shrink: 0; }
   .btn-outline { padding: 9px 16px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #111; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s; font-family: inherit; white-space: nowrap; }
   .btn-outline:hover { background: #f5f5f5; }
@@ -53,18 +49,8 @@
   .btn-red { background: #c0392b; }
   .btn-red:hover { background: #a93226; }
   .btn-solid i, .btn-outline i { font-size: 16px; }
-
-  /* EMPTY STATE */
-  .empty-state { padding: 2.5rem 1rem; text-align: center; color: #888; font-size: 14px; border: 1px dashed #ddd; border-radius: 12px; line-height: 1.6; }
-  .empty-state i { font-size: 36px; display: block; margin-bottom: 10px; color: #ccc; }
-
-  /* RENTED CARD */
   .rented-card { display: flex; align-items: center; gap: 16px; padding: 16px; background: #fff; border: 1px solid #eee; border-radius: 12px; }
   .rented-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #e1f5ee; color: #0f6e56; display: inline-block; margin-bottom: 4px; }
-  .rented-code { font-size: 22px; font-weight: 700; letter-spacing: 0.15em; color: #0e1117; font-family: monospace; margin: 2px 0 4px; }
-  .rented-hint { font-size: 12px; color: #888; }
-
-  /* DRAWER */
   .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: flex-end; justify-content: center; }
   .drawer-overlay.open { display: flex; }
   .drawer { background: #fff; border-radius: 16px 16px 0 0; width: 100%; max-width: 680px; padding: 20px; border-top: 1px solid #eee; max-height: 85vh; overflow-y: auto; }
@@ -85,43 +71,20 @@
   .da-confirm { background: #0e1117; color: #fff; }
   .da-confirm:hover { opacity: 0.85; }
   .da-pay { background: #1a9e5c; color: #fff; }
-  .da-pay:hover { background: #158a4f; }
   .da-buy { background: #1a9e5c; color: #fff; }
-  .da-buy:hover { background: #158a4f; }
-
-  /* RETURN INPUT SCREEN */
-  .return-code-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 24px 20px; text-align: center; }
-  .return-code-box h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
-  .return-code-box p { font-size: 13px; color: #888; margin-bottom: 20px; line-height: 1.5; }
-  .code-input { width: 100%; max-width: 200px; text-align: center; font-size: 28px; font-weight: 700; letter-spacing: 0.2em; font-family: monospace; padding: 12px; border: 2px solid #ddd; border-radius: 10px; outline: none; transition: border-color 0.15s; }
-  .code-input:focus { border-color: #0e1117; }
-  .code-input.error { border-color: #e74c3c; animation: shake 0.3s; }
-  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-  .btn-return-submit { margin-top: 16px; width: 100%; max-width: 200px; padding: 13px; background: #0e1117; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
-  .btn-return-submit:hover { opacity: 0.85; }
-
-  /* SUCCESS SCREEN */
-  .success-screen { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 28px 20px; text-align: center; }
-  .success-icon { font-size: 48px; margin-bottom: 12px; }
-  .success-screen h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
-  .success-screen p { font-size: 13px; color: #888; line-height: 1.5; }
-
-  /* TOAST */
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0e1117; color: #fff; padding: 11px 22px; border-radius: 8px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 300; white-space: nowrap; }
-  .toast.show { opacity: 1; }
-
-  /* LOCKER OPEN SCREEN inside drawer */
+  .empty-state { padding: 2.5rem 1rem; text-align: center; color: #888; font-size: 14px; border: 1px dashed #ddd; border-radius: 12px; line-height: 1.6; }
+  .empty-state i { font-size: 36px; display: block; margin-bottom: 10px; color: #ccc; }
   .locker-open { text-align: center; padding: 10px 0 4px; }
   .locker-number { display: inline-block; font-size: 52px; font-weight: 800; background: #0e1117; color: #fff; border-radius: 12px; padding: 8px 28px; letter-spacing: 0.05em; margin-bottom: 12px; }
-  .locker-code-label { font-size: 13px; color: #888; margin-bottom: 4px; }
-  .locker-code { font-size: 34px; font-weight: 700; letter-spacing: 0.2em; font-family: monospace; color: #0e1117; margin-bottom: 8px; }
-  .locker-hint { font-size: 13px; color: #888; line-height: 1.5; }
+  .locker-hint { font-size: 13px; color: #888; line-height: 1.5; margin-top: 8px; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0e1117; color: #fff; padding: 11px 22px; border-radius: 8px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 300; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
-
 <div class="container">
-
   <div class="tabs">
     <button class="tab-btn active" id="tab-rent" onclick="switchTab('rent')">
       <i class="ti ti-search"></i> Închiriere echipament
@@ -133,9 +96,7 @@
 
   <!-- RENT VIEW -->
   <div class="view active" id="rent-view">
-
     <div class="section-label">Palete standard — gratuit</div>
-
     <div class="item-card" id="card-bc-viva">
       <div class="item-img">
         <img src="paleta-black-crown-viva.png" alt="Black Crown VIVA" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -144,20 +105,14 @@
       <div class="item-info">
         <div class="item-name">Black Crown VIVA</div>
         <div class="item-free">Paletă oferită gratuit</div>
-        <div style="margin-top:5px">
-          <span class="avail-dot" id="dot-bc-viva"></span>
-          <span class="avail-text" id="avail-bc-viva">Se verifică...</span>
-        </div>
+        <div style="margin-top:5px"><span class="avail-dot" id="dot-bc-viva"></span><span class="avail-text" id="avail-bc-viva">Se verifică...</span></div>
       </div>
       <div class="item-action">
-        <button class="btn-outline" onclick="openDrawer('bc-viva')">
-          <i class="ti ti-lock-open"></i> deschide
-        </button>
+        <button class="btn-outline" onclick="openDrawer('bc-viva')"><i class="ti ti-lock-open"></i> deschide</button>
       </div>
     </div>
 
     <div class="section-label" style="margin-top:8px">Palete copii / femei — gratuit</div>
-
     <div class="item-card" id="card-vibora-titan">
       <div class="item-img">
         <img src="paleta-vibor-a-titan-junior.png" alt="Vibor-A Titan Junior" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -167,20 +122,14 @@
         <div class="item-name">Vibor-A Titan Junior</div>
         <div class="item-tag">Pentru copii / femei</div>
         <div class="item-free">Paletă oferită gratuit</div>
-        <div style="margin-top:5px">
-          <span class="avail-dot" id="dot-vibora-titan"></span>
-          <span class="avail-text" id="avail-vibora-titan">Se verifică...</span>
-        </div>
+        <div style="margin-top:5px"><span class="avail-dot" id="dot-vibora-titan"></span><span class="avail-text" id="avail-vibora-titan">Se verifică...</span></div>
       </div>
       <div class="item-action">
-        <button class="btn-outline" onclick="openDrawer('vibora-titan')">
-          <i class="ti ti-lock-open"></i> deschide
-        </button>
+        <button class="btn-outline" onclick="openDrawer('vibora-titan')"><i class="ti ti-lock-open"></i> deschide</button>
       </div>
     </div>
 
     <div class="section-label" style="margin-top:8px">Palete premium — închiriere</div>
-
     <div class="item-card" id="card-adidas-match">
       <div class="item-img">
         <img src="paleta-adidas-match-black.png" alt="adidas MATCH BLACK" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -190,64 +139,42 @@
         <div class="item-name">adidas MATCH BLACK</div>
         <div class="item-price-label">Preț închiriere:</div>
         <div class="item-price">15 lei / rezervare</div>
-        <div style="margin-top:5px">
-          <span class="avail-dot" id="dot-adidas-match"></span>
-          <span class="avail-text" id="avail-adidas-match">Se verifică...</span>
-        </div>
+        <div style="margin-top:5px"><span class="avail-dot" id="dot-adidas-match"></span><span class="avail-text" id="avail-adidas-match">Se verifică...</span></div>
       </div>
       <div class="item-action">
-        <button class="btn-solid" onclick="openDrawer('adidas-match')">
-          <i class="ti ti-credit-card"></i> plătește
-        </button>
+        <button class="btn-solid" onclick="openDrawer('adidas-match')"><i class="ti ti-credit-card"></i> plătește</button>
       </div>
     </div>
 
     <div class="section-label" style="margin-top:8px">Mingi / accesorii — cumpărare</div>
-
     <div class="item-card" id="card-mingi-set">
-      <div class="item-img">
-        <span class="emoji">🎱</span>
-      </div>
+      <div class="item-img"><span class="emoji">🎱</span></div>
       <div class="item-info">
-        <div class="item-name">Set mingi black brown 1+1</div>
+        <div class="item-name">Set mingi Black Crown 1+1</div>
         <div class="item-price-label">Preț achiziție:</div>
         <div class="item-price">50 lei</div>
-        <div style="margin-top:5px">
-          <span class="avail-dot" id="dot-mingi-set"></span>
-          <span class="avail-text" id="avail-mingi-set">Se verifică...</span>
-        </div>
+        <div style="margin-top:5px"><span class="avail-dot" id="dot-mingi-set"></span><span class="avail-text" id="avail-mingi-set">Se verifică...</span></div>
       </div>
       <div class="item-action">
-        <button class="btn-solid btn-green" onclick="openDrawer('mingi-set')">
-          <i class="ti ti-shopping-cart"></i> cumpără
-        </button>
+        <button class="btn-solid btn-green" onclick="openDrawer('mingi-set')"><i class="ti ti-shopping-cart"></i> cumpără</button>
       </div>
     </div>
-
   </div>
 
   <!-- RETURN VIEW -->
   <div class="view" id="return-view">
-
-    <div class="return-code-box" id="return-input-box">
-      <h3>Returnează echipamentul</h3>
-      <p>Introdu codul din 4 cifre primit când ai ridicat paleta. Dulapul se va deschide automat.</p>
-      <input class="code-input" id="return-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="····" oninput="this.value=this.value.replace(/\D/g,'')">
-      <br>
-      <button class="btn-return-submit" onclick="submitReturnCode()">
-        <i class="ti ti-lock-open" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>Deschide dulapul
-      </button>
+    <div id="active-rentals-container">
+      <div class="empty-state" id="no-rentals-msg">
+        <i class="ti ti-mood-empty"></i>
+        Nu ai niciun echipament activ.<br>Mergi la <b>Închiriere</b> pentru a lua o paletă.
+      </div>
     </div>
-
-    <div id="active-rentals"></div>
-
   </div>
-
 </div>
 
 <!-- DRAWER -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawerOutside(event)">
-  <div class="drawer" id="drawer-panel">
+  <div class="drawer">
     <div class="drawer-handle"></div>
     <div class="drawer-img-wrap" id="drawer-img-wrap"></div>
     <div class="drawer-title" id="drawer-title"></div>
@@ -260,293 +187,296 @@
 <div class="toast" id="toast"></div>
 
 <script>
+const WORKER_URL = 'https://netopia-pay.edivacariu.workers.dev';
+
+// ---- DEVICE ID (cookie persistent 365 zile) ----
+function getCookie(name) {
+  const m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+  return m ? m.pop() : null;
+}
+function setCookie(name, value, days) {
+  const d = new Date();
+  d.setTime(d.getTime() + days * 86400000);
+  document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+}
+function getDeviceId() {
+  let id = getCookie('ep_device');
+  if (!id) {
+    id = 'dev-' + crypto.randomUUID();
+    setCookie('ep_device', id, 365);
+  }
+  return id;
+}
+const DEVICE_ID = getDeviceId();
+
+// ---- ITEM CONFIG ----
 const items = {
   'bc-viva': {
-    img: 'paleta-black-crown-viva.png',
-    emoji: '🏓',
+    img: 'paleta-black-crown-viva.png', emoji: '🏓',
     name: 'Black Crown VIVA',
-    sub: 'Paletă standard pentru adulți — nivel intermediar. Se împrumută gratuit pentru durata rezervării și se returnează după joc.',
-    totalLockers: 8,
-    details: [
-      ['Tip', 'Paletă padel adulți'],
-      ['Nivel', 'Intermediar'],
-      ['Greutate', '~360g'],
-      ['Dulapuri totale', '8'],
-      ['Cost', 'Gratuit'],
-    ],
+    sub: 'Paletă standard pentru adulți — nivel intermediar. Se împrumută gratuit și se returnează după joc.',
+    rentType: 'free', lockerIds: [1, 2],
+    details: [['Tip','Paletă padel adulți'],['Nivel','Intermediar'],['Greutate','~360g'],['Cost','Gratuit']],
     actionType: 'rent-free'
   },
   'vibora-titan': {
-    img: 'paleta-vibor-a-titan-junior.png',
-    emoji: '🏓',
+    img: 'paleta-vibor-a-titan-junior.png', emoji: '🏓',
     name: 'Vibor-A Titan Junior',
     sub: 'Paletă cu mâner compact, potrivită pentru copii și femei. Împrumut gratuit cu returnare după joc.',
-    totalLockers: 4,
-    details: [
-      ['Tip', 'Paletă padel junior'],
-      ['Nivel', 'Începător / Intermediar'],
-      ['Greutate', '~310g'],
-      ['Dulapuri totale', '4'],
-      ['Cost', 'Gratuit'],
-    ],
+    rentType: 'free', lockerIds: [3, 4],
+    details: [['Tip','Paletă padel junior'],['Nivel','Începător / Intermediar'],['Greutate','~310g'],['Cost','Gratuit']],
     actionType: 'rent-free'
   },
   'adidas-match': {
-    img: 'paleta-adidas-match-black.png',
-    emoji: '🎾',
+    img: 'paleta-adidas-match-black.png', emoji: '🎾',
     name: 'adidas MATCH BLACK',
     sub: 'Paletă premium pentru jucători avansați. Preț fix pe rezervare, indiferent de durata jocului.',
-    totalLockers: 8,
-    price: '15 lei',
-    details: [
-      ['Tip', 'Paletă padel premium'],
-      ['Nivel', 'Avansat'],
-      ['Greutate', '~370g'],
-      ['Dulapuri totale', '8'],
-      ['Cost închiriere', '15 lei / rezervare'],
-    ],
+    rentType: 'premium', lockerIds: [5, 6], price: '15 lei',
+    details: [['Tip','Paletă padel premium'],['Nivel','Avansat'],['Greutate','~370g'],['Cost închiriere','15 lei / rezervare']],
     actionType: 'pay'
   },
   'mingi-set': {
-    img: null,
-    emoji: '🎱',
-    name: 'Set mingi black brown 1+1',
-    sub: '2 tuburi × 3 mingi Black Crown Pro pressurizate. Produs de cumpărat — dulapul rămâne gol după ridicare.',
-    totalLockers: 4,
-    price: '50 lei',
-    details: [
-      ['Conținut', '2 tuburi × 3 mingi'],
-      ['Brand', 'Black Crown Pro'],
-      ['Tip', 'Mingi pressurizate'],
-      ['Dulapuri totale', '4'],
-      ['Cost achiziție', '50 lei'],
-    ],
+    img: null, emoji: '🎱',
+    name: 'Set mingi Black Crown 1+1',
+    sub: '2 tuburi × 3 mingi Black Crown Pro pressurizate. Produs de cumpărat — dulapul rămâne gol.',
+    rentType: 'balls', lockerIds: [21], price: '50 lei',
+    details: [['Conținut','2 tuburi × 3 mingi'],['Brand','Black Crown Pro'],['Tip','Mingi pressurizate'],['Cost achiziție','50 lei']],
     actionType: 'buy'
   }
 };
 
-// Simulate availability (in production: fetch from Cloudflare D1)
-const availability = {
-  'bc-viva': 6,
-  'vibora-titan': 3,
-  'adidas-match': 2,
-  'mingi-set': 1
-};
+// Mapare content DB -> item key
+function contentToItemKey(content) {
+  if (content.includes('Black Crown VIVA')) return 'bc-viva';
+  if (content.includes('Vibor-A')) return 'vibora-titan';
+  if (content.includes('adidas')) return 'adidas-match';
+  if (content.includes('mingi')) return 'mingi-set';
+  return null;
+}
+
+// ---- STATUS ----
+let lockerStatus = {};
+
+async function fetchStatus() {
+  try {
+    const res = await fetch(WORKER_URL + '/status');
+    lockerStatus = {};
+    (await res.json()).forEach(l => { lockerStatus[l.id] = l; });
+    updateAvailability();
+  } catch(e) {}
+}
+
+function countFree(ids) {
+  return ids.filter(id => lockerStatus[id] && lockerStatus[id].status === 'free').length;
+}
 
 function updateAvailability() {
-  Object.keys(availability).forEach(id => {
-    const count = availability[id];
+  Object.keys(items).forEach(id => {
+    const count = countFree(items[id].lockerIds);
     const dot = document.getElementById('dot-' + id);
     const text = document.getElementById('avail-' + id);
     const card = document.getElementById('card-' + id);
-    if (!dot || !text) return;
+    if (!dot) return;
     if (count === 0) {
-      dot.className = 'avail-dot none';
-      text.textContent = 'Indisponibil momentan';
-      if (card) card.classList.add('unavailable');
-    } else if (count <= 1) {
-      dot.className = 'avail-dot low';
-      text.textContent = count + ' dulap disponibil';
-      if (card) card.classList.remove('unavailable');
+      dot.className = 'avail-dot none'; text.textContent = 'Indisponibil momentan';
+      card && card.classList.add('unavailable');
+    } else if (count === 1) {
+      dot.className = 'avail-dot low'; text.textContent = '1 dulap disponibil';
+      card && card.classList.remove('unavailable');
     } else {
-      dot.className = 'avail-dot';
-      text.textContent = count + ' dulapuri disponibile';
-      if (card) card.classList.remove('unavailable');
+      dot.className = 'avail-dot'; text.textContent = count + ' dulapuri disponibile';
+      card && card.classList.remove('unavailable');
     }
   });
 }
 
-// Poll every 5 seconds (replace with real API call)
-updateAvailability();
-setInterval(updateAvailability, 5000);
+// ---- MY SESSIONS (la fiecare încărcare pagină) ----
+async function loadMySessions() {
+  try {
+    const res = await fetch(WORKER_URL + '/my-sessions?device_id=' + encodeURIComponent(DEVICE_ID));
+    const sessions = await res.json();
+    const container = document.getElementById('active-rentals-container');
+    // Șterge cardurile existente (dar păstrează mesajul empty)
+    container.querySelectorAll('.rented-card').forEach(c => c.remove());
 
-let currentItem = null;
-let drawerState = 'info'; // 'info' | 'open'
-
-function switchTab(tab) {
-  document.getElementById('tab-rent').classList.toggle('active', tab === 'rent');
-  document.getElementById('tab-return').classList.toggle('active', tab === 'return');
-  document.getElementById('rent-view').classList.toggle('active', tab === 'rent');
-  document.getElementById('return-view').classList.toggle('active', tab === 'return');
+    if (sessions.length === 0) {
+      document.getElementById('no-rentals-msg').style.display = '';
+    } else {
+      document.getElementById('no-rentals-msg').style.display = 'none';
+      sessions.forEach(s => {
+        const itemKey = contentToItemKey(s.content);
+        const item = items[itemKey] || {};
+        addRentalCard(s.session_id, s.locker_id, s.content, item.emoji || '🏓', item.img || null);
+      });
+    }
+  } catch(e) {}
 }
 
-function openDrawer(id) {
-  currentItem = id;
-  drawerState = 'info';
-  const item = items[id];
+function addRentalCard(sessionId, lockerId, content, emoji, img) {
+  const container = document.getElementById('active-rentals-container');
+  if (container.querySelector('[data-session="' + sessionId + '"]')) return;
+  document.getElementById('no-rentals-msg').style.display = 'none';
 
-  // Image
-  const imgWrap = document.getElementById('drawer-img-wrap');
-  if (item.img) {
-    imgWrap.innerHTML = `<img src="${item.img}" alt="${item.name}" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\\'emoji\\'>${item.emoji}</span>')">`;
-  } else {
-    imgWrap.innerHTML = `<span class="emoji">${item.emoji}</span>`;
-  }
-
-  document.getElementById('drawer-title').textContent = item.name;
-  document.getElementById('drawer-sub').textContent = item.sub;
-
-  const details = item.details.map(([label, val]) =>
-    `<div class="detail-row"><span class="detail-label">${label}</span><span class="detail-value">${val}</span></div>`
-  ).join('');
-  document.getElementById('drawer-details').innerHTML = details;
-
-  let actions = `<button class="da-cancel" onclick="closeDrawer()"><i class="ti ti-x"></i> Închide</button>`;
-  if (item.actionType === 'rent-free') {
-    actions += `<button class="da-confirm" onclick="confirmAction()"><i class="ti ti-lock-open"></i> Împrumută gratuit</button>`;
-  } else if (item.actionType === 'pay') {
-    actions += `<button class="da-pay" onclick="confirmAction()"><i class="ti ti-credit-card"></i> Plătește ${item.price}</button>`;
-  } else if (item.actionType === 'buy') {
-    actions += `<button class="da-buy" onclick="confirmAction()"><i class="ti ti-shopping-cart"></i> Cumpără — ${item.price}</button>`;
-  }
-  document.getElementById('drawer-actions').innerHTML = actions;
-  document.getElementById('drawer-overlay').classList.add('open');
-}
-
-function confirmAction() {
-  const item = items[currentItem];
-  drawerState = 'open';
-
-  // Generate locker number and 4-digit code
-  const lockerNum = Math.floor(Math.random() * item.totalLockers) + 1;
-  const code = String(Math.floor(1000 + Math.random() * 9000));
-
-  // Show open state in drawer
-  document.getElementById('drawer-details').innerHTML = `
-    <div class="locker-open">
-      <div style="font-size:13px;color:#888;margin-bottom:8px">Dulapul s-a deschis</div>
-      <div class="locker-number">#${lockerNum}</div>
-      <div class="locker-code-label">Codul tău de returnare</div>
-      <div class="locker-code">${code}</div>
-      <div class="locker-hint">Ridică echipamentul și închide ușa.<br>Reține codul — îl vei folosi la returnare.</div>
-    </div>
-  `;
-
-  document.getElementById('drawer-actions').innerHTML = `
-    <button class="da-confirm" style="background:#1a9e5c" onclick="closeDrawerAfterOpen('${code}','${item.name}','${currentItem}','${item.emoji}',${lockerNum})">
-      <i class="ti ti-check"></i> Am ridicat echipamentul
-    </button>
-  `;
-
-  // Fast polling for open confirmation (simulate)
-  if (availability[currentItem] > 0) availability[currentItem]--;
-  updateAvailability();
-}
-
-function closeDrawerAfterOpen(code, name, id, emoji, lockerNum) {
-  document.getElementById('drawer-overlay').classList.remove('open');
-  showToast('✓ Dulap #' + lockerNum + ' deschis — cod ' + code);
-  addActiveRental(code, name, id, emoji, lockerNum);
-}
-
-function addActiveRental(code, name, id, emoji, lockerNum) {
-  const container = document.getElementById('active-rentals');
-  const existing = container.querySelector('[data-code="' + code + '"]');
-  if (existing) return;
+  const imgHtml = img
+    ? `<img src="${img}" alt="${content}" style="width:100%;height:100%;object-fit:contain;padding:6px" onerror="this.style.display='none'">`
+    : `<span style="font-size:26px">${emoji}</span>`;
 
   const card = document.createElement('div');
   card.className = 'rented-card';
-  card.setAttribute('data-code', code);
-  card.setAttribute('data-id', id);
-
-  const item = items[id];
-  let imgHtml = item.img
-    ? `<img src="${item.img}" alt="${name}" style="width:100%;height:100%;object-fit:contain;padding:6px" onerror="this.style.display='none'">`
-    : `<span style="font-size:26px">${emoji}</span>`;
-
+  card.setAttribute('data-session', sessionId);
   card.innerHTML = `
     <div class="item-img">${imgHtml}</div>
     <div style="flex:1;min-width:0">
-      <span class="rented-badge">Activ — Dulap #${lockerNum}</span>
-      <div class="item-name" style="margin-top:2px">${name}</div>
-      <div class="rented-code">${code}</div>
-      <div class="rented-hint">Cod de returnare</div>
+      <span class="rented-badge">Activ — Dulap #${lockerId}</span>
+      <div class="item-name" style="margin-top:2px">${content}</div>
     </div>
-    <button class="btn-solid btn-red" onclick="returnItem('${code}','${id}',this)">
+    <button class="btn-solid btn-red" onclick="returnItem('${sessionId}', this)">
       <i class="ti ti-arrow-back-up"></i> Returnează
     </button>
   `;
   container.appendChild(card);
 }
 
-function returnItem(code, id, btn) {
+async function returnItem(sessionId, btn) {
   btn.disabled = true;
-  btn.innerHTML = '<i class="ti ti-check"></i> Returnat';
-  btn.style.background = '#888';
-  showToast('✓ Echipament returnat — mulțumim!');
-  if (availability[id] !== undefined) availability[id]++;
-  updateAvailability();
-  setTimeout(() => {
-    const card = document.querySelector('[data-code="' + code + '"]');
-    if (card) card.remove();
-  }, 1500);
+  btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    const res = await fetch(WORKER_URL + '/return', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✓ Dulap #' + data.lockerId + ' deschis — mulțumim!');
+      setTimeout(() => {
+        document.querySelector('[data-session="' + sessionId + '"]')?.remove();
+        if (!document.querySelector('.rented-card')) {
+          document.getElementById('no-rentals-msg').style.display = '';
+        }
+      }, 1500);
+      fetchStatus();
+    } else {
+      showToast('⚠️ ' + (data.error || 'Eroare'));
+      btn.disabled = false;
+      btn.innerHTML = '<i class="ti ti-arrow-back-up"></i> Returnează';
+    }
+  } catch(e) {
+    showToast('⚠️ Eroare de conexiune');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-arrow-back-up"></i> Returnează';
+  }
 }
 
-function submitReturnCode() {
-  const input = document.getElementById('return-code-input');
-  const code = input.value.trim();
-  if (code.length !== 4) {
-    input.classList.add('error');
-    setTimeout(() => input.classList.remove('error'), 400);
-    return;
-  }
+// ---- DRAWER ----
+let currentItem = null;
 
-  // Check against active rentals
-  const match = document.querySelector('[data-code="' + code + '"]');
-  if (match) {
-    const id = match.getAttribute('data-id');
-    const name = match.querySelector('.item-name').textContent;
-    showToast('✓ Cod corect — dulap deschis!');
-    if (availability[id] !== undefined) availability[id]++;
-    updateAvailability();
-    match.remove();
-    input.value = '';
+function switchTab(tab) {
+  document.getElementById('tab-rent').classList.toggle('active', tab === 'rent');
+  document.getElementById('tab-return').classList.toggle('active', tab === 'return');
+  document.getElementById('rent-view').classList.toggle('active', tab === 'rent');
+  document.getElementById('return-view').classList.toggle('active', tab === 'return');
+  if (tab === 'return') loadMySessions();
+}
 
-    // Show success briefly
-    const box = document.getElementById('return-input-box');
-    const orig = box.innerHTML;
-    box.innerHTML = `
-      <div class="success-icon">✅</div>
-      <h3>Dulap deschis!</h3>
-      <p>Pune echipamentul la loc și închide ușa.<br>Mulțumim că ai jucat la EnjoyPadel!</p>
-    `;
-    setTimeout(() => { box.innerHTML = orig; bindReturnInput(); }, 3000);
+function openDrawer(id) {
+  currentItem = id;
+  const item = items[id];
+  const imgWrap = document.getElementById('drawer-img-wrap');
+  imgWrap.innerHTML = item.img
+    ? `<img src="${item.img}" alt="${item.name}" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\\'emoji\\'>${item.emoji}</span>')">`
+    : `<span class="emoji">${item.emoji}</span>`;
+  document.getElementById('drawer-title').textContent = item.name;
+  document.getElementById('drawer-sub').textContent = item.sub;
+  document.getElementById('drawer-details').innerHTML = item.details.map(([l,v]) =>
+    `<div class="detail-row"><span class="detail-label">${l}</span><span class="detail-value">${v}</span></div>`
+  ).join('');
+  let actions = `<button class="da-cancel" onclick="closeDrawer()"><i class="ti ti-x"></i> Închide</button>`;
+  if (item.actionType === 'rent-free') {
+    actions += `<button class="da-confirm" onclick="confirmRent()"><i class="ti ti-lock-open"></i> Împrumută gratuit</button>`;
+  } else if (item.actionType === 'pay') {
+    actions += `<button class="da-pay" onclick="confirmRent()"><i class="ti ti-credit-card"></i> Plătește ${item.price}</button>`;
   } else {
-    input.classList.add('error');
-    showToast('Cod incorect — încearcă din nou');
-    setTimeout(() => input.classList.remove('error'), 400);
-    input.value = '';
+    actions += `<button class="da-buy" onclick="confirmRent()"><i class="ti ti-shopping-cart"></i> Cumpără — ${item.price}</button>`;
+  }
+  document.getElementById('drawer-actions').innerHTML = actions;
+  document.getElementById('drawer-overlay').classList.add('open');
+}
+
+async function confirmRent() {
+  const item = items[currentItem];
+  const btn = document.querySelector('.da-confirm, .da-pay, .da-buy');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
+
+  try {
+    const res = await fetch(WORKER_URL + '/rent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: item.rentType, device_id: DEVICE_ID })
+    });
+    const data = await res.json();
+
+    if (data.error) { showToast('⚠️ ' + data.error); closeDrawer(); return; }
+
+    if (data.requiresPayment) {
+      const res2 = await fetch(WORKER_URL + '/pay-and-rent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lockerId: data.lockerId, device_id: DEVICE_ID })
+      });
+      const pay = await res2.json();
+      if (pay.payUrl) { window.location.href = pay.payUrl; }
+      else { showToast('⚠️ Eroare la plată'); closeDrawer(); }
+      return;
+    }
+
+    // Dulap deschis cu succes
+    document.getElementById('drawer-details').innerHTML = `
+      <div class="locker-open">
+        <div style="font-size:13px;color:#888;margin-bottom:8px">✅ Dulapul s-a deschis!</div>
+        <div class="locker-number">#${data.lockerId}</div>
+        <div class="locker-hint">Ridică echipamentul și închide ușa.<br>La tab-ul <b>Returnare</b> vei găsi paleta ta automat.</div>
+      </div>
+    `;
+    document.getElementById('drawer-actions').innerHTML = `
+      <button class="da-confirm" style="background:#1a9e5c" onclick="finishPickup('${data.sessionId}','${data.content}','${item.emoji}',${data.lockerId})">
+        <i class="ti ti-check"></i> Am ridicat echipamentul
+      </button>
+    `;
+    fetchStatus();
+
+  } catch(e) {
+    showToast('⚠️ Eroare de conexiune');
+    closeDrawer();
   }
 }
 
-function bindReturnInput() {
-  const input = document.getElementById('return-code-input');
-  if (input) input.oninput = function() { this.value = this.value.replace(/\D/g,''); };
+function finishPickup(sessionId, content, emoji, lockerId) {
+  closeDrawer();
+  showToast('✓ Dulap #' + lockerId + ' deschis!');
+  // Adaugă direct în tab return
+  const itemKey = contentToItemKey(content);
+  const item = items[itemKey] || {};
+  addRentalCard(sessionId, lockerId, content, emoji, item.img || null);
 }
 
-function closeDrawer() {
-  document.getElementById('drawer-overlay').classList.remove('open');
-}
-
-function closeDrawerOutside(e) {
-  if (e.target === document.getElementById('drawer-overlay')) closeDrawer();
-}
-
+function closeDrawer() { document.getElementById('drawer-overlay').classList.remove('open'); }
+function closeDrawerOutside(e) { if (e.target === document.getElementById('drawer-overlay')) closeDrawer(); }
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// Keyboard: Enter on return code input
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && document.getElementById('return-view').classList.contains('active')) {
-    submitReturnCode();
-  }
-  if (e.key === 'Escape') closeDrawer();
-});
-</script>
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
+// Init
+fetchStatus();
+setInterval(fetchStatus, 10000);
+loadMySessions();
+</script>
 </body>
 </html>
+```
+
+Acesta înlocuiește complet `echipament.html` în repo-ul GitHub. Copiază tot și înlocuiește fișierul.
