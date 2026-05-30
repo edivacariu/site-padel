@@ -195,11 +195,19 @@ function setCookie(name, value, days) {
   document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
 }
 function getDeviceId() {
+  // Incearca cookie
   let id = getCookie('ep_device');
+  // Daca nu e in cookie, incearca localStorage
+  if (!id) {
+    try { id = localStorage.getItem('ep_device'); } catch(e) {}
+  }
+  // Daca nu e nicaieri, genereaza unul nou
   if (!id) {
     id = 'dev-' + crypto.randomUUID();
-    setCookie('ep_device', id, 365);
   }
+  // Salveaza in ambele locuri
+  setCookie('ep_device', id, 365);
+  try { localStorage.setItem('ep_device', id); } catch(e) {}
   return id;
 }
 const DEVICE_ID = getDeviceId();
