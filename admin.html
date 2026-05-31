@@ -28,6 +28,16 @@
   .btn-logout { padding: 7px 14px; background: #fff2; border: none; border-radius: 6px; color: #fff; font-size: 13px; cursor: pointer; font-family: inherit; }
   .btn-logout:hover { background: #fff3; }
 
+  /* TABS */
+  .admin-tabs { display: flex; background: #fff; border-bottom: 1px solid #eee; }
+  .admin-tab { padding: 14px 24px; font-size: 14px; font-weight: 500; color: #888; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .admin-tab.active { color: #0e1117; border-bottom-color: #0e1117; }
+  .admin-tab:hover { color: #0e1117; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* STATS */
   .stats-bar { display: flex; gap: 12px; padding: 16px 20px; background: #fff; border-bottom: 1px solid #eee; flex-wrap: wrap; }
   .stat { text-align: center; padding: 8px 20px; border-radius: 8px; }
   .stat-num { font-size: 24px; font-weight: 700; }
@@ -66,6 +76,22 @@
 
   .refresh-info { font-size: 12px; color: #aaa; text-align: right; padding: 8px 20px 0; }
 
+  /* CONFIG TAB */
+  .config-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; }
+  .config-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; }
+  .config-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .config-num { width: 36px; height: 36px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #555; flex-shrink: 0; }
+  .config-card-title { font-size: 14px; font-weight: 600; }
+  .config-card-status { font-size: 11px; color: #888; }
+  .config-field { margin-bottom: 10px; }
+  .config-field label { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px; }
+  .config-field input, .config-field select { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; font-family: inherit; outline: none; }
+  .config-field input:focus, .config-field select:focus { border-color: #0e1117; }
+  .btn-save { width: 100%; padding: 9px; background: #0e1117; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; margin-top: 4px; }
+  .btn-save:hover { opacity: 0.85; }
+  .btn-save.saved { background: #1a9e5c; }
+  .btn-save:disabled { background: #ccc; cursor: not-allowed; }
+
   .spinner-inline { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(0,0,0,0.1); border-top-color: #555; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -95,36 +121,54 @@
     </div>
   </div>
 
-  <div class="stats-bar">
-    <div class="stat free">
-      <div class="stat-num" id="stat-free">—</div>
-      <div class="stat-label">Libere</div>
-    </div>
-    <div class="stat occupied">
-      <div class="stat-num" id="stat-occupied">—</div>
-      <div class="stat-label">Ocupate</div>
-    </div>
-    <div class="stat total">
-      <div class="stat-num" id="stat-total">—</div>
-      <div class="stat-label">Total</div>
-    </div>
+  <div class="admin-tabs">
+    <div class="admin-tab active" onclick="switchTab('status')">📊 Status dulapuri</div>
+    <div class="admin-tab" onclick="switchTab('config')">⚙️ Configurare dulapuri</div>
   </div>
 
-  <div class="content">
-    <div class="section-title">Palete standard (1–4)</div>
-    <div class="lockers-grid" id="grid-1-4"></div>
+  <!-- TAB STATUS -->
+  <div class="tab-content active" id="tab-status">
+    <div class="stats-bar">
+      <div class="stat free">
+        <div class="stat-num" id="stat-free">—</div>
+        <div class="stat-label">Libere</div>
+      </div>
+      <div class="stat occupied">
+        <div class="stat-num" id="stat-occupied">—</div>
+        <div class="stat-label">Ocupate</div>
+      </div>
+      <div class="stat total">
+        <div class="stat-num" id="stat-total">—</div>
+        <div class="stat-label">Total</div>
+      </div>
+    </div>
 
-    <div class="section-title">Palete premium (5–6)</div>
-    <div class="lockers-grid" id="grid-5-6"></div>
+    <div class="content">
+      <div class="section-title">Palete standard (1–4)</div>
+      <div class="lockers-grid" id="grid-1-4"></div>
 
-    <div class="section-title">Palete standard (7–20)</div>
-    <div class="lockers-grid" id="grid-7-20"></div>
+      <div class="section-title">Palete premium (5–6)</div>
+      <div class="lockers-grid" id="grid-5-6"></div>
 
-    <div class="section-title">Mingi & rezerve (21–24)</div>
-    <div class="lockers-grid" id="grid-21-24"></div>
+      <div class="section-title">Palete standard (7–20)</div>
+      <div class="lockers-grid" id="grid-7-20"></div>
+
+      <div class="section-title">Mingi & rezerve (21–24)</div>
+      <div class="lockers-grid" id="grid-21-24"></div>
+    </div>
+
+    <div class="refresh-info">Auto-refresh la 10s · <span id="next-refresh">10</span>s</div>
   </div>
 
-  <div class="refresh-info">Auto-refresh la 10s · <span id="next-refresh">10</span>s</div>
+  <!-- TAB CONFIG -->
+  <div class="tab-content" id="tab-config">
+    <div class="content">
+      <div class="section-title">Configurare dulapuri — modifică conținut și preț</div>
+      <div class="config-grid" id="config-grid">
+        <div style="color:#aaa;font-size:14px">Se încarcă...</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -154,7 +198,17 @@ function logout() {
   clearInterval(refreshInterval);
 }
 
-// DATA
+// TABS
+function switchTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && tab === 'status') || (i === 1 && tab === 'config'));
+  });
+  document.getElementById('tab-status').classList.toggle('active', tab === 'status');
+  document.getElementById('tab-config').classList.toggle('active', tab === 'config');
+  if (tab === 'config') loadConfig();
+}
+
+// STATUS DATA
 async function loadData() {
   try {
     const [statusRes, sessionsRes] = await Promise.all([
@@ -164,7 +218,6 @@ async function loadData() {
     const lockers = await statusRes.json();
     const sessions = sessionsRes.ok ? await sessionsRes.json() : [];
 
-    // Map sessions by locker_id
     const sessionMap = {};
     sessions.forEach(s => { sessionMap[s.locker_id] = s; });
 
@@ -178,9 +231,7 @@ async function loadData() {
 
     const now = new Date();
     document.getElementById('last-update').textContent = 'Actualizat: ' + now.toLocaleTimeString('ro-RO');
-  } catch(e) {
-    console.error(e);
-  }
+  } catch(e) { console.error(e); }
 }
 
 function timeSince(dateStr) {
@@ -193,12 +244,7 @@ function timeSince(dateStr) {
 }
 
 function renderLockers(lockers, sessionMap) {
-  const grids = {
-    '1-4': [],
-    '5-6': [],
-    '7-20': [],
-    '21-24': []
-  };
+  const grids = { '1-4': [], '5-6': [], '7-20': [], '21-24': [] };
 
   lockers.forEach(l => {
     if (l.id <= 4) grids['1-4'].push(l);
@@ -223,7 +269,6 @@ function renderLockers(lockers, sessionMap) {
 
       const timeText = session ? 'de ' + timeSince(session.created_at) : '';
       const priceTag = l.price > 0 ? `<span class="badge price">${l.price} lei</span>` : '';
-
       const freeBtn = !isFree ? `<button class="btn-free" onclick="forceRelease(${l.id}, this)">Eliberează</button>` : '';
 
       return `
@@ -244,7 +289,6 @@ function renderLockers(lockers, sessionMap) {
 async function forceRelease(lockerId, btn) {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner-inline"></span>';
-
   try {
     const res = await fetch(WORKER_URL + '/admin-release', {
       method: 'POST',
@@ -252,15 +296,74 @@ async function forceRelease(lockerId, btn) {
       body: JSON.stringify({ lockerId, adminPass: PASS })
     });
     const data = await res.json();
+    if (data.success) { loadData(); }
+    else { btn.disabled = false; btn.textContent = 'Eliberează'; }
+  } catch(e) { btn.disabled = false; btn.textContent = 'Eliberează'; }
+}
+
+// CONFIG
+let allLockers = [];
+
+async function loadConfig() {
+  try {
+    const res = await fetch(WORKER_URL + '/status');
+    allLockers = await res.json();
+    renderConfig(allLockers);
+  } catch(e) { console.error(e); }
+}
+
+function renderConfig(lockers) {
+  const grid = document.getElementById('config-grid');
+  grid.innerHTML = lockers.map(l => `
+    <div class="config-card">
+      <div class="config-card-header">
+        <div class="config-num">${l.id}</div>
+        <div>
+          <div class="config-card-title">Dulap #${l.id}</div>
+          <div class="config-card-status">${l.status === 'free' ? '🟢 Liber' : '🔴 Ocupat'}</div>
+        </div>
+      </div>
+      <div class="config-field">
+        <label>Conținut</label>
+        <input type="text" id="content-${l.id}" value="${l.content}" placeholder="Ex: paleta standard">
+      </div>
+      <div class="config-field">
+        <label>Preț (lei) — 0 = gratuit</label>
+        <input type="number" id="price-${l.id}" value="${l.price}" min="0" placeholder="0">
+      </div>
+      <button class="btn-save" id="save-${l.id}" onclick="saveLocker(${l.id})">Salvează</button>
+    </div>
+  `).join('');
+}
+
+async function saveLocker(lockerId) {
+  const content = document.getElementById('content-' + lockerId).value.trim();
+  const price = parseInt(document.getElementById('price-' + lockerId).value) || 0;
+  const btn = document.getElementById('save-' + lockerId);
+
+  if (!content) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-inline"></span>';
+
+  try {
+    const res = await fetch(WORKER_URL + '/admin-update-locker', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lockerId, content, price, adminPass: PASS })
+    });
+    const data = await res.json();
     if (data.success) {
-      loadData();
+      btn.classList.add('saved');
+      btn.textContent = '✓ Salvat!';
+      setTimeout(() => { btn.classList.remove('saved'); btn.textContent = 'Salvează'; btn.disabled = false; }, 2000);
     } else {
       btn.disabled = false;
-      btn.textContent = 'Eliberează';
+      btn.textContent = 'Salvează';
     }
   } catch(e) {
     btn.disabled = false;
-    btn.textContent = 'Eliberează';
+    btn.textContent = 'Salvează';
   }
 }
 
@@ -271,7 +374,8 @@ let countdown = 10;
 function startRefresh() {
   refreshInterval = setInterval(() => {
     countdown--;
-    document.getElementById('next-refresh').textContent = countdown;
+    const el = document.getElementById('next-refresh');
+    if (el) el.textContent = countdown;
     if (countdown <= 0) {
       countdown = 10;
       loadData();
