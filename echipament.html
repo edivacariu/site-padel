@@ -40,9 +40,7 @@
   .btn-solid { padding: 9px 16px; border: none; border-radius: 8px; background: #0e1117; color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: opacity 0.15s; font-family: inherit; white-space: nowrap; }
   .btn-solid:hover { opacity: 0.85; }
   .btn-green { background: #1a9e5c; }
-  .btn-green:hover { background: #158a4f; }
   .btn-red { background: #c0392b; }
-  .btn-red:hover { background: #a93226; }
   .btn-solid i, .btn-outline i { font-size: 16px; }
   .rented-card { display: flex; align-items: center; gap: 16px; padding: 16px; background: #fff; border: 1px solid #eee; border-radius: 12px; }
   .rented-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #e1f5ee; color: #0f6e56; display: inline-block; margin-bottom: 4px; }
@@ -59,14 +57,20 @@
   .detail-row:last-of-type { border-bottom: none; }
   .detail-label { color: #888; }
   .detail-value { font-weight: 500; }
-  .drawer-actions { display: flex; gap: 10px; margin-top: 20px; }
-  .drawer-actions button { flex: 1; padding: 13px; font-size: 15px; border-radius: 8px; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; font-weight: 500; }
+  .drawer-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .drawer-actions button { flex: 1; min-width: 120px; padding: 13px; font-size: 15px; border-radius: 8px; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; font-weight: 500; }
   .da-cancel { background: #f5f5f5; border: 1px solid #ddd !important; color: #111; font-weight: 400 !important; }
-  .da-cancel:hover { background: #ebebeb; }
   .da-confirm { background: #0e1117; color: #fff; }
-  .da-confirm:hover { opacity: 0.85; }
   .da-pay { background: #1a9e5c; color: #fff; }
   .da-buy { background: #1a9e5c; color: #fff; }
+  .balls-options { display: flex; gap: 10px; margin-top: 16px; }
+  .balls-option { flex: 1; border: 2px solid #eee; border-radius: 10px; padding: 14px 10px; text-align: center; cursor: pointer; transition: border-color 0.15s; background: #fff; }
+  .balls-option:hover { border-color: #1a9e5c; }
+  .balls-option.selected { border-color: #1a9e5c; background: #f0faf5; }
+  .balls-option.unavailable { opacity: 0.4; pointer-events: none; }
+  .balls-option-qty { font-size: 22px; font-weight: 800; color: #0e1117; }
+  .balls-option-label { font-size: 12px; color: #888; margin: 2px 0 6px; }
+  .balls-option-price { font-size: 16px; font-weight: 700; color: #1a9e5c; }
   .empty-state { padding: 2.5rem 1rem; text-align: center; color: #888; font-size: 14px; border: 1px dashed #ddd; border-radius: 12px; line-height: 1.6; }
   .empty-state i { font-size: 36px; display: block; margin-bottom: 10px; color: #ccc; }
   .locker-open { text-align: center; padding: 10px 0 4px; }
@@ -76,6 +80,8 @@
   .toast.show { opacity: 1; }
   .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-placeholder { background: #eee; border-radius: 8px; height: 90px; animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
 </style>
 </head>
 <body>
@@ -89,74 +95,13 @@
     </button>
   </div>
 
-  <!-- RENT VIEW -->
   <div class="view active" id="rent-view">
-    <div class="section-label">Palete standard — gratuit</div>
-    <div class="item-card" id="card-bc-viva">
-      <div class="item-img">
-        <img src="paleta-black-crown-viva.png" alt="Black Crown VIVA" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <span class="emoji" style="display:none">🏓</span>
-      </div>
-      <div class="item-info">
-        <div class="item-name">Black Crown VIVA</div>
-        <div class="item-free">Paletă oferită gratuit</div>
-        <div style="margin-top:5px"><span class="avail-dot" id="dot-bc-viva"></span><span class="avail-text" id="avail-bc-viva">Se verifică...</span></div>
-      </div>
-      <div class="item-action">
-        <button class="btn-outline" onclick="openDrawer('bc-viva')"><i class="ti ti-lock-open"></i> deschide</button>
-      </div>
-    </div>
-
-    <div class="section-label" style="margin-top:8px">Palete copii / femei — gratuit</div>
-    <div class="item-card" id="card-vibora-titan">
-      <div class="item-img">
-        <img src="paleta-vibor-a-titan-junior.png" alt="Vibor-A Titan Junior" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <span class="emoji" style="display:none">🏓</span>
-      </div>
-      <div class="item-info">
-        <div class="item-name">Vibor-A Titan Junior</div>
-        <div class="item-tag">Pentru copii / femei</div>
-        <div class="item-free">Paletă oferită gratuit</div>
-        <div style="margin-top:5px"><span class="avail-dot" id="dot-vibora-titan"></span><span class="avail-text" id="avail-vibora-titan">Se verifică...</span></div>
-      </div>
-      <div class="item-action">
-        <button class="btn-outline" onclick="openDrawer('vibora-titan')"><i class="ti ti-lock-open"></i> deschide</button>
-      </div>
-    </div>
-
-    <div class="section-label" style="margin-top:8px">Palete premium — închiriere</div>
-    <div class="item-card" id="card-adidas-match">
-      <div class="item-img">
-        <img src="paleta-adidas-match-black.png" alt="adidas MATCH BLACK" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <span class="emoji" style="display:none">🎾</span>
-      </div>
-      <div class="item-info">
-        <div class="item-name">adidas MATCH BLACK</div>
-        <div class="item-price-label">Preț închiriere:</div>
-        <div class="item-price">15 lei / rezervare</div>
-        <div style="margin-top:5px"><span class="avail-dot" id="dot-adidas-match"></span><span class="avail-text" id="avail-adidas-match">Se verifică...</span></div>
-      </div>
-      <div class="item-action">
-        <button class="btn-solid" onclick="openDrawer('adidas-match')"><i class="ti ti-credit-card"></i> plătește</button>
-      </div>
-    </div>
-
-    <div class="section-label" style="margin-top:8px">Mingi / accesorii — cumpărare</div>
-    <div class="item-card" id="card-mingi-set">
-      <div class="item-img"><span class="emoji">🎱</span></div>
-      <div class="item-info">
-        <div class="item-name">Set mingi Black Crown 1+1</div>
-        <div class="item-price-label">Preț achiziție:</div>
-        <div class="item-price">50 lei</div>
-        <div style="margin-top:5px"><span class="avail-dot" id="dot-mingi-set"></span><span class="avail-text" id="avail-mingi-set">Se verifică...</span></div>
-      </div>
-      <div class="item-action">
-        <button class="btn-solid btn-green" onclick="openDrawer('mingi-set')"><i class="ti ti-shopping-cart"></i> cumpără</button>
-      </div>
+    <div id="rent-content">
+      <div class="loading-placeholder"></div>
+      <div class="loading-placeholder" style="margin-top:10px"></div>
     </div>
   </div>
 
-  <!-- RETURN VIEW -->
   <div class="view" id="return-view">
     <div id="active-rentals-container">
       <div class="empty-state" id="no-rentals-msg">
@@ -167,7 +112,6 @@
   </div>
 </div>
 
-<!-- DRAWER -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawerOutside(event)">
   <div class="drawer">
     <div class="drawer-handle"></div>
@@ -184,7 +128,7 @@
 <script>
 const WORKER_URL = 'https://netopia-pay.edivacariu.workers.dev';
 
-// ---- DEVICE ID (cookie persistent 365 zile) ----
+// ---- DEVICE ID ----
 function getCookie(name) {
   const m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
   return m ? m.pop() : null;
@@ -195,111 +139,286 @@ function setCookie(name, value, days) {
   document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
 }
 function getDeviceId() {
-  // Incearca cookie
   let id = getCookie('ep_device');
-  // Daca nu e in cookie, incearca localStorage
-  if (!id) {
-    try { id = localStorage.getItem('ep_device'); } catch(e) {}
-  }
-  // Daca nu e nicaieri, genereaza unul nou
-  if (!id) {
-    id = 'dev-' + crypto.randomUUID();
-  }
-  // Salveaza in ambele locuri
+  if (!id) { try { id = localStorage.getItem('ep_device'); } catch(e) {} }
+  if (!id) { id = 'dev-' + crypto.randomUUID(); }
   setCookie('ep_device', id, 365);
   try { localStorage.setItem('ep_device', id); } catch(e) {}
   return id;
 }
 const DEVICE_ID = getDeviceId();
 
-// ---- ITEM CONFIG ----
-const items = {
-  'bc-viva': {
-    img: 'paleta-black-crown-viva.png', emoji: '🏓',
-    name: 'Black Crown VIVA',
-    sub: 'Paletă standard pentru adulți — nivel intermediar. Se împrumută gratuit și se returnează după joc.',
-    rentType: 'free', lockerIds: [1, 2],
-    details: [['Tip','Paletă padel adulți'],['Nivel','Intermediar'],['Greutate','~360g'],['Cost','Gratuit']],
-    actionType: 'rent-free'
-  },
-  'vibora-titan': {
-    img: 'paleta-vibor-a-titan-junior.png', emoji: '🏓',
-    name: 'Vibor-A Titan Junior',
-    sub: 'Paletă cu mâner compact, potrivită pentru copii și femei. Împrumut gratuit cu returnare după joc.',
-    rentType: 'free', lockerIds: [3, 4],
-    details: [['Tip','Paletă padel junior'],['Nivel','Începător / Intermediar'],['Greutate','~310g'],['Cost','Gratuit']],
-    actionType: 'rent-free'
-  },
-  'adidas-match': {
-    img: 'paleta-adidas-match-black.png', emoji: '🎾',
-    name: 'adidas MATCH BLACK',
-    sub: 'Paletă premium pentru jucători avansați. Preț fix pe rezervare, indiferent de durata jocului.',
-    rentType: 'premium', lockerIds: [5, 6], price: '15 lei',
-    details: [['Tip','Paletă padel premium'],['Nivel','Avansat'],['Greutate','~370g'],['Cost închiriere','15 lei / rezervare']],
-    actionType: 'pay'
-  },
-  'mingi-set': {
-    img: null, emoji: '🎱',
-    name: 'Set mingi Black Crown 1+1',
-    sub: '2 tuburi × 3 mingi Black Crown Pro pressurizate. Produs de cumpărat — dulapul rămâne gol.',
-    rentType: 'balls', lockerIds: [21], price: '50 lei',
-    details: [['Conținut','2 tuburi × 3 mingi'],['Brand','Black Crown Pro'],['Tip','Mingi pressurizate'],['Cost achiziție','50 lei']],
-    actionType: 'buy'
-  }
+// ---- POZE per nume ----
+const ITEM_IMAGES = {
+  'Black Crown VIVA adult barbati': { img: 'paleta-black-crown-viva.png', emoji: '🏓', tag: 'Adulți — nivel intermediar' },
+  'Vibor-A Titan Junior copii femei': { img: 'paleta-vibor-a-titan-junior.png', emoji: '🏓', tag: 'Copii / femei' },
+  'adidas MATCH BLACK premium': { img: 'paleta-adidas-match-black.png', emoji: '🎾', tag: 'Paletă premium — nivel avansat' },
 };
+const BALLS_IMAGE = { img: null, emoji: '🎱' };
 
-// Mapare content DB -> item key
-function contentToItemKey(content) {
-  if (content.includes('Black Crown VIVA')) return 'bc-viva';
-  if (content.includes('Vibor-A')) return 'vibora-titan';
-  if (content.includes('adidas')) return 'adidas-match';
-  if (content.includes('mingi')) return 'mingi-set';
-  return null;
+function getItemMeta(content) {
+  return ITEM_IMAGES[content] || { img: null, emoji: '🏓', tag: '' };
 }
 
 // ---- STATUS ----
-let lockerStatus = {};
+let allLockers = [];
 
 async function fetchStatus() {
   try {
     const res = await fetch(WORKER_URL + '/status');
-    lockerStatus = {};
-    (await res.json()).forEach(l => { lockerStatus[l.id] = l; });
-    updateAvailability();
+    allLockers = await res.json();
+    renderRentView();
   } catch(e) {}
 }
 
-function countFree(ids) {
-  return ids.filter(id => lockerStatus[id] && lockerStatus[id].status === 'free').length;
-}
-
-function updateAvailability() {
-  Object.keys(items).forEach(id => {
-    const count = countFree(items[id].lockerIds);
-    const dot = document.getElementById('dot-' + id);
-    const text = document.getElementById('avail-' + id);
-    const card = document.getElementById('card-' + id);
-    if (!dot) return;
-    if (count === 0) {
-      dot.className = 'avail-dot none'; text.textContent = 'Indisponibil momentan';
-      card && card.classList.add('unavailable');
-    } else if (count === 1) {
-      dot.className = 'avail-dot low'; text.textContent = '1 dulap disponibil';
-      card && card.classList.remove('unavailable');
-    } else {
-      dot.className = 'avail-dot'; text.textContent = count + ' dulapuri disponibile';
-      card && card.classList.remove('unavailable');
-    }
+function groupLockers(lockers) {
+  const groups = {};
+  lockers.forEach(l => {
+    if (l.disabled) return;
+    const key = l.content;
+    if (!groups[key]) groups[key] = { content: key, lockers: [], totalStock: 0 };
+    groups[key].lockers.push(l);
+    if (l.stock) groups[key].totalStock += l.stock;
   });
+  return Object.values(groups);
 }
 
-// ---- MY SESSIONS (la fiecare încărcare pagină) ----
+function renderRentView() {
+  const groups = groupLockers(allLockers);
+  const ballsGroup = groups.find(g => g.content.toLowerCase().includes('mingi'));
+  const paletaGroups = groups.filter(g => !g.content.toLowerCase().includes('mingi'));
+
+  let html = '';
+
+  if (paletaGroups.length > 0) {
+    paletaGroups.forEach(group => {
+      const freeCount = group.lockers.filter(l => l.status === 'free').length;
+      const isPremium = group.lockers.some(l => l.price > 0);
+      const price = isPremium ? group.lockers.find(l => l.price > 0).price : 0;
+      const meta = getItemMeta(group.content);
+
+      const dotClass = freeCount === 0 ? 'none' : freeCount === 1 ? 'low' : '';
+      const availText = freeCount === 0 ? 'Indisponibil momentan' : freeCount === 1 ? '1 dulap disponibil' : freeCount + ' dulapuri disponibile';
+      const unavailClass = freeCount === 0 ? ' unavailable' : '';
+
+      const imgHtml = meta.img
+        ? `<img src="${meta.img}" alt="${group.content}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="emoji" style="display:none">${meta.emoji}</span>`
+        : `<span class="emoji">${meta.emoji}</span>`;
+
+      const actionBtn = isPremium
+        ? `<button class="btn-solid" onclick="openDrawer('${encodeURIComponent(group.content)}')"><i class="ti ti-credit-card"></i> plătește</button>`
+        : `<button class="btn-outline" onclick="openDrawer('${encodeURIComponent(group.content)}')"><i class="ti ti-lock-open"></i> deschide</button>`;
+
+      html += `
+        <div class="item-card${unavailClass}">
+          <div class="item-img">${imgHtml}</div>
+          <div class="item-info">
+            <div class="item-name">${group.content}</div>
+            ${meta.tag ? `<div class="item-tag">${meta.tag}</div>` : ''}
+            ${isPremium ? `<div class="item-price-label">Preț închiriere:</div><div class="item-price">${price} lei / rezervare</div>` : `<div class="item-free">Paletă oferită gratuit</div>`}
+            <div style="margin-top:5px"><span class="avail-dot ${dotClass}"></span><span class="avail-text">${availText}</span></div>
+          </div>
+          <div class="item-action">${actionBtn}</div>
+        </div>
+      `;
+    });
+  }
+
+  if (ballsGroup) {
+    const stock = ballsGroup.totalStock;
+    const can1 = stock >= 1;
+    const can2 = stock >= 2;
+    const stockText = stock === 0 ? 'Stoc epuizat' : stock === 1 ? '1 set disponibil' : stock + ' seturi disponibile';
+    const dotClass = stock === 0 ? 'none' : stock === 1 ? 'low' : '';
+
+    html += `
+      <div class="section-label" style="margin-top:8px">Mingi / accesorii</div>
+      <div class="item-card${stock === 0 ? ' unavailable' : ''}">
+        <div class="item-img"><span class="emoji">🎱</span></div>
+        <div class="item-info">
+          <div class="item-name">${ballsGroup.content}</div>
+          <div style="margin-top:5px"><span class="avail-dot ${dotClass}"></span><span class="avail-text">${stockText}</span></div>
+        </div>
+        <div class="item-action">
+          <button class="btn-solid btn-green" onclick="openBallsDrawer(${stock})"><i class="ti ti-shopping-cart"></i> cumpără</button>
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById('rent-content').innerHTML = html || '<div class="empty-state"><i class="ti ti-mood-empty"></i>Niciun echipament disponibil momentan.</div>';
+}
+
+// ---- DRAWER PALETE ----
+let currentContent = null;
+
+function openDrawer(encodedContent) {
+  currentContent = decodeURIComponent(encodedContent);
+  const group = groupLockers(allLockers).find(g => g.content === currentContent);
+  if (!group) return;
+
+  const meta = getItemMeta(currentContent);
+  const isPremium = group.lockers.some(l => l.price > 0);
+  const price = isPremium ? group.lockers.find(l => l.price > 0).price : 0;
+  const freeCount = group.lockers.filter(l => l.status === 'free').length;
+
+  const imgWrap = document.getElementById('drawer-img-wrap');
+  imgWrap.innerHTML = meta.img
+    ? `<img src="${meta.img}" alt="${currentContent}" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\\'emoji\\'>${meta.emoji}</span>')">`
+    : `<span class="emoji">${meta.emoji}</span>`;
+
+  document.getElementById('drawer-title').textContent = currentContent;
+  document.getElementById('drawer-sub').textContent = isPremium
+    ? 'Paletă premium pentru jucători avansați. Preț fix pe rezervare, indiferent de durata jocului.'
+    : 'Paletă standard — se împrumută gratuit și se returnează după joc.';
+
+  document.getElementById('drawer-details').innerHTML = `
+    <div class="detail-row"><span class="detail-label">Disponibile</span><span class="detail-value">${freeCount} dulap${freeCount !== 1 ? 'uri' : ''}</span></div>
+    <div class="detail-row"><span class="detail-label">Cost</span><span class="detail-value">${isPremium ? price + ' lei / rezervare' : 'Gratuit'}</span></div>
+  `;
+
+  let actions = `<button class="da-cancel" onclick="closeDrawer()"><i class="ti ti-x"></i> Închide</button>`;
+  if (isPremium) {
+    actions += `<button class="da-pay" onclick="confirmRent()"><i class="ti ti-credit-card"></i> Plătește ${price} lei</button>`;
+  } else {
+    actions += `<button class="da-confirm" onclick="confirmRent()"><i class="ti ti-lock-open"></i> Împrumută gratuit</button>`;
+  }
+  document.getElementById('drawer-actions').innerHTML = actions;
+  document.getElementById('drawer-overlay').classList.add('open');
+}
+
+async function confirmRent() {
+  const group = groupLockers(allLockers).find(g => g.content === currentContent);
+  if (!group) return;
+  const isPremium = group.lockers.some(l => l.price > 0);
+
+  const btn = document.querySelector('.da-confirm, .da-pay');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
+
+  try {
+    const res = await fetch(WORKER_URL + '/rent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: isPremium ? 'premium' : 'free', content: currentContent, device_id: DEVICE_ID })
+    });
+    const data = await res.json();
+
+    if (data.error) { showToast('⚠️ ' + data.error); closeDrawer(); return; }
+
+    if (data.requiresPayment && isPremium) {
+      const res2 = await fetch(WORKER_URL + '/pay-and-rent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lockerId: data.lockerId, device_id: DEVICE_ID })
+      });
+      const pay = await res2.json();
+      if (pay.payUrl) { window.location.href = pay.payUrl; }
+      else { showToast('⚠️ Eroare la plată'); closeDrawer(); }
+      return;
+    }
+
+    showLockerOpened(data.lockerId, data.sessionId, currentContent, getItemMeta(currentContent).emoji);
+    fetchStatus();
+
+  } catch(e) { showToast('⚠️ Eroare de conexiune'); closeDrawer(); }
+}
+
+// ---- DRAWER MINGI ----
+let selectedBallsOption = null;
+
+function openBallsDrawer(stock) {
+  const can1 = stock >= 1;
+  const can2 = stock >= 2;
+
+  document.getElementById('drawer-img-wrap').innerHTML = '<span class="emoji">🎱</span>';
+  document.getElementById('drawer-title').textContent = 'Set mingi Black Crown';
+  document.getElementById('drawer-sub').textContent = 'Mingi Black Crown Pro pressurizate. Alege câte seturi dorești.';
+
+  document.getElementById('drawer-details').innerHTML = `
+    <div class="balls-options">
+      <div class="balls-option${!can1 ? ' unavailable' : ''}" id="opt-1" onclick="selectBalls(1)">
+        <div class="balls-option-qty">1</div>
+        <div class="balls-option-label">set mingi</div>
+        <div class="balls-option-price">30 lei</div>
+      </div>
+      <div class="balls-option${!can2 ? ' unavailable' : ''}" id="opt-2" onclick="selectBalls(2)">
+        <div class="balls-option-qty">2</div>
+        <div class="balls-option-label">seturi mingi</div>
+        <div class="balls-option-price">50 lei</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:#aaa;margin-top:10px;text-align:center">Stoc disponibil: ${stock} set${stock !== 1 ? 'uri' : ''}</div>
+  `;
+
+  selectedBallsOption = can1 ? 1 : null;
+  if (can1) document.getElementById('opt-1') && document.getElementById('opt-1').classList.add('selected');
+
+  document.getElementById('drawer-actions').innerHTML = `
+    <button class="da-cancel" onclick="closeDrawer()"><i class="ti ti-x"></i> Închide</button>
+    <button class="da-buy" id="btn-buy-balls" onclick="confirmBalls()"><i class="ti ti-shopping-cart"></i> Cumpără</button>
+  `;
+  document.getElementById('drawer-overlay').classList.add('open');
+}
+
+function selectBalls(qty) {
+  selectedBallsOption = qty;
+  document.querySelectorAll('.balls-option').forEach(el => el.classList.remove('selected'));
+  document.getElementById('opt-' + qty) && document.getElementById('opt-' + qty).classList.add('selected');
+  const btn = document.getElementById('btn-buy-balls');
+  if (btn) btn.innerHTML = `<i class="ti ti-shopping-cart"></i> Cumpără — ${qty === 1 ? '30' : '50'} lei`;
+}
+
+async function confirmBalls() {
+  if (!selectedBallsOption) { showToast('Alege câte seturi vrei'); return; }
+  const btn = document.getElementById('btn-buy-balls');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
+
+  try {
+    const type = selectedBallsOption === 1 ? 'balls_1' : 'balls_2';
+    const res = await fetch(WORKER_URL + '/rent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, device_id: DEVICE_ID })
+    });
+    const data = await res.json();
+
+    if (data.error) { showToast('⚠️ ' + data.error); closeDrawer(); return; }
+
+    // TODO: redirect Netopia pentru plată
+    // Deocamdata simulam success (sandbox)
+    showLockerOpened(data.lockerId, data.sessionId, 'Mingi Black Crown ×' + selectedBallsOption, '🎱');
+    fetchStatus();
+
+  } catch(e) { showToast('⚠️ Eroare de conexiune'); closeDrawer(); }
+}
+
+function showLockerOpened(lockerId, sessionId, content, emoji) {
+  document.getElementById('drawer-details').innerHTML = `
+    <div class="locker-open">
+      <div style="font-size:13px;color:#888;margin-bottom:8px">✅ Dulapul s-a deschis!</div>
+      <div class="locker-number">#${lockerId}</div>
+      <div class="locker-hint">Ridică echipamentul și închide ușa.<br>La tab-ul <b>Returnare</b> vei găsi articolul tău automat.</div>
+    </div>
+  `;
+  document.getElementById('drawer-actions').innerHTML = `
+    <button class="da-confirm" style="background:#1a9e5c" onclick="finishPickup('${sessionId}','${content}','${emoji}',${lockerId})">
+      <i class="ti ti-check"></i> Am ridicat echipamentul
+    </button>
+  `;
+}
+
+function finishPickup(sessionId, content, emoji, lockerId) {
+  closeDrawer();
+  showToast('✓ Dulap #' + lockerId + ' deschis!');
+  addRentalCard(sessionId, lockerId, content, emoji);
+}
+
+// ---- RETURN ----
 async function loadMySessions() {
   try {
     const res = await fetch(WORKER_URL + '/my-sessions?device_id=' + encodeURIComponent(DEVICE_ID));
     const sessions = await res.json();
     const container = document.getElementById('active-rentals-container');
-    // Șterge cardurile existente (dar păstrează mesajul empty)
     container.querySelectorAll('.rented-card').forEach(c => c.remove());
 
     if (sessions.length === 0) {
@@ -307,9 +426,8 @@ async function loadMySessions() {
     } else {
       document.getElementById('no-rentals-msg').style.display = 'none';
       sessions.forEach(s => {
-        const itemKey = contentToItemKey(s.content);
-        const item = items[itemKey] || {};
-        addRentalCard(s.session_id, s.locker_id, s.content, item.emoji || '🏓', item.img || null);
+        const meta = getItemMeta(s.content);
+        addRentalCard(s.session_id, s.locker_id, s.content, meta.emoji, meta.img);
       });
     }
   } catch(e) {}
@@ -371,96 +489,12 @@ async function returnItem(sessionId, btn) {
   }
 }
 
-// ---- DRAWER ----
-let currentItem = null;
-
 function switchTab(tab) {
   document.getElementById('tab-rent').classList.toggle('active', tab === 'rent');
   document.getElementById('tab-return').classList.toggle('active', tab === 'return');
   document.getElementById('rent-view').classList.toggle('active', tab === 'rent');
   document.getElementById('return-view').classList.toggle('active', tab === 'return');
   if (tab === 'return') loadMySessions();
-}
-
-function openDrawer(id) {
-  currentItem = id;
-  const item = items[id];
-  const imgWrap = document.getElementById('drawer-img-wrap');
-  imgWrap.innerHTML = item.img
-    ? `<img src="${item.img}" alt="${item.name}" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\\'emoji\\'>${item.emoji}</span>')">`
-    : `<span class="emoji">${item.emoji}</span>`;
-  document.getElementById('drawer-title').textContent = item.name;
-  document.getElementById('drawer-sub').textContent = item.sub;
-  document.getElementById('drawer-details').innerHTML = item.details.map(([l,v]) =>
-    `<div class="detail-row"><span class="detail-label">${l}</span><span class="detail-value">${v}</span></div>`
-  ).join('');
-  let actions = `<button class="da-cancel" onclick="closeDrawer()"><i class="ti ti-x"></i> Închide</button>`;
-  if (item.actionType === 'rent-free') {
-    actions += `<button class="da-confirm" onclick="confirmRent()"><i class="ti ti-lock-open"></i> Împrumută gratuit</button>`;
-  } else if (item.actionType === 'pay') {
-    actions += `<button class="da-pay" onclick="confirmRent()"><i class="ti ti-credit-card"></i> Plătește ${item.price}</button>`;
-  } else {
-    actions += `<button class="da-buy" onclick="confirmRent()"><i class="ti ti-shopping-cart"></i> Cumpără — ${item.price}</button>`;
-  }
-  document.getElementById('drawer-actions').innerHTML = actions;
-  document.getElementById('drawer-overlay').classList.add('open');
-}
-
-async function confirmRent() {
-  const item = items[currentItem];
-  const btn = document.querySelector('.da-confirm, .da-pay, .da-buy');
-  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
-
-  try {
-    const res = await fetch(WORKER_URL + '/rent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: item.rentType, device_id: DEVICE_ID })
-    });
-    const data = await res.json();
-
-    if (data.error) { showToast('⚠️ ' + data.error); closeDrawer(); return; }
-
-    if (data.requiresPayment) {
-      const res2 = await fetch(WORKER_URL + '/pay-and-rent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lockerId: data.lockerId, device_id: DEVICE_ID })
-      });
-      const pay = await res2.json();
-      if (pay.payUrl) { window.location.href = pay.payUrl; }
-      else { showToast('⚠️ Eroare la plată'); closeDrawer(); }
-      return;
-    }
-
-    // Dulap deschis cu succes
-    document.getElementById('drawer-details').innerHTML = `
-      <div class="locker-open">
-        <div style="font-size:13px;color:#888;margin-bottom:8px">✅ Dulapul s-a deschis!</div>
-        <div class="locker-number">#${data.lockerId}</div>
-        <div class="locker-hint">Ridică echipamentul și închide ușa.<br>La tab-ul <b>Returnare</b> vei găsi paleta ta automat.</div>
-      </div>
-    `;
-    document.getElementById('drawer-actions').innerHTML = `
-      <button class="da-confirm" style="background:#1a9e5c" onclick="finishPickup('${data.sessionId}','${data.content}','${item.emoji}',${data.lockerId})">
-        <i class="ti ti-check"></i> Am ridicat echipamentul
-      </button>
-    `;
-    fetchStatus();
-
-  } catch(e) {
-    showToast('⚠️ Eroare de conexiune');
-    closeDrawer();
-  }
-}
-
-function finishPickup(sessionId, content, emoji, lockerId) {
-  closeDrawer();
-  showToast('✓ Dulap #' + lockerId + ' deschis!');
-  // Adaugă direct în tab return
-  const itemKey = contentToItemKey(content);
-  const item = items[itemKey] || {};
-  addRentalCard(sessionId, lockerId, content, emoji, item.img || null);
 }
 
 function closeDrawer() { document.getElementById('drawer-overlay').classList.remove('open'); }
@@ -473,7 +507,6 @@ function showToast(msg) {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
-// Init
 fetchStatus();
 setInterval(fetchStatus, 10000);
 loadMySessions();
