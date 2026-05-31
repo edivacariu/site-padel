@@ -148,29 +148,6 @@ function getDeviceId() {
 }
 const DEVICE_ID = getDeviceId();
 
-// ---- TOKEN din URL ----
-function getToken() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('t') || null;
-}
-const PAGE_TOKEN = getToken();
-
-// Daca nu e token in URL, arata mesaj de blocare
-if (!PAGE_TOKEN) {
-  document.addEventListener('DOMContentLoaded', function() {
-    const container = document.querySelector('.container');
-    if (container) {
-      container.innerHTML = `
-        <div style="text-align:center;padding:60px 20px">
-          <div style="font-size:64px;margin-bottom:20px">🏓</div>
-          <h2 style="font-size:22px;font-weight:700;margin-bottom:12px">Acces restricționat</h2>
-          <p style="font-size:15px;color:#888;line-height:1.6">Pentru a închiria echipament,<br>scanează QR-ul de pe ecranul de la locație.</p>
-        </div>
-      `;
-    }
-  });
-}
-
 // ---- POZE per nume ----
 const ITEM_IMAGES = {
   'Black Crown VIVA adult barbati': { img: 'paleta-black-crown-viva.png', emoji: '🏓', tag: 'Adulți — nivel intermediar' },
@@ -322,7 +299,7 @@ async function confirmRent() {
     const res = await fetch(WORKER_URL + '/rent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: isPremium ? 'premium' : 'free', content: currentContent, device_id: DEVICE_ID, token: PAGE_TOKEN })
+      body: JSON.stringify({ type: isPremium ? 'premium' : 'free', content: currentContent, device_id: DEVICE_ID })
     });
     const data = await res.json();
 
@@ -401,7 +378,7 @@ async function confirmBalls() {
     const res = await fetch(WORKER_URL + '/rent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type, device_id: DEVICE_ID, token: PAGE_TOKEN })
+      body: JSON.stringify({ type, device_id: DEVICE_ID })
     });
     const data = await res.json();
 
