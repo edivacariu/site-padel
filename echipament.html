@@ -384,9 +384,19 @@ async function confirmBalls() {
 
     if (data.error) { showToast('⚠️ ' + data.error); closeDrawer(); return; }
 
-    // TODO: redirect Netopia pentru plată
-    // Deocamdata simulam success (sandbox)
-    showLockerOpened(data.lockerId, data.sessionId, 'Mingi Black Crown ×' + selectedBallsOption, '🎱');
+    // Mingi - nu apare la Returnare, doar arata ca s-a deschis
+    document.getElementById('drawer-details').innerHTML = `
+      <div class="locker-open">
+        <div style="font-size:13px;color:#888;margin-bottom:8px">✅ Dulapul s-a deschis!</div>
+        <div class="locker-number">#\${data.lockerId}</div>
+        <div class="locker-hint">Ridică \${selectedBallsOption === 1 ? 'setul de mingi' : 'cele 2 seturi de mingi'} și închide ușa.</div>
+      </div>
+    `;
+    document.getElementById('drawer-actions').innerHTML = `
+      <button class="da-confirm" style="background:#1a9e5c" onclick="closeDrawer()">
+        <i class="ti ti-check"></i> Am ridicat mingile
+      </button>
+    `;
     fetchStatus();
 
   } catch(e) { showToast('⚠️ Eroare de conexiune'); closeDrawer(); }
