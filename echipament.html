@@ -522,6 +522,8 @@ function submitNetopiaForm(payUrl, envKey, data) {
   form.method = 'POST';
   form.action = payUrl;
   form.style.display = 'none';
+  form.acceptCharset = 'UTF-8';
+  form.enctype = 'application/x-www-form-urlencoded';
 
   const envKeyInput = document.createElement('input');
   envKeyInput.type = 'hidden';
@@ -534,6 +536,12 @@ function submitNetopiaForm(payUrl, envKey, data) {
   dataInput.name = 'env[DATA]';
   dataInput.value = data;
   form.appendChild(dataInput);
+
+  const cipherInput = document.createElement('input');
+  cipherInput.type = 'hidden';
+  cipherInput.name = 'cipher';
+  cipherInput.value = 'rc4';
+  form.appendChild(cipherInput);
 
   document.body.appendChild(form);
   form.submit();
