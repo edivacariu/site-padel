@@ -525,13 +525,13 @@ function submitNetopiaForm(payUrl, envKey, data) {
 
   const envKeyInput = document.createElement('input');
   envKeyInput.type = 'hidden';
-  envKeyInput.name = 'env[KEY]';
+  envKeyInput.name = 'env_key';
   envKeyInput.value = envKey;
   form.appendChild(envKeyInput);
 
   const dataInput = document.createElement('input');
   dataInput.type = 'hidden';
-  dataInput.name = 'env[DATA]';
+  dataInput.name = 'data';
   dataInput.value = data;
   form.appendChild(dataInput);
 
