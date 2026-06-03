@@ -309,11 +309,12 @@ async function confirmRent() {
       const res2 = await fetch(WORKER_URL + '/pay-and-rent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lockerId: data.lockerId, device_id: DEVICE_ID })
+        body: JSON.stringify({ lockerId: data.lockerId, device_id: DEVICE_ID, amount: data.price, details: data.content, isBalls: false, quantity: 1 })
       });
       const pay = await res2.json();
-      if (pay.payUrl) { window.location.href = pay.payUrl; }
-      else { showToast('⚠️ Eroare la plată'); closeDrawer(); }
+      if (pay.envKey && pay.data) {
+        submitNetopiaForm(pay.payUrl, pay.envKey, pay.data);
+      } else { showToast('⚠️ Eroare la plată'); closeDrawer(); }
       return;
     }
 
@@ -384,19 +385,18 @@ async function confirmBalls() {
 
     if (data.error) { showToast('⚠️ ' + data.error); closeDrawer(); return; }
 
-    // Mingi - nu apare la Returnare, doar arata ca s-a deschis
-    document.getElementById('drawer-details').innerHTML = `
-      <div class="locker-open">
-        <div style="font-size:13px;color:#888;margin-bottom:8px">✅ Dulapul s-a deschis!</div>
-        <div class="locker-number">#\${data.lockerId}</div>
-        <div class="locker-hint">Ridică \${selectedBallsOption === 1 ? 'setul de mingi' : 'cele 2 seturi de mingi'} și închide ușa.</div>
-      </div>
-    `;
-    document.getElementById('drawer-actions').innerHTML = `
-      <button class="da-confirm" style="background:#1a9e5c" onclick="closeDrawer()">
-        <i class="ti ti-check"></i> Am ridicat mingile
-      </button>
-    `;
+    // Mingi necesita plata
+    if (data.lockerId) {
+      const res2 = await fetch(WORKER_URL + '/pay-and-rent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lockerId: data.lockerId, device_id: DEVICE_ID, amount: data.price, details: 'Mingi Black Crown x' + selectedBallsOption, isBalls: true, quantity: selectedBallsOption })
+      });
+      const pay = await res2.json();
+      if (pay.envKey && pay.data) {
+        submitNetopiaForm(pay.payUrl, pay.envKey, pay.data);
+      } else { showToast('⚠️ Eroare la plată'); closeDrawer(); }
+    }
     fetchStatus();
 
   } catch(e) { showToast('⚠️ Eroare de conexiune'); closeDrawer(); }
@@ -516,6 +516,28 @@ function showToast(msg) {
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+function submitNetopiaForm(payUrl, envKey, data) {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = payUrl;
+  form.style.display = 'none';
+
+  const envKeyInput = document.createElement('input');
+  envKeyInput.type = 'hidden';
+  envKeyInput.name = 'env[KEY]';
+  envKeyInput.value = envKey;
+  form.appendChild(envKeyInput);
+
+  const dataInput = document.createElement('input');
+  dataInput.type = 'hidden';
+  dataInput.name = 'env[DATA]';
+  dataInput.value = data;
+  form.appendChild(dataInput);
+
+  document.body.appendChild(form);
+  form.submit();
+}
 
 fetchStatus();
 setInterval(fetchStatus, 10000);
