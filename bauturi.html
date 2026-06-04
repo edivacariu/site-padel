@@ -507,32 +507,42 @@ async function processPayment() {
       <div style="font-size:15px;color:var(--text-muted)">Se procesează plata...</div>
     </div>`;
   try {
-    const res = await fetch(WORKER + '/drinks-order', {
+    const res = await fetch(WORKER + '/drinks-pay', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items })
+      body: JSON.stringify({ items, total })
     });
     if (!res.ok) { const err = await res.json(); throw new Error(err.error || 'Eroare server'); }
+    const pay = await res.json();
 
-    const code = String(Math.floor(10000 + Math.random() * 90000));
-    document.getElementById('modalContent').innerHTML = `
-      <div class="success-wrap">
-        <div class="success-icon">✅</div>
-        <div class="success-title">Plată confirmată!</div>
-        <div class="success-code">#${code}</div>
-        <div class="success-hint">Cod confirmare</div>
-        <div class="success-desc">Poți ridica băuturile imediat de la frigider.<br>Bucură-te de meci! 🎾</div>
-        <button class="modal-pay-btn" onclick="closeModal()">✓ Închide</button>
-      </div>`;
+    if (pay.envKey && pay.data) {
+      // Redirect to Netopia
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = pay.payUrl;
+      form.style.display = 'none';
 
-    for (const key of Object.keys(cart)) delete cart[key];
-    for (const d of allDrinks) {
-      const el = document.getElementById('qty-' + d.id);
-      if (el) el.innerHTML = addBtnHtml(d.id);
+      const envKeyInput = document.createElement('input');
+      envKeyInput.type = 'hidden';
+      envKeyInput.name = 'env_key';
+      envKeyInput.value = pay.envKey;
+      form.appendChild(envKeyInput);
+
+      const dataInput = document.createElement('input');
+      dataInput.type = 'hidden';
+      dataInput.name = 'data';
+      dataInput.value = pay.data;
+      form.appendChild(dataInput);
+
+      const cipherInput = document.createElement('input');
+      cipherInput.type = 'hidden';
+      cipherInput.name = 'cipher';
+      cipherInput.value = 'rc4';
+      form.appendChild(cipherInput);
+
+      document.body.appendChild(form);
+      form.submit();
     }
-    const aqEl = document.getElementById('qty-aqua-flavours');
-    if (aqEl) aqEl.innerHTML = `<button class="add-btn" onclick="changeAquaQty(1)">+ Adaugă</button>`;
-    updateCartUI();
   } catch (e) {
     document.getElementById('modalContent').innerHTML = `
       <div class="modal-inner" style="text-align:center;padding:20px 0">
