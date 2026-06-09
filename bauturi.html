@@ -352,10 +352,7 @@ function changeVariantQty(key, drinkId, groupKey, event, delta) {
 
 // ── AQUA FLAVOURS ─────────────────────────────────────────────
 function buildAquaFlavoursCard(items) {
-  const imgs = items.slice(0,2).map(d => {
-    const imgSrc = d.image || (d.name.replace('AQUA Carpatica FLAVOURS – ', '') + '.png');
-    return `<div class="group-img"><img src="${encodeURI(imgSrc)}" alt="${d.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="emoji-fb" style="display:none">💧</span></div>`;
-  }).join('');
+  const imgs = `<div class="group-img" style="width:80px;height:80px"><img src="AQUA flavours.png" alt="Aqua Flavours" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="emoji-fb" style="display:none">💧</span></div>`;
 
   const totalInCart = items.reduce((s, d) => s + (cart['af-' + d.id]?.qty || 0), 0);
   const toggleLabel = totalInCart > 0 ? `${totalInCart} în coș ▾` : `Alege varianta ▾`;
