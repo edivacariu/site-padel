@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Băuturi — EnjoyPadel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f2f2ef; --card: #ffffff; --border: #e8e8e4;
+    --text: #111110; --text-muted: #999990;
+    --green: #1a9e5c; --green-dark: #157a47;
+    --accent: #0e1117; --red: #e53935;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+  /* HEADER */
+  .top-bar { background: var(--accent); color: #fff; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+  .top-bar-title { font-size: 16px; font-weight: 700; }
+  .top-bar-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+  .cart-btn { background: var(--green); border: none; border-radius: 10px; color: #fff; padding: 8px 14px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: background 0.15s; }
+  .cart-btn:hover { background: var(--green-dark); }
+  .cart-btn.hidden { opacity: 0; pointer-events: none; }
+  .cart-count { background: #fff; color: var(--green-dark); border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+  /* LAYOUT */
+  .container { max-width: 640px; margin: 0 auto; padding: 16px 14px 120px; }
+  .cat-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; color: var(--text-muted); text-transform: uppercase; padding: 22px 2px 9px; }
+  .cat-label:first-child { padding-top: 4px; }
+
+  /* CARD SIMPLU (individual) */
+  .item-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 12px 14px 12px 12px; display: flex; align-items: center; gap: 14px; margin-bottom: 9px; box-shadow: var(--shadow); transition: border-color 0.15s; }
+  .item-card:hover { border-color: #d4d4d0; }
+  .item-card.out-of-stock { opacity: 0.5; }
+  .item-img { width: 90px; height: 90px; border-radius: 12px; background: #f5f5f2; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+  .item-img img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+  .item-img .emoji-fb { font-size: 40px; }
+  .item-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .item-name { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.35; }
+  .item-size { font-size: 12px; color: var(--text-muted); }
+  .item-price { font-size: 16px; font-weight: 700; color: var(--green); margin-top: 2px; }
+  .item-oos { font-size: 12px; color: var(--red); font-weight: 600; }
+  .item-action { flex-shrink: 0; }
+
+  /* CARD GRUP cu poze + dropdown */
+  .group-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 9px; box-shadow: var(--shadow); }
+  .group-card:hover { border-color: #d4d4d0; }
+
+  /* Poze mici sus */
+  .group-thumbs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+  .group-thumb { width: 52px; height: 52px; border-radius: 8px; background: #f5f5f2; overflow: hidden; flex-shrink: 0; border: 2px solid transparent; cursor: pointer; transition: border-color 0.15s; }
+  .group-thumb.active { border-color: var(--green); }
+  .group-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+  .group-thumb .emoji-fb { font-size: 24px; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+
+  /* Info + controls */
+  .group-bottom { display: flex; align-items: center; gap: 12px; }
+  .group-info { flex: 1; min-width: 0; }
+  .group-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .group-size { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .group-price { font-size: 16px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+  .flavor-select { width: 100%; padding: 7px 28px 7px 10px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; background: #fafaf8; color: var(--text); cursor: pointer; outline: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+  .flavor-select:focus { border-color: var(--green); }
+  .group-action { flex-shrink: 0; }
+
+  /* BUTOANE */
+  .add-btn { padding: 10px 16px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.13s; display: flex; align-items: center; gap: 5px; }
+  .add-btn:hover { background: #2a2f3a; }
+  .qty-controls { display: flex; align-items: center; background: #f0f0ec; border-radius: 10px; padding: 3px; }
+  .qty-btn { width: 36px; height: 36px; border: none; background: transparent; border-radius: 8px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text); transition: background 0.12s; }
+  .qty-btn:hover { background: #e4e4e0; }
+  .qty-btn.plus { background: var(--accent); color: #fff; }
+  .qty-btn.plus:hover { background: #2a2f3a; }
+  .qty-num { width: 30px; text-align: center; font-size: 16px; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--text); }
+
+  /* STICKY */
+  .sticky-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; padding: 12px 16px 22px; background: linear-gradient(to top, var(--bg) 65%, transparent); display: flex; justify-content: center; pointer-events: none; }
+  .sticky-bar.visible { pointer-events: all; }
+  .pay-btn { background: var(--green); color: #fff; border: none; border-radius: 14px; padding: 16px 28px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 20px rgba(26,158,92,0.35); max-width: 480px; width: 100%; justify-content: center; opacity: 0; transform: translateY(20px); transition: opacity 0.25s, transform 0.25s, background 0.15s; }
+  .sticky-bar.visible .pay-btn { opacity: 1; transform: translateY(0); }
+  .pay-btn:hover { background: var(--green-dark); }
+
+  /* LOADING */
+  .loading-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+  .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; justify-content: center; backdrop-filter: blur(2px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 20px 20px 0 0; width: 100%; max-width: 640px; padding: 0 0 32px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.22s ease; }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-handle { width: 36px; height: 4px; background: #ddd; border-radius: 2px; margin: 14px auto 20px; }
+  .modal-inner { padding: 0 20px; }
+  .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .modal-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+  .order-line { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .order-line:last-of-type { border-bottom: none; }
+  .order-qty { color: var(--text-muted); margin: 0 12px; font-family: 'DM Mono', monospace; font-size: 13px; }
+  .order-price { font-weight: 700; }
+  .total-line { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 0; font-size: 17px; font-weight: 700; border-top: 2px solid var(--text); margin-top: 4px; }
+  .total-amount { color: var(--green); font-size: 22px; }
+  .modal-pay-btn { width: 100%; margin-top: 20px; padding: 16px; background: var(--green); color: #fff; border: none; border-radius: 12px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .modal-pay-btn:hover { background: var(--green-dark); }
+  .modal-cancel-btn { width: 100%; margin-top: 10px; padding: 14px; background: #f3f3f0; color: var(--text); border: none; border-radius: 12px; font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer; }
+  .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--accent); color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 14px; opacity: 0; pointer-events: none; transition: all 0.25s; z-index: 300; white-space: nowrap; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 15px; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div>
+    <div class="top-bar-title">🥤 Băuturi & Răcoritoare</div>
+    <div class="top-bar-sub">Alege, plătești, iei din frigider</div>
+  </div>
+  <button class="cart-btn hidden" id="cartBtn" onclick="openCartModal()">
+    Coș <span class="cart-count" id="cartCount">0</span>
+  </button>
+</div>
+
+<div class="container" id="mainContainer">
+  <div class="loading-state"><div class="spinner"></div><div>Se încarcă băuturile...</div></div>
+</div>
+
+<div class="sticky-bar" id="stickyBar">
+  <button class="pay-btn" onclick="openCartModal()">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    <span id="payBtnText">Plătește 0 lei</span>
+  </button>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal"><div class="modal-handle"></div><div id="modalContent"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const WORKER = 'https://netopia-pay.edivacariu.workers.dev';
+const cart = {};
+let allDrinks = [];
+
+// Definitii grupuri: name = label, size = filtru marime, names = produse DB
+const GROUPS = {
+  'pepsi-05': {
+    label: 'PEPSI', size: '0.5ml', price: 10, category: 'Pepsi',
+    variants: [
+      { name: 'PEPSI regular',    img: 'PEPSI regular 0.5ML.png' },
+      { name: 'PEPSI Zero',       img: 'PEPSI Zero 0.5ML.png' },
+      { name: 'PEPSI twist',      img: 'PEPSI twist 0.5ML.png' },
+      { name: 'PEPSI Raspberry',  img: 'PEPSI Raspberry 0.5ML.png' },
+    ]
+  },
+  'pepsi-doza': {
+    label: 'PEPSI Doză', size: 'doză 0.33ml', price: 7, category: 'Pepsi',
+    variants: [
+      { name: 'PEPSI regular',                   img: 'PEPSI regular doză.png' },
+      { name: 'PEPSI Zero',                      img: 'PEPSI Zero doză.png' },
+      { name: 'PEPSI twist',                     img: 'PEPSI twist doză.png' },
+      { name: 'PEPSI Raspberry',                 img: 'PEPSI Raspberry doză.png' },
+      { name: 'PEPSI Zero vanilie și înghețată', img: 'PEPSI Zero vanilie și înghețată doză.png' },
+      { name: 'PEPSI Zero căpșuni și frișcă',    img: 'PEPSI Zero căpșuni și frișcă doză.png' },
+    ]
+  },
+  'racoritoare': {
+    label: 'Răcoritoare', size: '0.5ml', price: 10, category: 'Alte răcoritoare',
+    variants: [
+      { name: 'MIRINDA', img: 'MIRINDA 0.5ML.png' },
+      { name: '7UP',     img: '7UP 0.5ML.png' },
+    ]
+  },
+  'prigat': {
+    label: 'PRIGAT', size: '0.5ml', price: 10, category: 'Sucuri naturale',
+    variants: [
+      { name: 'PRIGAT căpșuni și banane',  img: 'PRIGAT căpșuni și banane 0.5ML.png' },
+      { name: 'PRIGAT lămâie și portocală', img: 'PRIGAT lămâie și portocala 0.5ML.png' },
+    ]
+  },
+  'lipton': {
+    label: 'LIPTON Ice Tea', size: '0.5ml', price: 10, category: 'Ice Tea',
+    variants: [
+      { name: 'LIPTON lămâie',                 img: 'LIPTON lămâie 0.5ML.png' },
+      { name: 'LIPTON ceai verde și căpșuni',  img: 'LIPTON ceai verde și căpșuni 0.5L.png' },
+      { name: 'LIPTON portocală și mango',     img: 'LIPTON portocală și manco 0.5L.png' },
+    ]
+  },
+  'aqua-05': {
+    label: 'AQUA Carpatica', size: '0.5ml', price: 10, category: 'Apă',
+    variants: [
+      { name: 'AQUA – APA PLATA',        img: 'AQUA – APA PLATA 0.5ML.png' },
+      { name: 'AQUA – APA CARBOGAZOASA', img: 'AQUA – APA CARBOGAZOASA 0.5ML.png' },
+    ]
+  },
+};
+
+async function loadDrinks() {
+  try {
+    const res = await fetch(WORKER + '/drinks');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    allDrinks = await res.json();
+    renderPage();
+  } catch (e) {
+    document.getElementById('mainContainer').innerHTML = '<div class="empty-state">⚠️ Nu s-au putut încărca băuturile.<br>Încearcă din nou.</div>';
+  }
+}
+
+function renderPage() {
+  let html = '';
+
+  // PEPSI
+  html += `<div class="cat-label">Pepsi</div>`;
+  html += buildGroupCard('pepsi-05');
+  html += buildGroupCard('pepsi-doza');
+
+  // RĂCORITOARE
+  html += `<div class="cat-label">Alte Răcoritoare</div>`;
+  html += buildGroupCard('racoritoare');
+
+  // Mountain Dew individual
+  const mdew = allDrinks.find(d => d.name === 'MOUNTAIN DEW' && d.active);
+  if (mdew) html += buildSingleCard(mdew);
+
+  // RockStar individual
+  const rockstar = allDrinks.find(d => d.name === 'Energizant RockStar' && d.active);
+  if (rockstar) html += buildSingleCard(rockstar);
+
+  // SUCURI
+  html += `<div class="cat-label">Sucuri Naturale</div>`;
+  html += buildGroupCard('prigat');
+
+  // ICE TEA
+  html += `<div class="cat-label">Ice Tea</div>`;
+  html += buildGroupCard('lipton');
+
+  // APĂ
+  html += `<div class="cat-label">Apă</div>`;
+  html += buildGroupCard('aqua-05');
+
+  // AQUA FLAVOURS
+  const flavours = allDrinks.filter(d => d.category === 'Aqua Flavours' && d.active);
+  if (flavours.length > 0) {
+    html += `<div class="cat-label">Aqua Carpatica cu Arome</div>`;
+    html += buildAquaFlavoursCard(flavours);
+  }
+
+  document.getElementById('mainContainer').innerHTML = html;
+}
+
+// ── GROUP CARD cu thumburi ────────────────────────────────────
+function buildGroupCard(groupKey) {
+  const group = GROUPS[groupKey];
+
+  // Rezolva variantele cu drink-uri din DB
+  const variants = group.variants.map(v => ({
+    ...v,
+    drink: allDrinks.find(d => d.name === v.name && d.size === group.size && d.active)
+  })).filter(v => v.drink);
+
+  if (variants.length === 0) return '';
+
+  const cartEntry = cart[groupKey];
+  const qty = cartEntry ? cartEntry.qty : 0;
+  const selectedIdx = cartEntry ? variants.findIndex(v => v.drink.id == cartEntry.drink.id) : 0;
+  const selIdx = selectedIdx >= 0 ? selectedIdx : 0;
+  const selectedDrink = variants[selIdx].drink;
+
+  // Thumburi
+  const thumbsHtml = variants.map((v, i) => {
+    const imgHtml = `<img src="${encodeURI(v.img)}" alt="${v.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="emoji-fb" style="display:none">🥤</span>`;
+    return `<div class="group-thumb${i === selIdx ? ' active' : ''}" id="thumb-${groupKey}-${i}" onclick="selectGroupVariant('${groupKey}', ${i})">${imgHtml}</div>`;
+  }).join('');
+
+  // Dropdown
+  const options = variants.map((v, i) =>
+    `<option value="${i}" ${i === selIdx ? 'selected' : ''} ${v.drink.stock <= 0 ? 'disabled' : ''}>${v.name}${v.drink.stock <= 0 ? ' (epuizat)' : ''}</option>`
+  ).join('');
+
+  // Qty controls
+  const qtyEl = qty > 0
+    ? `<div class="qty-controls"><button class="qty-btn" onclick="changeGroupQty('${groupKey}',-1)">−</button><span class="qty-num" id="qtynum-${groupKey}">${qty}</span><button class="qty-btn plus" onclick="changeGroupQty('${groupKey}',1)">+</button></div>`
+    : `<button class="add-btn" id="addbtn-${groupKey}" onclick="changeGroupQty('${groupKey}',1)">+ Adaugă</button>`;
+
+  return `
+  <div class="group-card" id="card-${groupKey}">
+    <div class="group-thumbs">${thumbsHtml}</div>
+    <div class="group-bottom">
+      <div class="group-info">
+        <div class="group-name">${group.label}</div>
+        <div class="group-size">${group.size}</div>
+        <div class="group-price" id="price-${groupKey}">${selectedDrink.price} lei</div>
+        <select class="flavor-select" id="select-${groupKey}" onchange="onGroupSelectChange('${groupKey}', parseInt(this.value))">${options}</select>
+      </div>
+      <div class="group-action" id="qty-${groupKey}">${qtyEl}</div>
+    </div>
+  </div>`;
+}
+
+function selectGroupVariant(groupKey, idx) {
+  const group = GROUPS[groupKey];
+  const variants = group.variants.map(v => ({
+    ...v, drink: allDrinks.find(d => d.name === v.name && d.size === group.size && d.active)
+  })).filter(v => v.drink);
+
+  // Update thumbs
+  variants.forEach((_, i) => {
+    const el = document.getElementById(`thumb-${groupKey}-${i}`);
+    if (el) el.classList.toggle('active', i === idx);
+  });
+
+  // Update select
+  const sel = document.getElementById('select-' + groupKey);
+  if (sel) sel.value = idx;
+
+  // Update price + cart
+  const drink = variants[idx]?.drink;
+  if (!drink) return;
+  const priceEl = document.getElementById('price-' + groupKey);
+  if (priceEl) priceEl.textContent = drink.price + ' lei';
+  if (cart[groupKey]) { cart[groupKey].drink = drink; updateCartUI(); }
+}
+
+function onGroupSelectChange(groupKey, idx) {
+  selectGroupVariant(groupKey, idx);
+}
+
+function changeGroupQty(groupKey, delta) {
+  const group = GROUPS[groupKey];
+  const variants = group.variants.map(v => ({
+    ...v, drink: allDrinks.find(d => d.name === v.name && d.size === group.size && d.active)
+  })).filter(v => v.drink);
+
+  const sel = document.getElementById('select-' + groupKey);
+  const idx = sel ? parseInt(sel.value) : 0;
+  const drink = variants[idx]?.drink;
+  if (!drink) return;
+
+  const current = cart[groupKey] ? cart[groupKey].qty : 0;
+  const newQty = Math.max(0, Math.min(drink.stock, current + delta));
+  if (newQty === 0) delete cart[groupKey];
+  else cart[groupKey] = { drink, qty: newQty };
+
+  const el = document.getElementById('qty-' + groupKey);
+  if (el) el.innerHTML = newQty > 0
+    ? `<div class="qty-controls"><button class="qty-btn" onclick="changeGroupQty('${groupKey}',-1)">−</button><span class="qty-num">${newQty}</span><button class="qty-btn plus" onclick="changeGroupQty('${groupKey}',1)">+</button></div>`
+    : `<button class="add-btn" onclick="changeGroupQty('${groupKey}',1)">+ Adaugă</button>`;
+  updateCartUI();
+}
+
+// ── SINGLE CARD ───────────────────────────────────────────────
+function buildSingleCard(d) {
+  const oos = d.stock <= 0;
+  const qty = cart[d.id] ? cart[d.id].qty : 0;
+  const imgEl = d.image ? `<img src="${encodeURI(d.image)}" alt="${d.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : '';
+  const emojiEl = `<span class="emoji-fb" style="display:${d.image ? 'none' : 'flex'}">🥤</span>`;
+  return `
+  <div class="item-card${oos ? ' out-of-stock' : ''}" id="card-${d.id}">
+    <div class="item-img">${imgEl}${emojiEl}</div>
+    <div class="item-info">
+      <div class="item-name">${d.name}</div>
+      <div class="item-size">${d.size}</div>
+      ${oos ? '<div class="item-oos">Stoc epuizat</div>' : `<div class="item-price">${d.price} lei</div>`}
+    </div>
+    ${oos ? '' : `<div class="item-action" id="qty-${d.id}">${qty > 0 ? singleQtyHtml(d.id, qty) : `<button class="add-btn" onclick="changeSingleQty(${d.id},1)">+ Adaugă</button>`}</div>`}
+  </div>`;
+}
+
+function singleQtyHtml(id, qty) {
+  return `<div class="qty-controls"><button class="qty-btn" onclick="changeSingleQty(${id},-1)">−</button><span class="qty-num">${qty}</span><button class="qty-btn plus" onclick="changeSingleQty(${id},1)">+</button></div>`;
+}
+
+function changeSingleQty(id, delta) {
+  const drink = allDrinks.find(d => d.id == id);
+  if (!drink) return;
+  const current = cart[id] ? cart[id].qty : 0;
+  const newQty = Math.max(0, Math.min(drink.stock, current + delta));
+  if (newQty === 0) delete cart[id];
+  else cart[id] = { drink, qty: newQty };
+  const el = document.getElementById('qty-' + id);
+  if (el) el.innerHTML = newQty > 0 ? singleQtyHtml(id, newQty) : `<button class="add-btn" onclick="changeSingleQty(${id},1)">+ Adaugă</button>`;
+  updateCartUI();
+}
+
+// ── AQUA FLAVOURS ─────────────────────────────────────────────
+function buildAquaFlavoursCard(items) {
+  const cartEntry = cart['aqua-flavours'];
+  const qty = cartEntry ? cartEntry.qty : 0;
+  const selectedId = cartEntry ? cartEntry.drink.id : items[0].id;
+  const price = items.find(d => d.id == selectedId)?.price || 7;
+  const options = items.map(d =>
+    `<option value="${d.id}" ${d.id == selectedId ? 'selected' : ''} ${d.stock <= 0 ? 'disabled' : ''}>${d.name.replace('AQUA Carpatica FLAVOURS – ', '')}${d.stock <= 0 ? ' (epuizat)' : ''}</option>`
+  ).join('');
+
+  const thumbsHtml = items.map(d => {
+    const imgName = d.name.replace('AQUA Carpatica FLAVOURS – ', '') + '.png';
+    return `<div class="group-thumb${d.id == selectedId ? ' active' : ''}" onclick="onAquaThumbClick(${d.id})"><img src="${encodeURI(imgName)}" alt="${d.name}" onerror="this.style.display='none'"></div>`;
+  }).join('');
+
+  return `
+  <div class="group-card" id="card-aqua-flavours">
+    <div class="group-thumbs">${thumbsHtml}</div>
+    <div class="group-bottom">
+      <div class="group-info">
+        <div class="group-name">AQUA Carpatica FLAVOURS</div>
+        <div class="group-size">doză 0.33ml</div>
+        <div class="group-price" id="aqua-price">${price} lei</div>
+        <select class="flavor-select" id="aqua-select" onchange="onAquaFlavorChange(this.value)">${options}</select>
+      </div>
+      <div class="group-action" id="qty-aqua-flavours">
+        ${qty > 0 ? aquaQtyHtml(qty) : `<button class="add-btn" onclick="changeAquaQty(1)">+ Adaugă</button>`}
+      </div>
+    </div>
+  </div>`;
+}
+
+function onAquaThumbClick(id) {
+  const sel = document.getElementById('aqua-select');
+  if (sel) sel.value = id;
+  onAquaFlavorChange(id);
+  document.querySelectorAll('#card-aqua-flavours .group-thumb').forEach(t => {
+    t.classList.toggle('active', t.onclick.toString().includes(id));
+  });
+}
+
+function aquaQtyHtml(qty) {
+  return `<div class="qty-controls"><button class="qty-btn" onclick="changeAquaQty(-1)">−</button><span class="qty-num">${qty}</span><button class="qty-btn plus" onclick="changeAquaQty(1)">+</button></div>`;
+}
+function onAquaFlavorChange(id) {
+  const drink = allDrinks.find(d => d.id == id);
+  if (!drink) return;
+  const priceEl = document.getElementById('aqua-price');
+  if (priceEl) priceEl.textContent = drink.price + ' lei';
+  if (cart['aqua-flavours']) { cart['aqua-flavours'].drink = drink; updateCartUI(); }
+}
+function changeAquaQty(delta) {
+  const sel = document.getElementById('aqua-select');
+  const id = parseInt(sel.value);
+  const drink = allDrinks.find(d => d.id == id);
+  if (!drink) return;
+  const current = cart['aqua-flavours'] ? cart['aqua-flavours'].qty : 0;
+  const newQty = Math.max(0, Math.min(drink.stock, current + delta));
+  if (newQty === 0) delete cart['aqua-flavours'];
+  else cart['aqua-flavours'] = { drink, qty: newQty };
+  const el = document.getElementById('qty-aqua-flavours');
+  if (el) el.innerHTML = newQty > 0 ? aquaQtyHtml(newQty) : `<button class="add-btn" onclick="changeAquaQty(1)">+ Adaugă</button>`;
+  updateCartUI();
+}
+
+// ── CART ──────────────────────────────────────────────────────
+function getCartItems() { return Object.values(cart); }
+function getTotal() { return getCartItems().reduce((s, e) => s + e.drink.price * e.qty, 0); }
+function getCount() { return getCartItems().reduce((s, e) => s + e.qty, 0); }
+function updateCartUI() {
+  const total = getTotal(), count = getCount(), has = count > 0;
+  document.getElementById('stickyBar').classList.toggle('visible', has);
+  document.getElementById('payBtnText').textContent = `Plătește ${total} lei`;
+  document.getElementById('cartBtn').classList.toggle('hidden', !has);
+  document.getElementById('cartCount').textContent = count;
+}
+
+// ── MODAL ─────────────────────────────────────────────────────
+function openCartModal() {
+  const items = getCartItems(), total = getTotal();
+  const lines = items.map(e => `
+    <div class="order-line">
+      <span style="flex:1">${e.drink.name} <span style="color:var(--text-muted);font-size:12px">${e.drink.size}</span></span>
+      <span class="order-qty">×${e.qty}</span>
+      <span class="order-price">${e.drink.price * e.qty} lei</span>
+    </div>`).join('');
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-inner">
+      <div class="modal-title">Comandă ta</div>
+      <div class="modal-sub">Verifică înainte de plată</div>
+      ${lines}
+      <div class="total-line"><span>Total</span><span class="total-amount">${total} lei</span></div>
+      <button class="modal-pay-btn" onclick="processPayment()">💳 Plătește ${total} lei</button>
+      <button class="modal-cancel-btn" onclick="closeModal()">Înapoi</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+// ── PAYMENT ───────────────────────────────────────────────────
+async function processPayment() {
+  const items = getCartItems().map(e => ({ id: e.drink.id, quantity: e.qty }));
+  const total = getTotal();
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-inner" style="text-align:center;padding:40px 0">
+      <div class="spinner" style="margin:0 auto 16px"></div>
+      <div style="font-size:15px;color:var(--text-muted)">Se procesează plata...</div>
+    </div>`;
+  try {
+    const res = await fetch(WORKER + '/drinks-pay', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items, total })
+    });
+    if (!res.ok) { const err = await res.json(); throw new Error(err.error || 'Eroare server'); }
+    const pay = await res.json();
+    if (pay.envKey && pay.data) {
+      const form = document.createElement('form');
+      form.method = 'POST'; form.action = pay.payUrl; form.style.display = 'none';
+      [['env_key', pay.envKey], ['data', pay.data], ['cipher', 'rc4']].forEach(([n, v]) => {
+        const i = document.createElement('input'); i.type = 'hidden'; i.name = n; i.value = v;
+        form.appendChild(i);
+      });
+      document.body.appendChild(form); form.submit();
+    }
+  } catch (e) {
+    document.getElementById('modalContent').innerHTML = `
+      <div class="modal-inner" style="text-align:center;padding:20px 0">
+        <div style="font-size:40px;margin-bottom:12px">⚠️</div>
+        <div style="font-size:17px;font-weight:700;margin-bottom:8px">Eroare</div>
+        <div style="font-size:14px;color:var(--text-muted);margin-bottom:20px">${e.message}</div>
+        <button class="modal-cancel-btn" onclick="closeModal()">Închide</button>
+      </div>`;
+  }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+loadDrinks();
+</script>
+</body>
+</html>
