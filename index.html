@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enjoy Padel Botoșani</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --accent: #22c55e;
+      --accent-dark: #16a34a;
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.88);
+      --card-bg: rgba(7, 12, 20, 0.46);
+      --card-border: rgba(255, 255, 255, 0.1);
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      background: #000;
+    }
+
+    /* ── HERO PAGE ── */
+    #page-home {
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.76)),
+        url('./hero.png') center center / cover no-repeat;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 28px 20px 60px;
+      text-align: center;
+      position: relative;
+    }
+
+    .socials {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-btn {
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 14px;
+      background: rgba(26, 26, 26, 0.88);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .social-btn svg { width: 22px; height: 22px; fill: #fff; }
+
+    .content {
+      width: 100%; max-width: 900px;
+      margin-top: 60px;
+      display: flex; flex-direction: column; align-items: center; gap: 24px;
+    }
+
+    h1 {
+      margin: 0; font-size: 84px; line-height: 0.95;
+      font-weight: 800; color: #ffffff;
+      letter-spacing: -1.8px; text-transform: uppercase;
+    }
+
+    .sub {
+      font-size: 30px; font-weight: 700;
+      letter-spacing: 0.28em; text-transform: uppercase; color: #ffffff;
+      display: inline-block; position: relative; padding-bottom: 10px;
+    }
+    .sub::after {
+      content: ""; position: absolute; left: 0; bottom: 0;
+      width: 100%; height: 5px; border-radius: 999px; background: #ffffff;
+    }
+
+    .tagline { font-size: 32px; font-weight: 600; line-height: 1.3; color: #ffffff; }
+
+    .btn {
+      min-width: 340px; padding: 20px 38px; border-radius: 999px;
+      background: linear-gradient(#34d399, var(--accent));
+      color: #ffffff; font-size: 29px; font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 16px 34px rgba(34,197,94,0.28);
+    }
+
+    .subtext { font-size: 18px; max-width: 680px; color: var(--muted); }
+
+    .meta-row { margin-top: 16px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .meta-card {
+      padding: 18px 28px; border-radius: 20px;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      backdrop-filter: blur(8px); display: flex; align-items: center; gap: 12px;
+    }
+    .big-number { font-size: 52px; font-weight: 900; color: var(--accent); line-height: 1; }
+    .meta-title { font-size: 22px; font-weight: 700; }
+    .meta-sub { font-size: 15px; color: var(--muted); }
+
+    /* ── FOOTER LEGAL LINKS ── */
+    .legal-footer {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(10px);
+      padding: 12px 24px;
+      display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      z-index: 100;
+    }
+    .legal-footer a {
+      color: rgba(255,255,255,0.6); font-size: 12px; text-decoration: none;
+      transition: color 0.2s;
+    }
+    .legal-footer a:hover { color: var(--accent); }
+
+    /* ── LEGAL PAGES ── */
+    .page { display: none; min-height: 100vh; background: #0a0f1a; }
+    .page.active { display: block; }
+    #page-home { display: block; }
+    #page-home.hidden { display: none; }
+
+    .legal-page {
+      max-width: 860px; margin: 0 auto;
+      padding: 60px 24px 100px;
+      color: rgba(255,255,255,0.88);
+      font-size: 15px; line-height: 1.8;
+    }
+    .legal-page h2 {
+      font-size: 28px; font-weight: 800; color: #fff;
+      margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .legal-page .company-info {
+      background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 12px; padding: 16px 20px; margin-bottom: 32px;
+      font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.7;
+    }
+    .legal-page h3 {
+      font-size: 16px; font-weight: 700; color: var(--accent);
+      margin: 28px 0 8px; text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .legal-page p { margin: 0 0 14px; }
+    .legal-page ul { margin: 0 0 14px; padding-left: 20px; }
+    .legal-page ul li { margin-bottom: 6px; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--accent); font-size: 14px; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+      margin-bottom: 32px; background: none; border: none;
+      padding: 0; font-family: 'Poppins', sans-serif;
+    }
+    .back-btn:hover { opacity: 0.8; }
+    .divider {
+      border: none; border-top: 1px solid rgba(255,255,255,0.08);
+      margin: 24px 0;
+    }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 46px; }
+      .sub { font-size: 20px; }
+      .tagline { font-size: 20px; }
+      .btn { width: 100%; font-size: 22px; }
+      .legal-page { padding: 40px 16px 100px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: HOME
+  ══════════════════════════════════════════ -->
+  <div id="page-home">
+    <div class="hero">
+      <div class="socials">
+        <a class="social-btn" href="https://www.facebook.com/share/1BdVN7M7L4/?mibextid=wwXIfr" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.2H7.8V14h2.8v8h2.9z"/></svg>
+        </a>
+        <a class="social-btn" href="https://www.instagram.com/enjoypadelbotosani?igsh=OWx4YWw3ZmcyOW5q&utm_source=qr" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2.2A2.8 2.8 0 0 0 4.2 7v10A2.8 2.8 0 0 0 7 19.8h10a2.8 2.8 0 0 0 2.8-2.8V7A2.8 2.8 0 0 0 17 4.2H7zm10.25 1.65a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6z"/></svg>
+        </a>
+        <a class="social-btn" href="https://www.tiktok.com/@enjoy.padel.botosani?_r=1&_t=ZN-97I7sX6hNJu" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M14.2 3c.3 2.1 1.5 3.7 3.5 4.6.8.4 1.7.6 2.3.6v3.1c-1.4 0-2.7-.3-4-.9v6.2c0 3.3-2.6 5.7-6 5.7-3.2 0-5.8-2.4-5.8-5.6 0-3.4 2.8-5.9 6.2-5.6v3.1a2.6 2.6 0 1 0 2.6 2.6V3h1.2z"/></svg>
+        </a>
+        <a class="social-btn" href="https://wa.me/40774398456" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.5 0-.2-.6-1.5-.9-2-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.5.1-.8.4C7 8.4 6.2 9.2 6.2 10.8c0 1.6 1.2 3.1 1.3 3.3.1.2 2.3 3.5 5.6 4.8.8.3 1.4.5 1.9.6.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.2L2 22l4.9-1.5C8.3 21.5 10.1 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.8 0-3.5-.5-5-1.4l-.4-.2-3 .8.8-2.9-.2-.4C3.2 14.9 3 13.5 3 12 3 7 7 3 12 3s9 4 9 9-4 9-9 9z"/></svg>
+        </a>
+      </div>
+
+      <div class="content">
+        <h1>ENJOY PADEL</h1>
+        <div class="sub">BOTOȘANI</div>
+        <div class="tagline">Descoperă fenomenul PADEL.</div>
+        <a href="https://padelrankup.com/clubs/enjoy-padel-botosani-romania" target="_blank" class="btn">REZERVĂ TEREN!</a>
+        <div class="subtext">Vei fi redirecționat către Padel Rank Up pentru a-ți face rezervarea.</div>
+        <div class="meta-row">
+          <div class="meta-card">
+            <div class="big-number">2</div>
+            <div class="meta-title">terenuri outdoor</div>
+          </div>
+          <div class="meta-card">
+            <div>
+              <div class="meta-title">Program NON-STOP</div>
+              <div class="meta-sub">Acces self-service, intri și joci când vrei.</div>
+            </div>
+          </div>
+          <div class="meta-card">
+            <a href="tel:0774398456" style="text-decoration:none;color:inherit">
+              <div class="meta-title"><span style="color:var(--accent)">📞</span> 0774 398 456</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       PAGE: TERMENI ȘI CONDIȚII
+  ══════════════════════════════════════════ -->
+  <div id="page-termeni" class="page">
+    <div class="legal-page">
+      <button class="back-btn" onclick="showPage('home')">← Înapoi acasă</button>
+      <h2>Termeni și Condiții</h2>
+
+      <div class="company-info">
+        <strong>ENJOYPADEL S.R.L.</strong> &nbsp;|&nbsp; CUI: 54726526 &nbsp;|&nbsp; J2026032964008<br>
+        Aleea Constantin Gane, Nr. 1, Sc. B, Ap. 12, Mun. Botoșani, Jud. Botoșani<br>
+        E-mail: contact@enjoypadel.ro &nbsp;|&nbsp; Web: https://enjoypadel.ro
+      </div>
+
+      <p>Prin utilizarea site-ului <strong>enjoypadel.ro</strong> și a paginii de plăți aferente, acceptați în totalitate prezentele Termeni și Condiții. Vă rugăm să le citiți cu atenție înainte de a efectua orice tranzacție.</p>
+
+      <h3>1. Obiectul serviciilor</h3>
+      <p>ENJOYPADEL S.R.L. oferă:</p>
+      <ul>
+        <li>Închirierea terenurilor de padel outdoor, localizate în Botoșani;</li>
+        <li>Vânzarea de băuturi răcoritoare, apă și alte produse alimentare la locație, prin intermediul paginii de plăți accesibilă prin cod QR.</li>
+      </ul>
+
+      <h3>2. Procesul de comandă și plată</h3>
+      <p>Clienții pot efectua plata pentru produsele disponibile la locație (apă, sucuri etc.) scanând codul QR afișat. Plata se realizează online, prin intermediul procesatorului de plăți NETOPIA Payments. Produsul fizic este ridicat de client direct de la locație, imediat după confirmarea plății.</p>
+      <p>Comanda este considerată finalizată în momentul în care sistemul NETOPIA confirmă tranzacția cu succes.</p>
+
+      <h3>3. Prețuri și moneda de tranzacționare</h3>
+      <p>Toate prețurile afișate sunt exprimate în <strong>lei românești (RON)</strong>, includ TVA (acolo unde este cazul) și sunt valabile la data afișării. ENJOYPADEL S.R.L. își rezervă dreptul de a modifica prețurile fără notificare prealabilă.</p>
+
+      <h3>4. Disponibilitatea produselor</h3>
+      <p>Produsele sunt disponibile în limita stocului existent la locație. În cazul în care un produs nu mai este disponibil după efectuarea plății, suma va fi rambursată integral în termen de maxim 7 zile lucrătoare.</p>
+
+      <h3>5. Răspunderea utilizatorilor</h3>
+      <p>Utilizatorii se obligă să furnizeze informații corecte și să utilizeze serviciile în mod responsabil, cu respectarea regulamentului locației și a legislației în vigoare.</p>
+
+      <h3>6. Limitarea răspunderii</h3>
+      <p>ENJOYPADEL S.R.L. nu răspunde pentru daune indirecte sau pierderi cauzate de utilizarea inadecvată a serviciilor sau a echipamentelor sportive. Utilizarea terenurilor se face pe propria răspundere.</p>
+
+      <h3>7. Proprietate intelectuală</h3>
+      <p>Toate elementele grafice, textele și conținuturile de pe site-ul enjoypadel.ro sunt proprietatea ENJOYPADEL S.R.L. și sunt protejate de legislația privind drepturile de autor. Reproducerea fără acordul scris al societății este interzisă.</p>
+
+      <h3>8. Legea aplicabilă</h3>
+      <p>Prezentul contract este guvernat de legislația română. Orice litigiu se va soluționa pe cale amiabilă sau, în caz de eșec, de instanțele judecătorești competente din România.</p>
+
+      <h3>9. Contact</h3>
+      <p>Pentru orice întrebări legate de prezentele Termeni și Condiții, ne puteți contacta la adresa de e-mail: <strong>contact@enjoypadel.ro</strong>.</p>
+
+      <hr class="divider">
+      <p style="font-size:12px; color:rgba(255,255,255,0.4);">Ultima actualizare: Mai 2026</p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       PAGE: POLITICA DE CONFIDENȚIALITATE & GDPR
+  ══════════════════════════════════════════ -->
+  <div id="page-gdpr" class="page">
+    <div class="legal-page">
+      <button class="back-btn" onclick="showPage('home')">← Înapoi acasă</button>
+      <h2>Politica de Confidențialitate &amp; GDPR</h2>
+
+      <div class="company-info">
+        <strong>Operator de date cu caracter personal:</strong> ENJOYPADEL S.R.L.<br>
+        CUI: 54726526 &nbsp;|&nbsp; J2026032964008<br>
+        Aleea Constantin Gane, Nr. 1, Sc. B, Ap. 12, Mun. Botoșani, Jud. Botoșani<br>
+        E-mail: contact@enjoypadel.ro
+      </div>
+
+      <p>ENJOYPADEL S.R.L. respectă dreptul la viață privată al utilizatorilor și prelucrează datele cu caracter personal în conformitate cu <strong>Regulamentul (UE) 2016/679 (GDPR)</strong> și legislația națională aplicabilă.</p>
+
+      <h3>1. Ce date colectăm</h3>
+      <p>În cadrul procesului de plată prin pagina QR, pot fi prelucrate următoarele date:</p>
+      <ul>
+        <li>Date de identificare a tranzacției (ID tranzacție, sumă, dată, oră);</li>
+        <li>Date de card (procesate exclusiv de NETOPIA Payments — ENJOYPADEL S.R.L. nu stochează datele cardului);</li>
+        <li>Adresă de e-mail (dacă este furnizată pentru primirea confirmării).</li>
+      </ul>
+
+      <h3>2. Scopul prelucrării</h3>
+      <ul>
+        <li>Procesarea și confirmarea plăților online;</li>
+        <li>Îndeplinirea obligațiilor legale (fiscale, contabile);</li>
+        <li>Soluționarea eventualelor contestații sau rambursări.</li>
+      </ul>
+
+      <h3>3. Temeiul legal</h3>
+      <p>Prelucrarea se realizează în baza <strong>art. 6 alin. (1) lit. b) GDPR</strong> — executarea unui contract și a <strong>art. 6 alin. (1) lit. c) GDPR</strong> — respectarea obligațiilor legale.</p>
+
+      <h3>4. Durata păstrării datelor</h3>
+      <p>Datele aferente tranzacțiilor sunt păstrate conform obligațiilor legale contabile (10 ani). Datele care nu mai sunt necesare sunt șterse sau anonimizate.</p>
+
+      <h3>5. Destinatarii datelor</h3>
+      <p>Datele pot fi transmise către:</p>
+      <ul>
+        <li><strong>NETOPIA Payments</strong> — procesator de plăți, în calitate de operator asociat/împuternicit;</li>
+        <li>Autorități publice, la solicitarea acestora în baza legii.</li>
+      </ul>
+      <p>Nu vindem, nu închiriem și nu transmitem datele dumneavoastră unor terți în scop de marketing.</p>
+
+      <h3>6. Drepturile dumneavoastră</h3>
+      <p>Conform GDPR, aveți dreptul la: acces, rectificare, ștergere, restricționarea prelucrării, portabilitatea datelor și opoziție. Puteți exercita aceste drepturi contactând-ne la <strong>contact@enjoypadel.ro</strong>. Aveți, de asemenea, dreptul de a depune plângere la <strong>ANSPDCP</strong> (www.dataprotection.ro).</p>
+
+      <h3>7. Cookies</h3>
+      <p>Site-ul enjoypadel.ro poate utiliza cookies tehnice necesare funcționării. Nu utilizăm cookies de urmărire sau publicitate.</p>
+
+      <h3>8. Securitatea datelor</h3>
+      <p>Toate plățile online sunt procesate prin conexiune securizată HTTPS/SSL. Datele cardului sunt procesate exclusiv de NETOPIA Payments, certificat PCI-DSS.</p>
+
+      <hr class="divider">
+      <p style="font-size:12px; color:rgba(255,255,255,0.4);">Ultima actualizare: Mai 2026</p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       PAGE: POLITICA DE LIVRARE
+  ══════════════════════════════════════════ -->
+  <div id="page-livrare" class="page">
+    <div class="legal-page">
+      <button class="back-btn" onclick="showPage('home')">← Înapoi acasă</button>
+      <h2>Politica de Livrare</h2>
+
+      <div class="company-info">
+        <strong>ENJOYPADEL S.R.L.</strong> &nbsp;|&nbsp; CUI: 54726526 &nbsp;|&nbsp; J2026032964008<br>
+        Aleea Constantin Gane, Nr. 1, Sc. B, Ap. 12, Mun. Botoșani, Jud. Botoșani
+      </div>
+
+      <h3>1. Modalitatea de livrare</h3>
+      <p>Produsele comercializate prin intermediul paginii de plăți (apă, sucuri și alte băuturi) sunt produse <strong>ridicate personal de client de la locația Enjoy Padel</strong>, imediat după confirmarea plății online.</p>
+      <p>Nu oferim livrare la domiciliu sau prin servicii de curierat. Produsul este disponibil fizic la locație în momentul efectuării plății.</p>
+
+      <h3>2. Confirmarea comenzii</h3>
+      <p>După procesarea cu succes a plății prin NETOPIA, clientul primește o confirmare electronică a tranzacției. Această confirmare reprezintă dovada achiziției și permite ridicarea produsului de la locație.</p>
+
+      <h3>3. Termenul de ridicare</h3>
+      <p>Produsul poate fi ridicat imediat după confirmarea plății, pe durata programului de funcționare al locației. Locația este disponibilă <strong>NON-STOP</strong> prin sistem self-service.</p>
+
+      <h3>4. Produse indisponibile</h3>
+      <p>În situația excepțională în care un produs plătit nu mai este disponibil la locație (stoc epuizat), ENJOYPADEL S.R.L. va rambursa suma integral în termen de <strong>7 zile lucrătoare</strong>.</p>
+
+      <h3>5. Contact</h3>
+      <p>Pentru orice problemă legată de o comandă, contactați-ne la: <strong>contact@enjoypadel.ro</strong>.</p>
+
+      <hr class="divider">
+      <p style="font-size:12px; color:rgba(255,255,255,0.4);">Ultima actualizare: Mai 2026</p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       PAGE: POLITICA DE ANULARE / RAMBURSARE
+  ══════════════════════════════════════════ -->
+  <div id="page-anulare" class="page">
+    <div class="legal-page">
+      <button class="back-btn" onclick="showPage('home')">← Înapoi acasă</button>
+      <h2>Politica de Anulare și Rambursare</h2>
+
+      <div class="company-info">
+        <strong>ENJOYPADEL S.R.L.</strong> &nbsp;|&nbsp; CUI: 54726526 &nbsp;|&nbsp; J2026032964008<br>
+        Aleea Constantin Gane, Nr. 1, Sc. B, Ap. 12, Mun. Botoșani, Jud. Botoșani<br>
+        E-mail: contact@enjoypadel.ro
+      </div>
+
+      <h3>1. Dreptul de retragere</h3>
+      <p>Conform <strong>OUG 34/2014</strong> privind drepturile consumatorilor, în cazul contractelor la distanță, consumatorii beneficiază de dreptul de retragere din contract în termen de 14 zile calendaristice.</p>
+      <p>Totuși, în conformitate cu art. 16 lit. (m) din OUG 34/2014, <strong>dreptul de retragere nu se aplică</strong> pentru produse care, prin natura lor, se deteriorează rapid sau au termen de valabilitate scurt (băuturi, produse perisabile).</p>
+
+      <h3>2. Cazuri în care se acordă rambursare</h3>
+      <p>ENJOYPADEL S.R.L. acordă rambursare integrală în următoarele situații:</p>
+      <ul>
+        <li>Produsul plătit nu este disponibil la locație (stoc epuizat);</li>
+        <li>Produsul livrat este deteriorat sau impropriu consumului;</li>
+        <li>Tranzacție procesată eronat (dublă taxare, sumă incorectă).</li>
+      </ul>
+
+      <h3>3. Procedura de rambursare</h3>
+      <p>Pentru a solicita o rambursare, contactați-ne la <strong>contact@enjoypadel.ro</strong> cu:</p>
+      <ul>
+        <li>ID-ul tranzacției (din confirmarea primită);</li>
+        <li>Descrierea problemei;</li>
+        <li>Data și ora tranzacției.</li>
+      </ul>
+      <p>Rambursarea se procesează în termen de <strong>7 zile lucrătoare</strong> de la aprobarea cererii, prin același mijloc de plată utilizat la achiziție.</p>
+
+      <h3>4. Contestații plăți cu cardul</h3>
+      <p>În cazul în care considerați că ați fost taxat în mod eronat, puteți contacta și banca emitentă a cardului pentru deschiderea unei proceduri de chargeback, conform condițiilor băncii dumneavoastră.</p>
+
+      <h3>5. Contact</h3>
+      <p>Orice solicitare de anulare sau rambursare se trimite la: <strong>contact@enjoypadel.ro</strong>. Răspundem în maxim 2 zile lucrătoare.</p>
+
+      <hr class="divider">
+      <p style="font-size:12px; color:rgba(255,255,255,0.4);">Ultima actualizare: Mai 2026</p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       FOOTER (fixed, apare pe toate paginile)
+  ══════════════════════════════════════════ -->
+  <nav class="legal-footer">
+    <a href="#" onclick="showPage('termeni'); return false;">Termeni și Condiții</a>
+    <a href="#" onclick="showPage('gdpr'); return false;">Confidențialitate &amp; GDPR</a>
+    <a href="#" onclick="showPage('livrare'); return false;">Politica de Livrare</a>
+    <a href="#" onclick="showPage('anulare'); return false;">Anulare &amp; Rambursare</a>
+    <span style="color:rgba(255,255,255,0.25); font-size:12px;">© 2026 ENJOYPADEL S.R.L. · CUI 54726526</span>
+  </nav>
+
+
+
+
+  <script>
+    function showPage(name) {
+      // ascunde tot
+      document.getElementById('page-home').style.display = 'none';
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+      if (name === 'home') {
+        document.getElementById('page-home').style.display = 'block';
+      } else {
+        const el = document.getElementById('page-' + name);
+        if (el) {
+          el.classList.add('active');
+          window.scrollTo(0, 0);
+        }
+      }
+    }
+  </script>
+
+  <!-- NETOPIA Payments Logo -->
+  <script src="https://mny.ro/npId.js?p=165281" type="text/javascript" data-version="vertical" data-contrast-color="#ffffff"></script>
+</body>
+</html>
