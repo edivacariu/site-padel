@@ -309,7 +309,7 @@ function renderPage() {
   const coolerDrink = allDrinks.find(d => d.category === 'Cooler' && d.active && d.stock > 0);
   if (coolerDrink) {
     html += `<div class="cat-label">Cooler</div>`;
-    html += buildSingleCard(coolerDrink);
+    html += buildSingleCard({...coolerDrink, image: 'Cooler%20Afine%20sau%20Ment%C4%83%20%C8%99i%20lime.png'});
   }
 
   // Aqua Flavours — produs unificat
