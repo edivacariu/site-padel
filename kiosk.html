@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiosk — EnjoyPadel</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f2540;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ── LEFT ── */
+  .left {
+    width: 38%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 28px;
+    gap: 24px;
+    border-right: 2px solid rgba(255,255,255,0.1);
+  }
+
+  .qr-box {
+    background: #fff;
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: 0 0 60px rgba(74,222,128,0.25);
+  }
+
+  .scan-label {
+    font-size: 46px;
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+    line-height: 1.15;
+    letter-spacing: -1px;
+  }
+  .scan-label em { color: #4ade80; font-style: normal; }
+
+  /* ── RIGHT ── */
+  .right {
+    width: 62%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .right-top {
+    height: 46%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 48px;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+  }
+
+  .notice-text {
+    font-size: 48px;
+    font-weight: 900;
+    color: #fbbf24;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+  .notice-text small {
+    display: block;
+    font-size: 30px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.75);
+    margin-top: 10px;
+    line-height: 1.35;
+  }
+
+  /* ── CARDS ROW ── */
+  .right-bottom {
+    height: 54%;
+    display: flex;
+    gap: 0;
+  }
+
+  .card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 28px 20px;
+    position: relative;
+    border-right: 2px solid rgba(255,255,255,0.08);
+  }
+  .card:last-child { border-right: none; }
+
+  .card-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 12px;
+  }
+
+  /* product row: image + info side by side */
+  .product-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+  }
+
+  .product-img {
+    width: 90px;
+    height: 120px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+  }
+  .product-img .fallback { font-size: 40px; }
+
+  .product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .product-name {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+
+  .product-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 500;
+  }
+
+  .price-block {
+    margin-top: 8px;
+  }
+
+  .price-main {
+    font-size: 42px;
+    font-weight: 900;
+    color: #fbbf24;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .price-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 3px;
+  }
+
+  /* mingi specific prices */
+  .price-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 8px;
+  }
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .price-qty {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    min-width: 70px;
+  }
+  .price-val {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fbbf24;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  /* badge bottom */
+  .card-footer {
+    margin-top: 14px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .badge-gold {
+    background: rgba(251,191,36,0.15);
+    color: #fbbf24;
+    border: 1.5px solid rgba(251,191,36,0.4);
+  }
+  .badge-blue {
+    background: rgba(96,165,250,0.12);
+    color: #60a5fa;
+    border: 1.5px solid rgba(96,165,250,0.35);
+  }
+</style>
+</head>
+<body>
+
+<!-- LEFT -->
+<div class="left">
+  <div class="scan-label">Scanează și<br><em>alege paleta premium.</em></div>
+  <div class="qr-box"><div id="qrcode"></div></div>
+  <div class="scan-label">Scanează și<br><em>returnează paleta.</em></div>
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+  <div class="right-top">
+    <div class="notice-text">
+      După ce joci, te rugăm<br>să pui paleta înapoi în dulap.
+      <small>Nu o înmâna direct altui jucător —<br>scanează QR-ul și ți se deschide același dulap.</small>
+    </div>
+  </div>
+
+  <div class="right-bottom">
+
+    <!-- Card paletă -->
+    <div class="card">
+      <div class="card-label">Paletă premium</div>
+      <div class="product-row">
+        <div class="product-img">
+          <img src="paleta-adidas-match-black.png" alt="adidas MATCH BLACK"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="fallback" style="display:none">🎾</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">adidas<br>MATCH BLACK</div>
+          <div class="product-sub">Premium · Adulți</div>
+          <div class="price-block">
+            <div class="price-main">15 lei</div>
+            <div class="price-sub">per sesiune</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="badge badge-gold">Cu plată</span>
+      </div>
+    </div>
+
+    <!-- Card mingi -->
+    <div class="card">
+      <div class="card-label">Mingi</div>
+      <div class="product-row">
+        <div class="product-img">
+          <img src="set-mingi-black-crown.png" alt="Set Mingi Black Crown"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="fallback" style="display:none">🎾</span>
+        </div>
+        <div class="product-info">
+          <div class="product-name">Set Mingi<br>Black Crown</div>
+
+          <div class="price-list">
+            <div class="price-row">
+              <span class="price-qty">o cutie</span>
+              <span class="price-val">30 lei</span>
+            </div>
+            <div class="price-row">
+              <span class="price-qty">2 cutii</span>
+              <span class="price-val">50 lei</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="badge badge-blue">Cu plată</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  new QRCode(document.getElementById('qrcode'), {
+    text: 'https://enjoypadel.ro/echipament.html',
+    width: 300,
+    height: 300,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+</body>
+</html>
